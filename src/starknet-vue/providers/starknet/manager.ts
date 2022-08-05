@@ -3,7 +3,7 @@ import { defaultProvider, Provider, AccountInterface, ProviderInterface } from '
 
 import { StarknetMethods, StarknetState } from './model'
 import { Connector, InjectedConnector } from '../../connectors'
-import { ConnectorNotFoundError } from '../../errors'
+import { ConnectorNotFoundError, UserRejectedRequestError, ConnectorNotConnectedError } from '../../errors'
 import ConnectorStorageManager from '../../utils/ConnectorStorageManager'
 
 export function useStarknetManager(
@@ -26,26 +26,29 @@ export function useStarknetManager(
   const connectorStorageManager = new ConnectorStorageManager()
 
   const connectorId = connectorStorageManager.get()
-  const currentConnector = ref<Connector | undefined>(
-    connectorId ? new InjectedConnector({ id: connectorId }) : undefined
-  )
+  const currentConnector = ref<Connector | undefined>(connectorId ? new InjectedConnector({ id: connectorId }) : undefined)
 
-  const connect = (connector: Connector) => {
+  const connect = async (connector: Connector) => {
     if (state.account) {
       return
     }
-    connector.connect().then(
-      (account) => {
-        currentConnector.value = connector
-        state.account = account.address
-        state.library = account
-        connectorStorageManager.set(connector.id())
-      },
-      (err) => {
-        console.error(err)
-        state.error = new ConnectorNotFoundError()
+    try {
+      const account = await connector.connect()
+      currentConnector.value = connector
+      state.account = account.address
+      state.library = account
+      connectorStorageManager.set(connector.id())
+    } catch (error) {
+      if (error instanceof UserRejectedRequestError) {
+        state.error = error
+        return
       }
-    )
+      if (error instanceof ConnectorNotConnectedError) {
+        state.error = error
+        return
+      }
+      state.error = error instanceof Error ? error : new Error(error as any)
+    }
   }
 
   const disconnect = () => {

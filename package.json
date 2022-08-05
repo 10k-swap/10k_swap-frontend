@@ -10,13 +10,19 @@
   },
   "dependencies": {
     "@argent/get-starknet": "^3.0",
+    "big.js": "^6.2.1",
+    "decimal.js-light": "^2.5.1",
+    "jsbi": "^4.3.0",
     "pinia": "^2.0.17",
     "starknet": "^3.5",
+    "tiny-invariant": "^1.2.0",
+    "tiny-warning": "^1.0.3",
     "vue": "^3.0.0",
     "vue-i18n": "^9.2.0",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
+    "@types/big.js": "^6.1.5",
     "@vitejs/plugin-vue": "^3.0.0",
     "@vitejs/plugin-vue-jsx": "^2.0.0",
     "sass": "^1.54.2",
