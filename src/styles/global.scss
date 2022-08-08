@@ -1,1 +1,7 @@
 @import './reset.scss';
+@import './variable.scss';
+
+body{
+  font-family: 'Helvetica';
+  color: $color-primary-text;
+}

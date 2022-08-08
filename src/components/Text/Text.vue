@@ -9,7 +9,7 @@ import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { createNamespace } from '../../utils/create'
 import { TextColor, TextType } from './types'
 
-const otherColorPrefix = (color: TextColor) => color.indexOf('text') > 0 ? color : `g-${color}`
+const normalColor = (color: TextColor) => color.indexOf('text') > 0 ? color : `g-${color}`
 const [, bem] = createNamespace('text')
 
 export default defineComponent({
@@ -27,7 +27,7 @@ export default defineComponent({
     const { type, color } = toRefs(props)
 
     const classes = computed(() => (
-      [bem([type.value, otherColorPrefix(color.value)]),]
+      [bem([type.value, normalColor(color.value)]),]
     ))
 
     return {

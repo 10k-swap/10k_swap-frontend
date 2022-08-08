@@ -1,0 +1,53 @@
+// 背景图片
+@mixin bg-image($url) {
+  background-image: url($url + '@2x.png');
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    background-image: url($url + '@3x.png');
+  }
+}
+
+// 背景图片
+@mixin bg-prefix($url) {
+  background-image: url($url + '.png');
+  @include mobile {
+    background-image: url($url + '-mobile.png');
+  }
+}
+
+// 不换行
+@mixin no-wrap() {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+// 扩展点击区域
+@mixin extend-click() {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    @include absolute-pos(-10px, -10px, -10px, -10px);
+  }
+}
+
+@mixin absolute-pos($t: 0, $r: 0, $b: 0, $l: 0) {
+  top: $t;
+  right: $r;
+  bottom: $b;
+  left: $l;
+}
+
+@mixin no-scrollbar {
+  scrollbar-width: none; /* firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+}
+
+@mixin mobile {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}

@@ -4,12 +4,22 @@
     <Text color="red">
       123
     </Text>
+    <Button type="primary">
+      1214
+    </Button>
+    <Button type="primary" size="large">
+      1214
+    </Button>
+    <Button plain>
+      1214
+    </Button>
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR
       {{ t('test') }}
       {{ test }}
     </p>
+    <AddIcon :style="{ width: '30px' }" />
   </div>
 </template>
 
@@ -18,11 +28,14 @@ import { computed, defineComponent, onMounted, toRaw } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useStore } from '../../state/index'
-import Text from '../../components/Text/index.vue'
+import Text from '../../components/Text/Text.vue'
+import Button from '../../components/Button/Button'
+import { AddIcon } from '../../components/Svg/index'
 
 export default defineComponent({
   components: {
-    Text
+    Text,
+    Button, AddIcon
   },
   setup() {
     const { t } = useI18n()
@@ -43,8 +56,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .card {
-  background-color: aqua;
-
   .read-the-docs {
     color: #888;
   }

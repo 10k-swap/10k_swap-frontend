@@ -2,8 +2,7 @@ import { PropType, CSSProperties, defineComponent, ButtonHTMLAttributes } from '
 
 import { createNamespace } from '../../utils'
 import { ButtonSize, ButtonType } from './types'
-
-// import { Loading, LoadingType } from '../loading'
+import './index.scss'
 
 const [name, bem] = createNamespace('button')
 
@@ -15,10 +14,8 @@ export default defineComponent({
     color: String,
     block: Boolean,
     plain: Boolean,
-    round: Boolean,
-    square: Boolean,
     loading: Boolean,
-    hairline: Boolean,
+    bold: Boolean,
     disabled: Boolean,
     loadingSize: String,
     loadingText: String,
@@ -110,7 +107,7 @@ export default defineComponent({
     }
 
     return () => {
-      const { tag, type, size, block, round, plain, square, loading, disabled, hairline, nativeType, iconPosition } = props
+      const { tag, type, size, block, plain, loading, disabled, nativeType, iconPosition ,bold} = props
 
       const classes = [
         bem([
@@ -119,11 +116,9 @@ export default defineComponent({
           {
             plain,
             block,
-            round,
-            square,
+            bold,
             loading,
             disabled,
-            hairline,
           },
         ]),
       ]

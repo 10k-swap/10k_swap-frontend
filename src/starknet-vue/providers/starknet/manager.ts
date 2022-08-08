@@ -41,11 +41,11 @@ export function useStarknetManager(
     } catch (error) {
       if (error instanceof UserRejectedRequestError) {
         state.error = error
-        return
+        throw error
       }
       if (error instanceof ConnectorNotConnectedError) {
         state.error = error
-        return
+        throw error
       }
       state.error = error instanceof Error ? error : new Error(error as any)
     }

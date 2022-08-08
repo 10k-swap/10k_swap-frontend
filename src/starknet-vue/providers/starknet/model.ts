@@ -9,7 +9,7 @@ export interface StarknetState {
 }
 
 export interface StarknetMethods {
-  connect: (connector: Connector) => void
+  connect: (connector: Connector) => Promise<void>
   disconnect: () => void
 }
 

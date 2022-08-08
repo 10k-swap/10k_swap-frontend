@@ -2,10 +2,11 @@ import { inject, toRefs, ToRefs } from 'vue'
 import { StarknetState, StarknetMethods, STARKNET_INITIAL_STATE } from './model'
 import { StarknetStateSymbol, StarknetMethodsSymbol } from './const'
 import { noop } from '../../utils'
+import { ConnectorNotFoundError } from '../../errors'
 
 export function useStarknet(): StarknetMethods & { state: ToRefs<StarknetState> } {
   const state = inject<ToRefs<StarknetState>>(StarknetStateSymbol)
-  const methods = inject<StarknetMethods>(StarknetMethodsSymbol) ?? { connect: noop, disconnect: noop }
+  const methods = inject<StarknetMethods>(StarknetMethodsSymbol) ?? { connect: () => Promise.reject(new ConnectorNotFoundError()), disconnect: noop }
 
   if (state) {
     return {
