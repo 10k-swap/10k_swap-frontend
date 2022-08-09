@@ -1,5 +1,5 @@
 <template>
-  <svg :class="classes" :style="{ ...style, width }" :viewBox="viewBox">
+  <svg :class="classes" :style="{ ...style, width }" :viewBox="viewBox" :fill="fill">
     <slot></slot>
   </svg>
 </template>
@@ -10,25 +10,27 @@ import { createNamespace } from '../../utils/create'
 import { SvgColor, SvgProps } from './types'
 
 const [, bem] = createNamespace('svg')
-const normalColor = (color: SvgColor) => ['white', 'primary'].includes(color) ? color : `g-${color}`
+const normalColor = (color: SvgColor) => ['white', 'red', 'primary'].includes(color) ? `g-${color}` : color
 
 export default defineComponent({
   props: {
     ...SvgProps,
+    fill: String,
     viewBox: {
       type: String as PropType<string>,
       default: '0 0 24 24',
     },
   },
   setup(props) {
-    const { color, style, viewBox, width } = toRefs(props)
-    const classes = computed(() => ([bem([normalColor(color.value)]),]))
+    const { color, style, viewBox, width, fill } = toRefs(props)
+    const classes = computed(() => ([bem([normalColor(color.value)])]))
 
     return {
       classes,
       style,
       viewBox,
-      width
+      width,
+      fill
     }
   }
 })
@@ -36,22 +38,25 @@ export default defineComponent({
 
 <style lang="scss">
 @import '../../styles/index.scss';
-$text-prefix: '#{$prefix}-svg';
-
-.#{$text-prefix} {
-  width: 24px;
-}
-
+$svg-prefix: '#{$prefix}-svg';
 $colors: (
-  normal: $color-primary-text,
-  'g-white':$color-primary,
-  'g-primary':$color-white
+  'normal': $color-primary-text,
+  'secondary': $color-secondary-text,
+  'minor': $color-description-text,
+  'transparent':$color-transparent-text,
+  'g-white':$color-white,
+  'g-primary':$color-primary,
+  'g-red':$color-red
 );
-$textNames: 'g-primary''g-white';
+$textNames: 'g-red''g-primary''g-white''secondary''minor''normal''transparent';
 
-@each $name in $textNames {
-  .#{$text-prefix}--#{$name} {
-    color: map-get($colors, $name);
+.#{$svg-prefix} {
+  width: 24px;
+
+  @each $name in $textNames {
+    &--#{$name} {
+      fill: map-get($colors, $name);
+    }
   }
 }
 </style>

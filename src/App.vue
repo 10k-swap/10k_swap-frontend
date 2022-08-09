@@ -1,5 +1,5 @@
 <template>
-  <StarknetProvider :connectors="connectors" :autoConnect="true">
+  <StarknetProvider :connectors="connectors">
     <AppBody>
       <router-view />
     </AppBody>
@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AppBody from './components/AppBody/AppBody.vue'
+import AppBody from './pages/AppBody/index.vue'
 import { getInstalledInjectedConnectors } from './starknet-vue/connectors'
 import { StarknetProvider } from './starknet-vue/providers/index'
 

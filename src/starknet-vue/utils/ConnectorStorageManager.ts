@@ -5,7 +5,12 @@ export default class ConnectorStorageManager {
     return window.localStorage.getItem(this.name)
   }
 
-  set(data: string): void {
+  set(data: string | null): void {
+    if (data === null) {
+      window.localStorage.removeItem(this.name)
+      return
+    }
+
     return window.localStorage.setItem(this.name, data)
   }
 }

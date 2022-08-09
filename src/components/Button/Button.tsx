@@ -1,5 +1,7 @@
 import { PropType, CSSProperties, defineComponent, ButtonHTMLAttributes } from 'vue'
 
+import { LoadingIcon } from '../Svg'
+
 import { createNamespace } from '../../utils'
 import { ButtonSize, ButtonType } from './types'
 import './index.scss'
@@ -49,7 +51,7 @@ export default defineComponent({
         return slots.loading()
       }
 
-      // return <Loading size={props.loadingSize} type={props.loadingType} class={bem('loading')} />
+      return <LoadingIcon class={bem('loading')} color="secondary" />
     }
 
     const renderIcon = () => {
@@ -58,17 +60,12 @@ export default defineComponent({
       }
 
       if (slots.icon) {
-        return slots.icon()
+        return <span class={bem('icon')}>{slots.icon()}</span>
       }
     }
 
     const renderText = () => {
-      let text
-      if (props.loading) {
-        text = props.loadingText
-      } else {
-        text = slots.default ? slots.default() : props.text
-      }
+      const text = slots.default ? slots.default() : props.text
 
       if (text) {
         return <span class={bem('text')}>{text}</span>
@@ -107,7 +104,7 @@ export default defineComponent({
     }
 
     return () => {
-      const { tag, type, size, block, plain, loading, disabled, nativeType, iconPosition ,bold} = props
+      const { tag, type, size, block, plain, loading, disabled, nativeType, iconPosition, bold } = props
 
       const classes = [
         bem([

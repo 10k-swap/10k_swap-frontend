@@ -9,6 +9,7 @@ export function useStarknetTransactionManager(): StarknetTransactionManager & { 
     addTransaction: noop,
     removeTransaction: noop,
     refreshTransaction: noop,
+    clearTransactions: noop,
   }
 
   if (transactions) {

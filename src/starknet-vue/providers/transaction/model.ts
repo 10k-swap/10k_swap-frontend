@@ -23,10 +23,13 @@ export interface TransactionReceived {
 
 export type Transaction = (TransactionSubmitted | TransactionReceived) & {
   loading: boolean
+  scuccess: boolean
+  fail: boolean
 }
 
 export interface StarknetTransactionManager {
   addTransaction: (transaction: TransactionSubmitted) => void
   removeTransaction: (transactionHash: string) => void
   refreshTransaction: (transactionHash: string) => void
+  clearTransactions: () => void
 }

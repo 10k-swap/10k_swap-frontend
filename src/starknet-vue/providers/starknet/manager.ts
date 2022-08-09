@@ -8,8 +8,7 @@ import ConnectorStorageManager from '../../utils/ConnectorStorageManager'
 
 export function useStarknetManager(
   userDefaultProvider: Ref<ProviderInterface | undefined>,
-  connectors: Ref<Connector[]>,
-  autoConnect: Ref<boolean | undefined>
+  connectors: Ref<Connector[]>
 ): StarknetMethods & { state: StarknetState } {
   const state = reactive<{
     library: ProviderInterface | AccountInterface | Provider
@@ -57,6 +56,7 @@ export function useStarknetManager(
     }
     currentConnector.value.disconnect().then(
       () => {
+        connectorStorageManager.set(null)
         state.account = undefined
         state.library = userDefaultProvider.value ? userDefaultProvider.value : defaultProvider
       },
@@ -68,28 +68,8 @@ export function useStarknetManager(
   }
 
   onMounted(() => {
-    async function tryAutoConnect(connectors: Connector[]) {
-      // Autoconnect priority is defined by the order of the connectors.
-      for (let i = 0; i < connectors.length; i++) {
-        try {
-          if (!(await connectors[i].ready())) {
-            // Not already authorized, try next.
-            continue
-          }
-
-          const account = await connectors[i].connect()
-          state.account = account.address
-          state.library = account
-          // Success, stop trying.
-          return
-        } catch {
-          // no-op, we continue trying the next connectors.
-        }
-      }
-    }
-
-    if (autoConnect.value) {
-      tryAutoConnect(toRaw(state.connectors))
+    if (connectorId) {
+      connect(new InjectedConnector({ id: connectorId }))
     }
   })
 

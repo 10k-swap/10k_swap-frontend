@@ -7,15 +7,16 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { createNamespace } from '../../utils/create'
-import { TextColor, TextType } from './types'
+import { TextColor, TextSize } from './types'
 
 const normalColor = (color: TextColor) => color.indexOf('text') > 0 ? color : `g-${color}`
 const [, bem] = createNamespace('text')
 
 export default defineComponent({
   props: {
-    type: {
-      type: String as PropType<TextType>,
+    bold: Boolean,
+    size: {
+      type: String as PropType<TextSize>,
       default: 'normal'
     },
     color: {
@@ -24,10 +25,16 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { type, color } = toRefs(props)
+    const { size, color, bold } = toRefs(props)
 
     const classes = computed(() => (
-      [bem([type.value, normalColor(color.value)]),]
+      [bem([
+        size.value,
+        normalColor(color.value),
+        {
+          bold: bold.value
+        }
+      ]),]
     ))
 
     return {
@@ -39,32 +46,8 @@ export default defineComponent({
 
 <style lang="scss">
 @import '../../styles/index.scss';
+
 $text-prefix: '#{$prefix}-text';
-
-.#{$text-prefix}--large-header {
-  font-weight: 700;
-  font-size: $font-size-lg;
-  line-height: 40px;
-}
-
-.#{$text-prefix}--sub-header {
-  font-weight: 700;
-  font-size: $font-size-md;
-  line-height: 24px;
-}
-
-.#{$text-prefix}--header {
-  font-weight: 700;
-  font-size: $font-size-normal;
-  line-height: 24px;
-}
-
-.#{$text-prefix}--normal {
-  font-weight: 400;
-  font-size: $font-size-normal;
-  line-height: 24px;
-}
-
 $textColors: (
   normal: $color-primary-text,
   secondary-text: $color-secondary-text,
@@ -76,9 +59,36 @@ $textColors: (
 );
 $textNames: 'g-red''g-primary''g-white''normal''secondary-text''description-text''transparent-text';
 
-@each $name in $textNames {
-  .#{$text-prefix}--#{$name} {
-    color: map-get($textColors, $name);
+.#{$text-prefix} {
+  font-weight: 400;
+  line-height: 24px;
+
+  &--large {
+    font-size: $font-size-lg;
+    line-height: 40px;
+  }
+
+  &--md {
+    font-size: $font-size-md;
+  }
+
+  &--normal {
+    font-size: $font-size-normal;
+  }
+
+  &--small {
+    line-height: 20px;
+    font-size: $font-size-sm;
+  }
+
+  &--bold {
+    font-weight: 700;
+  }
+
+  @each $name in $textNames {
+    &--#{$name} {
+      color: map-get($textColors, $name);
+    }
   }
 }
 </style>

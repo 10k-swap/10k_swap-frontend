@@ -3,13 +3,17 @@ import { Status, TransactionStatus } from 'starknet'
 import { useStarknet } from '../starknet/hooks'
 import { DEFAULT_INTERVAL, StarknetTransactionMethodsSymbol, StarknetTransactionStateSymbol } from './const'
 import { Transaction, TransactionSubmitted } from './model'
+import TransactionStorageManager from '../../utils/TransactionStorageManager'
 
 // todo: wait test
 function isLoading(status: Status | TransactionStatus) {
-  if (status === 'TRANSACTION_RECEIVED' || status === 'RECEIVED' || status === 'PENDING') {
-    return true
-  }
-  return false
+  return ['TRANSACTION_RECEIVED', 'RECEIVED', 'PENDING'].includes(status)
+}
+function isSuccess(status: Status | TransactionStatus) {
+  return ['ACCEPTED_ON_L2', 'ACCEPTED_ON_L1'].includes(status)
+}
+function isFail(status: Status | TransactionStatus) {
+  return ['REJECTED'].includes(status)
 }
 
 function shouldRefreshTransaction(transaction: Transaction, now: number): boolean {
@@ -38,18 +42,23 @@ export const StarknetTransactionManagerProvider = defineComponent({
     interval: Number,
   },
   setup(props, { slots }) {
+    const transactionStorageManager = new TransactionStorageManager()
+
     const { interval } = toRefs(props)
     const {
-      state: { library },
+      state: { library, account },
     } = useStarknet()
 
-    const state = reactive<{ transactions: Transaction[] }>({ transactions: [] })
+    const state = reactive<{ transactions: Transaction[] }>({ transactions: transactionStorageManager.at(account.value) })
 
     const addTransaction = (transaction: TransactionSubmitted) => {
-      state.transactions = state.transactions.concat([{ loading: true, ...transaction }])
+      state.transactions = state.transactions.concat([{ loading: true, scuccess: false, fail: false, ...transaction }])
     }
     const removeTransaction = (transactionHash: string) => {
       state.transactions = state.transactions.filter((tx) => tx.transactionHash !== transactionHash)
+    }
+    const clearTransactions = () => {
+      state.transactions = []
     }
     const refreshTransaction = async (transactionHash: string) => {
       try {
@@ -65,12 +74,14 @@ export const StarknetTransactionManagerProvider = defineComponent({
         if (!oldTransaction) {
           return
         }
-
+        const status = transactionResponse.status
         const newTransaction: Transaction = {
           transactionHash,
           lastUpdatedAt,
-          status: transactionResponse.status,
-          loading: isLoading(transactionResponse.status),
+          status: status,
+          scuccess: isSuccess(status),
+          fail: isFail(status),
+          loading: isLoading(status),
           transaction: transactionResponse.transaction,
           metadata: oldTransaction.metadata,
         }
@@ -97,6 +108,7 @@ export const StarknetTransactionManagerProvider = defineComponent({
       removeTransaction,
       refreshTransaction,
       refreshAllTransactions,
+      clearTransactions,
     })
 
     onMounted(() => {
@@ -106,7 +118,16 @@ export const StarknetTransactionManagerProvider = defineComponent({
       }, interval.value ?? DEFAULT_INTERVAL)
     })
     onBeforeUnmount(() => clearInterval(intervalId))
+
     watch([state.transactions, library, interval], () => refreshAllTransactions())
+
+    watch([account], () => (state.transactions = transactionStorageManager.at(account.value)))
+    onBeforeUnmount(() => {
+      if (!account.value) {
+        return
+      }
+      transactionStorageManager.set(state.transactions, account.value)
+    })
 
     return slots.default
   },

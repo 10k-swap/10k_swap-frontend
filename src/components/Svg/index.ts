@@ -1,1 +1,9 @@
-export { default as AddIcon } from "./Icons/Add";
+export { default as StarknetIcon } from './Icons/Starknet'
+export { default as LoadingIcon } from './Icons/Loading'
+export { default as ColseIcon } from './Icons/Colse'
+export { default as UserIcon } from './Icons/User'
+export { default as CopyIcon } from './Icons/Copy'
+export { default as ClearIcon } from './Icons/Clear'
+export { default as ScuccessIcon } from './Icons/Scuccess'
+export { default as FailIcon } from './Icons/Fail'
+export { default as ShareIcon } from './Icons/Share'

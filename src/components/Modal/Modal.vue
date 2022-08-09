@@ -1,29 +1,79 @@
 <template>
-  <vue-final-modal v-model="showModal" classes="modal-container" content-class="modal-content">
-    <span># Simple modal</span>
-    <p>
-      Lorem Ipsum is simply dummy text of the printing and typesetting
-      industry.
-    </p>
-    <button class="modal-close" @click="showModal = false">
-      x
-    </button>
+  <vue-final-modal v-model="showModal" classes="l0k-swap-modal-container" overlay-class="l0k-swap-modal-overlay"
+    content-class="l0k-swap-modal-content">
+    <slot name="header" v-if="slots.header"></slot>
+    <ModalHeader v-else>
+      {{ title }}
+    </ModalHeader>
+    <div class="l0k-swap-modal-wrap">
+      <slot />
+    </div>
   </vue-final-modal>
 </template>
 
-<script>
-import { defineComponent, ref } from '@vue/runtime-core'
+<script lang="ts">
+import { computed, defineComponent, toRefs } from 'vue'
+import ModalHeader from './ModalHeader.vue'
 
 export default defineComponent({
-  setup() {
-    const showModal = ref(true)
+  components: {
+    ModalHeader
+  },
+  props: {
+    title: {
+      type: String,
+    },
+    value: {
+      type: Boolean,
+      require: true
+    }
+  },
+  emits: ['update:value'],
+  setup(props, context) {
+    const { value, title } = toRefs(props)
+
+    const showModal = computed({
+      get: () => value.value,
+      set(newValue) {
+        context.emit('update:value', newValue)
+      }
+    })
 
     return {
-      showModal
+      showModal,
+      title,
+      slots: context.slots
     }
   }
 })
 </script>
 
-<style>
+<style lang="scss" >
+@import '../../styles/index.scss';
+
+.l0k-swap-modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.l0k-swap-modal-overlay {
+  background-color: $color-overlay  !important;
+}
+
+.l0k-swap-modal-content {
+  width: 480px;
+  background: $color-white;
+  border-radius: 20px;
+  overflow-y: scroll;
+  @include no-scrollbar;
+
+  @include mobile {
+    width: 335px;
+  }
+
+  .l0k-swap-modal-wrap {
+    padding: 0 20px 20px 20px;
+  }
+}
 </style>

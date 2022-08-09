@@ -16,18 +16,15 @@
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR
-      {{ t('test') }}
-      {{ test }}
     </p>
     <AddIcon :style="{ width: '30px' }" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, toRaw } from 'vue'
+import { defineComponent, onMounted, toRaw } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
-import { useStore } from '../../state/index'
 import Text from '../../components/Text/Text.vue'
 import Button from '../../components/Button/Button'
 import { AddIcon } from '../../components/Svg/index'
@@ -35,12 +32,12 @@ import { AddIcon } from '../../components/Svg/index'
 export default defineComponent({
   components: {
     Text,
-    Button, AddIcon
+    Button,
+    AddIcon
   },
   setup() {
     const { t } = useI18n()
     const { state: { library } } = useStarknet()
-    const store = useStore()
 
     onMounted(() => {
       console.log(toRaw(library.value))
@@ -48,7 +45,6 @@ export default defineComponent({
 
     return {
       t,
-      test: computed(() => store.test)
     }
   },
 })

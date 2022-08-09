@@ -11,15 +11,11 @@ export const StarknetLibraryProvider = defineComponent({
       type: Array as PropType<Connector[]>,
       required: true,
     },
-    autoConnect: {
-      type: Boolean,
-      required: false,
-    },
   },
   setup(props, { slots }) {
-    const { defaultProvider, connectors, autoConnect } = toRefs(props)
+    const { defaultProvider, connectors } = toRefs(props)
 
-    const { state, connect, disconnect } = useStarknetManager(defaultProvider, connectors, autoConnect)
+    const { state, connect, disconnect } = useStarknetManager(defaultProvider, connectors)
     // 使用 `toRefs()` 确保其在消费者组件中广泛可用
     // 而 `readonly()` 预防了用户修改全局状态
     provide(StarknetStateSymbol, toRefs(readonly(state)))

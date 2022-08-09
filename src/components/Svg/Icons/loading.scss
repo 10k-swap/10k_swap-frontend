@@ -1,0 +1,14 @@
+@import '../../../styles/index.scss';
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.#{$prefix}-svg-loading-spin {
+  animation: rotate 2s linear infinite;
+}

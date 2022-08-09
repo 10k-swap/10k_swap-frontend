@@ -60,15 +60,41 @@ $button-prefix: '#{$prefix}-button';
     border: $color-primary solid 1px;
   }
 
+  &--danger {
+    color: $color-red;
+    background-color: $color-white;
+    border: $color-red solid 1px;
+  }
+
+  &--warning {
+    color: $color-blue;
+    background-color: $color-white;
+    border: $color-blue solid 1px;
+  }
+
   &--plain {
     background-color: $color-bg-streak;
     color: $color-black;
     border: none;
+
+    &.#{$button-prefix}--primary {
+      color: $color-primary;
+    }
+
+    &.#{$button-prefix}--danger {
+      color: $color-red;
+    }
+
+    &.#{$button-prefix}--warning {
+      color: $color-blue;
+    }
+
   }
 
   &--large {
     width: 100%;
     height: 50px;
+    line-height: 50px;
     border-radius: 25px;
   }
 
@@ -79,6 +105,7 @@ $button-prefix: '#{$prefix}-button';
 
   &--small {
     height: 28px;
+    line-height: 28px;
     padding: 4px 9px;
     font-size: $font-size-sm;
   }
@@ -138,6 +165,8 @@ $button-prefix: '#{$prefix}-button';
   }
 
   &__icon {
+    display: inline-flex;
+    align-items: center;
     line-height: inherit;
   }
 

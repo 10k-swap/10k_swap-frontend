@@ -13,18 +13,13 @@ export const StarknetProvider = defineComponent({
       type: Array as PropType<Connector[]>,
       required: true,
     },
-    autoConnect: {
-      type: Boolean,
-      required: false,
-    },
   },
   setup(props, { slots }) {
-    const { defaultProvider, connectors, autoConnect } = toRefs(props)
+    const { defaultProvider, connectors } = toRefs(props)
 
     return () => (
       <StarknetLibraryProvider
         defaultProvider={defaultProvider.value}
-        autoConnect={autoConnect.value}
         connectors={connectors.value}
       >
         <StarknetBlockProvider>
