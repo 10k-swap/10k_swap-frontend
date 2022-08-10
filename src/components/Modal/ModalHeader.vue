@@ -1,28 +1,35 @@
 <template>
   <div class="l0k-swap-modal-header">
     <slot name="left"></slot>
-    <div class="l0k-swap-modal-header-title">
+    <div class="l0k-swap-modal-header-title" v-if="!slots.default">
       <Text bold>
-        <slot></slot>
+        {{ title }}
       </Text>
     </div>
+    <template v-else>
+      <slot></slot>
+    </template>
     <slot name="right" v-if="slots.right"></slot>
     <ColseIcon class="l0k-swap-modal-header-close" v-else @click="onClose" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, toRefs } from 'vue'
 import { ColseIcon } from '../Svg'
 import Text from '../Text/Text.vue'
 
 export default defineComponent({
+  props: {
+    title: String
+  },
   components: {
     ColseIcon,
     Text
   },
   emits: ['dismiss'],
-  setup(_, { slots, emit }) {
+  setup(props, { slots, emit }) {
+    const { title } = toRefs(props)
 
     const onClose = () => {
       emit('dismiss')
@@ -30,6 +37,7 @@ export default defineComponent({
 
     return {
       slots,
+      title,
 
       onClose
     }

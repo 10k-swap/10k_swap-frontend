@@ -5,6 +5,9 @@ export const useModalStore = defineStore('modal', {
     return {
       showAccountModal: false,
       showConnectingModal: false,
+      showConnectorNotFoundModal: false,
+      showConnectRejectModal: false,
+      showSlippageToleranceSettingsModal: false,
     }
   },
   actions: {
@@ -13,6 +16,15 @@ export const useModalStore = defineStore('modal', {
     },
     toggleConnectingModal(show: boolean) {
       this.showConnectingModal = show
+    },
+    toggleConnectorNotFoundModal(show: boolean) {
+      this.showConnectorNotFoundModal = show
+    },
+    toggleConnectRejectModal(show: boolean) {
+      this.showConnectRejectModal = show
+    },
+    toggleSlippageToleranceSettingsModal(show: boolean) {
+      this.showSlippageToleranceSettingsModal = show
     },
   },
 })

@@ -1,9 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false">
-        {{ t('account_modal.account') }}
-      </ModalHeader>
+      <ModalHeader @dismiss="() => showModal = false" :title="t('account_modal.account')" />
     </template>
     <div class="l0k-swap-account-modal-card">
       <div class="l0k-swap-account-modal-card-top">
@@ -21,7 +19,7 @@
         </div>
         <div class="copy" v-if="!copySuccess" id="l0k-swap-account-modal-copy-address" :data-clipboard-text="account">
           <CopyIcon color="secondary" width="15px" />
-          <Text size="small" :color="'secondary-text'">{{ t('account_modal.copy') }} </Text>
+          <Text size="small" :color="'secondary-text'" v-show="!isMobile">{{ t('account_modal.copy') }} </Text>
         </div>
         <Text v-else size="small" :color="'secondary-text'">{{ t('account_modal.copy_success') }} </Text>
       </div>
@@ -43,6 +41,7 @@ import { UserIcon, CopyIcon } from '../Svg'
 import { useModalStore } from '../../state'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import useConnectorWallet from '../../hooks/useConnectorWallet'
+import useIsMobile from '../../hooks/useIsMobile'
 import { shortenAddress } from '../../utils'
 
 export default defineComponent({
@@ -60,6 +59,7 @@ export default defineComponent({
     const store = useModalStore()
     const { state: { account }, disconnect } = useStarknet()
     const wallet = useConnectorWallet()
+    const isMobile = useIsMobile()
 
     const copySuccess = ref(false)
 
@@ -88,6 +88,7 @@ export default defineComponent({
       showModal,
       wallet,
       account,
+      isMobile,
       copySuccess,
 
       t,

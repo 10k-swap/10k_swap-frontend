@@ -2,9 +2,7 @@
   <vue-final-modal v-model="showModal" classes="l0k-swap-modal-container" overlay-class="l0k-swap-modal-overlay"
     content-class="l0k-swap-modal-content">
     <slot name="header" v-if="slots.header"></slot>
-    <ModalHeader v-else>
-      {{ title }}
-    </ModalHeader>
+    <ModalHeader v-else :title="title" />
     <div class="l0k-swap-modal-wrap">
       <slot />
     </div>
@@ -23,19 +21,19 @@ export default defineComponent({
     title: {
       type: String,
     },
-    value: {
+    modelValue: {
       type: Boolean,
       require: true
     }
   },
-  emits: ['update:value'],
+  emits: ['update:modelValue'],
   setup(props, context) {
-    const { value, title } = toRefs(props)
+    const { modelValue, title } = toRefs(props)
 
     const showModal = computed({
-      get: () => value.value,
+      get: () => modelValue.value,
       set(newValue) {
-        context.emit('update:value', newValue)
+        context.emit('update:modelValue', newValue)
       }
     })
 

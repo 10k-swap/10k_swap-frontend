@@ -3,21 +3,18 @@
     <Header />
     <slot></slot>
   </div>
-  <AccountModal />
-  <ConnectingModal />
+  <Modals />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Header from '../../components/Header/Header.vue'
-import AccountModal from '../../components/AccountModal/AccountModal.vue'
-import ConnectingModal from '../../components/ConnectingModal/ConnectingModal.vue'
+import Modals from '../../components/Modals/Modals.vue'
 
 export default defineComponent({
   components: {
     Header,
-    AccountModal,
-    ConnectingModal
+    Modals
   }
 })
 </script>

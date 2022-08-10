@@ -81,6 +81,11 @@ $textNames: 'g-red''g-primary''g-white''normal''secondary-text''description-text
     font-size: $font-size-sm;
   }
 
+  &--mini {
+    line-height: 18px;
+    font-size: $font-size-mini;
+  }
+
   &--bold {
     font-weight: 700;
   }

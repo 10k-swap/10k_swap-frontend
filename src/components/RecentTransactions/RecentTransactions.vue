@@ -1,31 +1,38 @@
 <template>
   <div class="l0k-swap-recent-transactions-wrap">
-    <div class="l0k-swap-recent-transactions-head">
-      <Text>
-        {{ t('recent_transactions.title') }}
-      </Text>
-      <div class="clear" @click="clearTransactions">
-        <ClearIcon width="15px" />
+    <template v-if="transactions.length">
+      <div class="l0k-swap-recent-transactions-head">
         <Text>
-          {{ t('recent_transactions.clear') }}
+          {{ t('recent_transactions.title') }}
         </Text>
-      </div>
-    </div>
-    <div class="l0k-swap-recent-transactions">
-      <div class="l0k-swap-recent-transaction" v-for="transaction in transactions" :key="transaction.transactionHash">
-        <div class="svgs">
-          <ScuccessIcon v-if="transaction.scuccess" :color="'primary'" width="16px" />
-          <LoadingIcon v-else-if="transaction.loading" :color="'minor'" width="16px" />
-          <FailIcon v-else-if="transaction.fail" color="red" width="16px" />
+        <div class="clear" @click="clearTransactions">
+          <ClearIcon width="15px" />
+          <Text>
+            {{ t('recent_transactions.clear') }}
+          </Text>
         </div>
-        <Text class="text" :color="'secondary-text'" :size="'small'">
-          {{ transaction.metadata?.message }}
-        </Text>
-        <a href="#">
-          <ShareIcon :color="'transparent'" width="12px" />
-        </a>
       </div>
-    </div>
+      <div class="l0k-swap-recent-transactions">
+        <div class="l0k-swap-recent-transaction" v-for="transaction in transactions" :key="transaction.transactionHash">
+          <div class="svgs">
+            <ScuccessIcon v-if="transaction.scuccess" :color="'primary'" width="16px" />
+            <LoadingIcon v-else-if="transaction.loading" :color="'minor'" width="16px" />
+            <FailIcon v-else-if="transaction.fail" color="red" width="16px" />
+          </div>
+          <Text class="text" :color="'secondary-text'" :size="'small'">
+            {{ transaction.metadata?.message }}
+          </Text>
+          <a href="#">
+            <ShareIcon :color="'transparent'" width="12px" />
+          </a>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <Text :color="'secondary-text'" :size="'small'">
+        {{ t('recent_transactions.tips') }}
+      </Text>
+    </template>
   </div>
 </template>
 

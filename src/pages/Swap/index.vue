@@ -1,59 +1,65 @@
 <template>
-  <div class="card">
-    <button type="button">count is</button>
-    <Text color="red">
-      123
-    </Text>
-    <Button type="primary">
-      1214
-    </Button>
-    <Button type="primary" size="large">
-      1214
-    </Button>
-    <Button plain>
-      1214
-    </Button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
-    <AddIcon :style="{ width: '30px' }" />
-  </div>
+  <Page class="l0k-swap-swap-wrapper" :title="t('pool.title')">
+    <template v-slot:head-right>
+      <SettingIcon class="setting" width="17px" @click="onSetting" />
+    </template>
+    <TokenSelect v-model="current" />
+  </Page>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, toRaw } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
 import Text from '../../components/Text/Text.vue'
 import Button from '../../components/Button/Button'
-import { AddIcon } from '../../components/Svg/index'
+import Page from '../../components/Page/Page.vue'
+import TokenSelect from '../../components/TokenSelect/TokenSelect.vue'
+import { SettingIcon } from '../../components/Svg'
+import { ChainId, Token } from '../../sdk'
+import { useModalStore, useSlippageToleranceSettingsStore } from '../../state'
 
 export default defineComponent({
   components: {
     Text,
     Button,
-    AddIcon
+    Page,
+    SettingIcon,
+    TokenSelect
   },
   setup() {
     const { t } = useI18n()
-    const { state: { library } } = useStarknet()
+    const modalStore = useModalStore()
+    const slippageToleranceSettingsStore = useSlippageToleranceSettingsStore()
 
-    onMounted(() => {
-      console.log(toRaw(library.value))
-    })
+    const current = ref(new Token(ChainId.TESTNET, '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7', 18, 'testEth'))
+
+    const onSetting = () => {
+      modalStore.toggleSlippageToleranceSettingsModal(true)
+      slippageToleranceSettingsStore.updateCurrentSet('swap')
+    }
 
     return {
+      current,
+
       t,
+      onSetting,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.card {
-  .read-the-docs {
-    color: #888;
+@import '../../styles/index.scss';
+
+.l0k-swap-swap-wrapper {
+  margin-top: 28px;
+
+  .setting {
+    cursor: pointer;
+  }
+
+  @include mobile {
+    margin-top: 5px;
   }
 }
 </style>

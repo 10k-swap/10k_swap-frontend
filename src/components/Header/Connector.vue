@@ -1,12 +1,19 @@
 <template>
   <div class="l0k-swap-connector">
     <div class="connected" v-if="account">
-      <Button plain v-if="chainId">
-        <template v-slot:icon>
-          <StarknetIcon />
-        </template>
-        {{ CHAIN_LABELS[chainId] }}
-      </Button>
+      <template v-if="chainId">
+        <Button plain v-if="!isMobile" class="network">
+          <template v-slot:icon>
+            <StarknetIcon class="icon" />
+          </template>
+          {{ CHAIN_LABELS[chainId] }}
+        </Button>
+        <Button plain v-else class="network">
+          <template v-slot:icon>
+            <StarknetIcon class="icon" />
+          </template>
+        </Button>
+      </template>
       <Button plain @click="store.toggleAccountModal(true)">
         {{ shortenAddress(account) }}
       </Button>
@@ -18,15 +25,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref, toRaw } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { CHAIN_LABELS } from '../../constants'
-import { ConnectorNotFoundError } from '../../starknet-vue/errors'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { shortenAddress } from '../../utils'
 import { StarknetIcon } from '../Svg/index'
 import Button from '../Button/Button'
 import { useModalStore } from '../../state'
+import useConnector from '../../hooks/useConnector'
+import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
   components: {
@@ -34,47 +42,21 @@ export default defineComponent({
     StarknetIcon
   },
   setup() {
-    const err = ref<Error>()
     const store = useModalStore()
+    const isMobile = useIsMobile()
 
-    const { state: { account, connectors, library }, connect } = useStarknet()
+    const { state: { account, library } } = useStarknet()
     const { t } = useI18n()
+    const { onConnect } = useConnector()
 
     const chainId = computed(() => library.value.chainId ?? undefined)
-
-    const onConnect = async () => {
-      if (!connectors.value) {
-        err.value = new ConnectorNotFoundError()
-        return
-      }
-
-      try {
-        const connector = toRaw(connectors.value[0])
-        const ready = await connector.ready()
-
-        if (!ready) {
-          store.toggleConnectingModal(true)
-        }
-
-        await connect(connector)
-
-        nextTick(() => {
-          if (account.value) {
-            store.toggleConnectingModal(false)
-            store.toggleAccountModal(true)
-          }
-        })
-      } catch (error) {
-        console.log('connect error', error)
-        err.value = error as Error
-      }
-    }
 
     return {
       account,
       chainId,
       CHAIN_LABELS,
       store,
+      isMobile,
 
       t,
       onConnect,
@@ -85,8 +67,21 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/index.scss';
+
 .l0k-swap-connector {
   .connected {
+    .network {
+      cursor: default;
+
+      @include mobile {
+        margin-right: 0;
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+      }
+    }
+
     button {
       &:first-child {
         margin-right: 8px;
