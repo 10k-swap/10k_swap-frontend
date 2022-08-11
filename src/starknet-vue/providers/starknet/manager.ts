@@ -1,6 +1,6 @@
-import { onMounted, reactive, Ref, ref, toRaw } from 'vue'
+import { onMounted, reactive, Ref, ref } from 'vue'
 import { defaultProvider, Provider, AccountInterface, ProviderInterface } from 'starknet'
-
+import { StarknetChainId } from 'starknet/constants'
 import { StarknetMethods, StarknetState } from './model'
 import { Connector, InjectedConnector } from '../../connectors'
 import { ConnectorNotFoundError, UserRejectedRequestError, ConnectorNotConnectedError } from '../../errors'
@@ -14,17 +14,17 @@ export function useStarknetManager(
     library: ProviderInterface | AccountInterface | Provider
     connectors: Connector[]
     account: string | undefined
+    chainId: StarknetChainId | undefined
     error: Error | undefined
   }>({
     library: userDefaultProvider.value ? userDefaultProvider.value : defaultProvider,
     connectors: connectors.value,
     account: undefined,
     error: undefined,
+    chainId: (userDefaultProvider.value ? userDefaultProvider.value : defaultProvider).chainId,
   })
 
-  const connectorStorageManager = new ConnectorStorageManager()
-
-  const connectorId = connectorStorageManager.get()
+  const connectorId = ConnectorStorageManager.get()
   const currentConnector = ref<Connector | undefined>(connectorId ? new InjectedConnector({ id: connectorId }) : undefined)
 
   const connect = async (connector: Connector) => {
@@ -36,7 +36,8 @@ export function useStarknetManager(
       currentConnector.value = connector
       state.account = account.address
       state.library = account
-      connectorStorageManager.set(connector.id())
+      state.chainId = account.chainId
+      ConnectorStorageManager.set(connector.id())
     } catch (error) {
       if (error instanceof UserRejectedRequestError) {
         state.error = error
@@ -56,9 +57,10 @@ export function useStarknetManager(
     }
     currentConnector.value.disconnect().then(
       () => {
-        connectorStorageManager.set(null)
+        ConnectorStorageManager.set(null)
         state.account = undefined
         state.library = userDefaultProvider.value ? userDefaultProvider.value : defaultProvider
+        state.chainId = state.library.chainId
       },
       (err) => {
         console.error(err)

@@ -42,14 +42,13 @@ export const StarknetTransactionManagerProvider = defineComponent({
     interval: Number,
   },
   setup(props, { slots }) {
-    const transactionStorageManager = new TransactionStorageManager()
 
     const { interval } = toRefs(props)
     const {
       state: { library, account },
     } = useStarknet()
 
-    const state = reactive<{ transactions: Transaction[] }>({ transactions: transactionStorageManager.at(account.value) })
+    const state = reactive<{ transactions: Transaction[] }>({ transactions: TransactionStorageManager.at(account.value) })
 
     const addTransaction = (transaction: TransactionSubmitted) => {
       state.transactions = state.transactions.concat([{ loading: true, scuccess: false, fail: false, ...transaction }])
@@ -121,12 +120,12 @@ export const StarknetTransactionManagerProvider = defineComponent({
 
     watch([state.transactions, library, interval], () => refreshAllTransactions())
 
-    watch([account], () => (state.transactions = transactionStorageManager.at(account.value)))
+    watch([account], () => (state.transactions = TransactionStorageManager.at(account.value)))
     onBeforeUnmount(() => {
       if (!account.value) {
         return
       }
-      transactionStorageManager.set(state.transactions, account.value)
+      TransactionStorageManager.set(state.transactions, account.value)
     })
 
     return slots.default

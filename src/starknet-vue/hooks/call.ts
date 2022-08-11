@@ -86,7 +86,7 @@ export function useStarknetCall<T extends unknown[]>(
 
 interface CallsState {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: Array<any>[]
+  data?: Array<any>
   loading: boolean
   error?: string
   lastUpdatedAt: string
@@ -94,8 +94,8 @@ interface CallsState {
 
 export function useStarknetCalls<T extends unknown[]>(
   contracts: ComputedRef<Contract[] | undefined>,
-  methods: string[],
-  argsList: ComputedRef<T[] | undefined>,
+  methods: ComputedRef<string[] | undefined>,
+  argsList?: ComputedRef<T[] | undefined>,
   options?: UseStarknetCallOptions | undefined
 ): UseStarknetCall & { states: CallsState } {
   const states = reactive<CallsState>({
@@ -111,10 +111,10 @@ export function useStarknetCalls<T extends unknown[]>(
   const sholudWatch = options?.watch !== undefined ? options.watch : false
 
   const callContract = async () => {
-    if (contracts.value && methods && argsList.value) {
+    if (contracts.value && methods.value) {
       const calls = contracts.value.map((contract, i) => {
-        const args = argsList.value?.[i] ? argsList.value[i] : undefined
-        return contract.call(methods[i], args)
+        const args = argsList && argsList.value?.[i] ? argsList.value[i] : undefined
+        return contract.call(methods.value?.[i] as string, args)
       })
       return await Promise.all(calls)
     }

@@ -48,22 +48,22 @@ $button-prefix: '#{$prefix}-button';
     border: none;
   }
 
-  &--secondary {
-    color: $color-primary;
-    background-color: $color-white;
-    border: 1px solid $color-primary;
-  }
+  // &--secondary {
+  //   color: $color-primary;
+  //   background-color: $color-white;
+  //   border: 2px solid $color-primary;
+  // }
 
   &--default {
     color: $color-primary;
     background-color: $color-white;
-    border: $color-primary solid 1px;
+    border: $color-primary solid 2px;
   }
 
   &--danger {
     color: $color-red;
     background-color: $color-white;
-    border: $color-red solid 1px;
+    border: $color-red solid 2px;
   }
 
   &--warning {

@@ -1,16 +1,16 @@
 export default class ConnectorStorageManager {
-  readonly name = 'ConnectorId'
+  static readonly _name = 'ConnectorId'
 
-  get(): string | null {
-    return window.localStorage.getItem(this.name)
+  static get(): string | null {
+    return window.localStorage.getItem(ConnectorStorageManager._name)
   }
 
-  set(data: string | null): void {
+  static set(data: string | null): void {
     if (data === null) {
-      window.localStorage.removeItem(this.name)
+      window.localStorage.removeItem(ConnectorStorageManager._name)
       return
     }
 
-    return window.localStorage.setItem(this.name, data)
+    return window.localStorage.setItem(ConnectorStorageManager._name, data)
   }
 }

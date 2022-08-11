@@ -1,2 +1,2 @@
 export * from './modal'
-export * from './SlippageToleranceSettings'
+export * from './slippageToleranceSettings'

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import SlippageStorageManager from './SlippageStorageManager'
 
 type SetType = 'swap' | 'addLiqiudit'
 
@@ -15,15 +16,21 @@ interface SettingsActions {
   updateSlippageTolerance: (slippageTolerance: number) => void
 }
 
+export const RISKY_SLIPPAGE_LOW = 10
+export const DEFAULT_SLIPPAGE = 20
+export const MAX_SLIPPAGE = 10000
+
 export const useSlippageToleranceSettingsStore = defineStore<'SlippageToleranceSettings', SettingsState, {}, SettingsActions>(
   'SlippageToleranceSettings',
   {
     state: () => {
+      const { swap, addLiqiudit } = SlippageStorageManager.get() ?? {}
+
       return {
         currentSet: undefined,
         slippageTolerances: {
-          swap: 20,
-          addLiqiudit: 20,
+          swap: swap ? swap : DEFAULT_SLIPPAGE,
+          addLiqiudit: addLiqiudit ? addLiqiudit : DEFAULT_SLIPPAGE,
         },
       }
     },
@@ -37,6 +44,7 @@ export const useSlippageToleranceSettingsStore = defineStore<'SlippageToleranceS
           throw Error('No current set fund')
         }
         this.slippageTolerances[currentSet] = slippageTolerance
+        SlippageStorageManager.set(this.slippageTolerances)
       },
     },
   }

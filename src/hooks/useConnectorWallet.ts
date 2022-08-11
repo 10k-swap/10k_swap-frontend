@@ -8,11 +8,10 @@ export default function useConnectorWallet() {
   } = useStarknet()
 
   const wallet = ref<string | null>(null)
-  const connectorStorageManager = new ConnectorStorageManager()
 
   const getConnector = () => {
     if (account.value) {
-      wallet.value = connectorStorageManager.get()
+      wallet.value = ConnectorStorageManager.get()
     }
   }
 

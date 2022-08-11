@@ -25,6 +25,8 @@ export default {
     title: 'Transaction Settings',
     slippage_tolerance: 'Slippage tolerance',
     slippage_tolerance_desc: 'Your transaction will revert if the price changes unfavorably by more than this percentage.',
+    auto: 'Auto',
+    confirm: 'Confirm',
   },
   recent_transactions: {
     title: 'Recent Transactions',
