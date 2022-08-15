@@ -11,6 +11,8 @@ type ChainTokenList = {
 
 export const CSS_PREFIX = 'l0k-swap'
 
+export const ADDRESS_ZORE = '0x0000000000000000000000000000000000000000000000000000000000000000'
+
 export const MOBILE_SIZE = 768
 
 export const CHAIN_LABELS: { [chainId in StarknetChainId]: string } = {
@@ -18,13 +20,10 @@ export const CHAIN_LABELS: { [chainId in StarknetChainId]: string } = {
   [StarknetChainId.TESTNET]: i18n.global.t('goerli_test_network'),
 }
 
-const TKA = new Token(StarknetChainId.MAINNET, '0x01f16ff16e38786750800d81b89f442e7c88a282b58929516921115e551a14cf', 18, 'TKA', 'TestMainnet Token')
-const TKB = new Token(StarknetChainId.MAINNET, '0x06dd5d9a4fa06d10afb39ae267ac6d3999e36e16d160082cf5c612e4ed944f2b', 18, 'TKB', 'TestMainnet Token')
-
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [StarknetChainId.MAINNET]: [],
-  [StarknetChainId.TESTNET]:[TKA, TKB]
+  [StarknetChainId.TESTNET]: [],
 }
 
 /**

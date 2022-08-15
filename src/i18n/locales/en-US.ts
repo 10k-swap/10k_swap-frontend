@@ -33,6 +33,9 @@ export default {
     clear: 'Clear All',
     tips: 'your transaction will appear here...',
   },
+  currency_input_panel: {
+    balance: 'balance: %{balance}',
+  },
   header: {
     nav: {
       swap: 'Swap',

@@ -1,10 +1,10 @@
-import { Contract } from 'starknet'
-import { ComputedRef, onMounted, reactive, watch } from 'vue'
+import { Contract, Result } from 'starknet'
+import { computed, ComputedRef, onMounted, reactive, watch } from 'vue'
+import { BN } from '../../utils'
 import { useStarknetBlock } from '../providers/block'
 
 interface State {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: Array<any>
+  data?: Result | undefined
   loading: boolean
   error?: string
   lastUpdatedAt: string
@@ -21,11 +21,11 @@ export interface UseStarknetCall {
 export function useStarknetCall<T extends unknown[]>(
   contract: ComputedRef<Contract | undefined>,
   method: string,
-  args: ComputedRef<T | undefined>,
+  args?: ComputedRef<T | undefined>,
   options?: UseStarknetCallOptions | undefined
 ): UseStarknetCall & { state: State } {
   const state = reactive<State>({
-    data: [],
+    data: undefined,
     loading: false,
     error: undefined,
     lastUpdatedAt: '',
@@ -37,8 +37,8 @@ export function useStarknetCall<T extends unknown[]>(
   const sholudWatch = options?.watch !== undefined ? options.watch : false
 
   const callContract = async () => {
-    if (contract.value && method && args.value) {
-      return await contract.value.call(method, args.value)
+    if (contract.value && method) {
+      return await contract.value.call(method, args && args.value ? args.value : [])
     }
   }
 
@@ -67,7 +67,8 @@ export function useStarknetCall<T extends unknown[]>(
     refresh()
   })
 
-  watch([contract, args], () => {
+  const arg = computed(() => (args?.value ? args.value : undefined))
+  watch([contract, arg], () => {
     refresh()
   })
 
@@ -85,8 +86,7 @@ export function useStarknetCall<T extends unknown[]>(
 }
 
 interface CallsState {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: Array<any>
+  data?: Array<BN[] & { [key: string]: BN }>
   loading: boolean
   error?: string
   lastUpdatedAt: string
@@ -114,7 +114,7 @@ export function useStarknetCalls<T extends unknown[]>(
     if (contracts.value && methods.value) {
       const calls = contracts.value.map((contract, i) => {
         const args = argsList && argsList.value?.[i] ? argsList.value[i] : undefined
-        return contract.call(methods.value?.[i] as string, args)
+        return contract.call(methods.value?.[i] as string, args ?? [])
       })
       return await Promise.all(calls)
     }
@@ -145,7 +145,8 @@ export function useStarknetCalls<T extends unknown[]>(
     refresh()
   })
 
-  watch([contracts, argsList], () => {
+  const arg = computed(() => (argsList?.value ? argsList.value : undefined))
+  watch([contracts, arg], () => {
     refresh()
   })
 

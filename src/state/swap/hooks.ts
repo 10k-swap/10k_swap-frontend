@@ -1,92 +1,147 @@
+import { computed, ComputedRef, ref, watch } from 'vue'
+import { useSwapStore } from '.'
+import { useTokenBalances } from '../../hooks/Balances'
+import { useToken } from '../../hooks/Tokens'
+import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
 import { Token, TokenAmount, Trade } from '../../sdk'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
+import { isAddress } from '../../utils'
+import { computeSlippageAdjustedAmounts } from '../../utils/prices'
+import { tryParseAmount } from '../../utils/tryParseAmount'
+import { useUserSwapSlippageTolerance } from '../slippageToleranceSettings/hooks'
 import { Field } from './types'
 
-// from the current swap inputs, compute the best trade and return it.
-export function useDerivedSwapInfo(): {
-  currencies: { [field in Field]?: Token }
-  currencyBalances: { [field in Field]?: Token }
-  parsedAmount: TokenAmount | undefined
-  v2Trade: Trade | undefined
-  inputError?: string
+/**
+ * Returns true if any of the pairs or tokens in a trade have the given checksummed address
+ * @param trade to check for the given address
+ * @param checksummedAddress address to check in the pairs and tokens
+ */
+function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
+  return (
+    trade.route.path.some((token) => token.address === checksummedAddress) ||
+    trade.route.pairs.some((pair) => pair.liquidityToken.address === checksummedAddress)
+  )
+}
+
+export function useSwapActionHandlers(): {
+  onCurrencySelection: (field: Field, currency: Token) => void
+  onSwitchTokens: () => void
+  onUserInput: (field: Field, typedValue: string|number) => void
 } {
+  const store = useSwapStore()
+
+  const onCurrencySelection = (field: Field, currency: Token) => {
+    store.selectCurrency({
+      field,
+      currencyId: currency.address,
+    })
+  }
+
+  const onSwitchTokens = () => {
+    store.switchCurrencies()
+  }
+
+  const onUserInput = (field: Field, typedValue: string|number) => {
+    store.typeInput(field, typedValue)
+  }
+
+  return {
+    onSwitchTokens,
+    onCurrencySelection,
+    onUserInput,
+  }
+}
+
+export function useSwapState() {
+  const store = useSwapStore()
+  return computed(() => store.$state)
+}
+
+// from the current swap inputs, compute the best trade and return it.
+export function useDerivedSwapInfo() {
   const {
     state: { account },
   } = useStarknet()
 
-  const {
-    independentField,
-    typedValue,
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
-    recipient,
-  } = useSwapState()
+  const swapState = useSwapState()
+  const inputCurrencyId = computed(() => swapState.value.INPUT.currencyId)
+  const outputCurrencyId = computed(() => swapState.value.OUTPUT.currencyId)
+  const independentField = computed(() => swapState.value.independentField)
+  const typedValue = computed(() => swapState.value.typedValue)
 
-  const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
-  const recipientLookup = useENS(recipient ?? undefined)
-  const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
+  const inputCurrency = useToken(inputCurrencyId)
+  const outputCurrency = useToken(outputCurrencyId)
+  const to = computed(() => (swapState.value.recipient === null ? swapState.value.recipient : account.value ?? null))
 
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [inputCurrency ?? undefined, outputCurrency ?? undefined])
+  const tokens = computed(() => [inputCurrency.value ?? undefined, outputCurrency.value ?? undefined])
+  const relevantTokenBalances = useTokenBalances(account, tokens)
 
-  const isExactIn: boolean = independentField === Field.INPUT
-  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+  const isExactIn = computed(() => independentField.value === Field.INPUT)
+  const token = computed(() => (isExactIn.value ? inputCurrency.value : outputCurrency.value))
+  const parsedAmount = computed(() => tryParseAmount(typedValue.value, token.value ?? undefined))
 
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
+  const currencyAmountIn = computed(() => (isExactIn.value ? parsedAmount.value : undefined))
+  const bestTradeExactIn = useTradeExactIn(currencyAmountIn, outputCurrency)
+  const currencyAmountOut = computed(() => (!isExactIn.value ? parsedAmount.value : undefined))
+  const bestTradeExactOut = useTradeExactOut(inputCurrency, currencyAmountOut)
 
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+  const v2Trade = computed(() => (isExactIn.value ? bestTradeExactIn.value : bestTradeExactOut.value))
 
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1],
-  }
+  const currencyBalances = computed(() => ({
+    [Field.INPUT]: relevantTokenBalances.value[0],
+    [Field.OUTPUT]: relevantTokenBalances.value[1],
+  }))
 
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
+  const currencies: ComputedRef<{ [field in Field]?: Token }> = computed(() => ({
+    [Field.INPUT]: inputCurrency.value ?? undefined,
+    [Field.OUTPUT]: outputCurrency.value ?? undefined,
+  }))
 
-  let inputError: string | undefined
-  if (!account) {
-    inputError = 'Connect Wallet'
-  }
+  const inputError = ref<string | undefined>()
 
-  if (!parsedAmount) {
-    inputError = inputError ?? 'Enter an amount'
-  }
+  const allowedSlippage = useUserSwapSlippageTolerance()
 
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? 'Select a token'
-  }
-
-  const formattedTo = isAddress(to)
-  if (!to || !formattedTo) {
-    inputError = inputError ?? 'Enter a recipient'
-  } else if (
-    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-    (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
-    (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
-  ) {
-    inputError = inputError ?? 'Invalid recipient'
-  }
-
-  const [allowedSlippage] = useUserSlippageTolerance()
-
-  const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+  const slippageAdjustedAmounts = computed(() =>
+    v2Trade.value && allowedSlippage.value ? computeSlippageAdjustedAmounts(v2Trade.value ?? undefined, allowedSlippage.value) : null
+  )
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null]
+  const balanceIn = computed(() => currencyBalances.value[Field.INPUT])
+  const amountIn = computed(() => (slippageAdjustedAmounts.value ? slippageAdjustedAmounts.value[Field.INPUT] : null))
 
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = `Insufficient ${amountIn.currency.symbol} balance`
-  }
+  watch([account, parsedAmount, currencies, balanceIn, amountIn, to], () => {
+    if (!account.value) {
+      inputError.value = 'Connect Wallet'
+    }
+
+    if (!parsedAmount.value) {
+      inputError.value = inputError.value ?? 'Enter an amount'
+    }
+
+    if (!currencies.value[Field.INPUT] || !currencies.value[Field.OUTPUT]) {
+      inputError.value = inputError.value ?? 'Select a token'
+    }
+
+    const formattedTo = isAddress(to.value)
+    if (!to.value || !formattedTo) {
+      inputError.value = inputError.value ?? 'Enter a recipient'
+    } else if (
+      (bestTradeExactIn.value && involvesAddress(bestTradeExactIn.value, formattedTo)) ||
+      (bestTradeExactOut.value && involvesAddress(bestTradeExactOut.value, formattedTo))
+    ) {
+      inputError.value = inputError.value ?? 'Invalid recipient'
+    }
+
+    if (balanceIn.value && amountIn.value && balanceIn.value.lessThan(amountIn.value)) {
+      inputError.value = `Insufficient ${amountIn.value.currency.symbol} balance`
+    }
+  })
 
   return {
     currencies,
     currencyBalances,
     parsedAmount,
-    v2Trade: v2Trade ?? undefined,
+    v2Trade,
     inputError,
   }
 }

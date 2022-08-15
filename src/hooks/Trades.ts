@@ -1,4 +1,4 @@
-import { TokenAmount, Pair, Token, Trade, CurrencyAmount } from '../sdk'
+import { TokenAmount, Pair, Token, Trade } from '../sdk'
 import { flatMap } from 'lodash'
 
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants'
@@ -6,7 +6,7 @@ import { PairState, usePairs } from '../data/Reserves'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { computed, ComputedRef } from 'vue'
 
-function useAllCommonPairs(currencyA?: Token, currencyB?: Token): ComputedRef<Pair[]> {
+function useAllCommonPairs(currencyA: ComputedRef<Token | null | undefined>, currencyB: ComputedRef<Token | null | undefined>): ComputedRef<Pair[]> {
   const {
     state: { chainId },
   } = useStarknet()
@@ -21,7 +21,7 @@ function useAllCommonPairs(currencyA?: Token, currencyB?: Token): ComputedRef<Pa
     )
   )
 
-  const tokens = computed(() => (chainId.value ? [currencyA, currencyB] : [undefined, undefined]))
+  const tokens = computed(() => (chainId.value ? [currencyA.value, currencyB.value] : [undefined, undefined]))
 
   const allPairCombinations: ComputedRef<[Token, Token][]> = computed(() => {
     if (!tokens.value[0] || !tokens.value[1]) {
@@ -80,12 +80,16 @@ function useAllCommonPairs(currencyA?: Token, currencyB?: Token): ComputedRef<Pa
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
-export function useTradeExactIn(currencyAmountIn?: TokenAmount, currencyOut?: Token): ComputedRef<Trade | null> {
-  const allowedPairs = useAllCommonPairs(currencyAmountIn?.currency, currencyOut)
+export function useTradeExactIn(
+  currencyAmountIn: ComputedRef<TokenAmount | undefined>,
+  currencyOut: ComputedRef<Token | null | undefined>
+): ComputedRef<Trade | null> {
+  const currencyIn = computed(() => currencyAmountIn.value?.currency)
+  const allowedPairs = useAllCommonPairs(currencyIn, currencyOut)
 
   return computed(() => {
-    if (currencyAmountIn && currencyOut && allowedPairs.value.length > 0) {
-      return Trade.bestTradeExactIn(allowedPairs.value, currencyAmountIn, currencyOut, { maxHops: 3, maxNumResults: 1 })[0] ?? null
+    if (currencyAmountIn.value && currencyOut.value && allowedPairs.value.length > 0) {
+      return Trade.bestTradeExactIn(allowedPairs.value, currencyAmountIn.value, currencyOut.value, { maxHops: 3, maxNumResults: 1 })[0] ?? null
     }
     return null
   })
@@ -94,12 +98,16 @@ export function useTradeExactIn(currencyAmountIn?: TokenAmount, currencyOut?: To
 /**
  * Returns the best trade for the token in to the exact amount of token out
  */
-export function useTradeExactOut(currencyIn?: Token, currencyAmountOut?: TokenAmount): ComputedRef<Trade | null> {
-  const allowedPairs = useAllCommonPairs(currencyIn, currencyAmountOut?.currency)
+export function useTradeExactOut(
+  currencyIn: ComputedRef<Token | null | undefined>,
+  currencyAmountOut: ComputedRef<TokenAmount | undefined>
+): ComputedRef<Trade | null> {
+  const out = computed(() => currencyAmountOut.value?.token)
+  const allowedPairs = useAllCommonPairs(currencyIn, out)
 
   return computed(() => {
-    if (currencyIn && currencyAmountOut && allowedPairs.value.length > 0) {
-      return Trade.bestTradeExactOut(allowedPairs.value, currencyIn, currencyAmountOut, { maxHops: 3, maxNumResults: 1 })[0] ?? null
+    if (currencyIn.value && currencyAmountOut.value && allowedPairs.value.length > 0) {
+      return Trade.bestTradeExactOut(allowedPairs.value, currencyIn.value, currencyAmountOut.value, { maxHops: 3, maxNumResults: 1 })[0] ?? null
     }
     return null
   })

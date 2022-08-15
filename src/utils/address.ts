@@ -1,8 +1,10 @@
 import { validateAndParseAddress } from 'starknet/utils/address'
+import { ADDRESS_ZORE } from '../constants'
 
 export function isAddress(address: any): string | false {
   try {
-    return validateAndParseAddress(address)
+    const parsed = validateAndParseAddress(address)
+    return parsed === ADDRESS_ZORE ? false : address
   } catch (error) {
     return false
   }

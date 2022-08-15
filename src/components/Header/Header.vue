@@ -1,6 +1,8 @@
 <template>
   <div class="l0k-swap-app-header">
-    <img class="app-logo" src="./logo.png">
+    <div class="app-logo">
+      <img src="./logo.png">
+    </div>
     <Nav class="l0k-swap-app-header-nav" />
     <Connector class="l0k-swap-app-header-connector" />
   </div>
@@ -30,8 +32,22 @@ export default defineComponent({
   padding: 0 20px;
 
   .app-logo {
-    width: 105px;
-    height: 40px;
+    flex: 1;
+
+    img {
+      width: 105px;
+      height: 40px;
+    }
+  }
+
+  .l0k-swap-app-header-nav {
+    flex: 1;
+  }
+
+  .l0k-swap-app-header-connector {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
   }
 
   @include mobile {

@@ -30,6 +30,7 @@ export default defineComponent({
 .l0k-swap-app-nav-wrap {
   display: flex;
   align-items: center;
+  justify-content: center;
   font-weight: 700;
   font-size: $font-size-md;
 

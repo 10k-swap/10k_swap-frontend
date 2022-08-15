@@ -7,8 +7,8 @@
     </div>
     <template #content>
       <div class="l0k-swap-select-token--tokens">
-        <div class="l0k-swap-select-token--token" :class="{ 'active': current.equals(token) }" v-for="token in tokens"
-          :key="token.address" @click="onSelect(token)">
+        <div class="l0k-swap-select-token--token" :class="{ 'active': current && token.equals(current) }"
+          v-for="token in tokens" :key="token.address" @click="onSelect(token)">
           <TokenLogo class="l0k-swap-select-token--token-logo" :token="token" />
           <Text class="text"> {{ token.symbol }} </Text>
         </div>
@@ -21,20 +21,17 @@
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import Popper from 'vue3-popper'
 import TokenLogo from '../TokenLogo/TokenLogo'
+import tokensList from '../../constants/tokens'
 import Text from '../Text/Text.vue'
 import { ArrowDownIcon } from '../Svg'
-import { ChainId, Token } from '../../sdk'
-
-const tokens = [
-  new Token(ChainId.TESTNET, '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7', 18, 'tes3tEth'),
-  new Token(ChainId.TESTNET, '0x049d36570d4e46f48e99674bd3fcc84664ddd6b96f7c741b1562b82f9e004dc7', 18, 'testE5th'), new Token(ChainId.TESTNET, '0x049d36570d4e46f48e99674bd3fcc34644ddd6b96f7c741b1562b82f9e004dc7', 18, 'test3Eth'),
-  new Token(ChainId.TESTNET, '0x049d36570d4e46f48e99674bd3fcc84648ddd6b96f7c741b1562b82f9e004dc7', 18, 'testEt5h'),
-]
+import { Token } from '../../sdk'
+import { useStarknet } from '../../starknet-vue/providers/starknet'
 
 export default defineComponent({
   props: {
-    modelValue: {
-      type: Object as PropType<Token>,
+    token: {
+      type: Object as PropType<Token | null>,
+      validator: (token: Token | null) => token === null || token instanceof Token,
       required: true,
     }
   },
@@ -44,14 +41,17 @@ export default defineComponent({
     Text,
     ArrowDownIcon
   },
-  emits: ['update:modelValue'],
+  emits: ['select'],
   setup(props, { emit }) {
-    const { modelValue } = toRefs(props)
+    const { token } = toRefs(props)
+    const { state: { chainId } } = useStarknet()
+
+    const tokens = computed(() => chainId.value ? tokensList[chainId.value] : [])
 
     const current = computed({
-      get: () => modelValue.value,
+      get: () => token.value,
       set(newValue) {
-        emit('update:modelValue', newValue)
+        emit('select', newValue)
       }
     })
 

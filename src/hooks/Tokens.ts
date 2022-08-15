@@ -1,109 +1,52 @@
-import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, ETHER, Token, currencyEquals } from '@pancakeswap-libs/sdk'
-import { useMemo } from 'react'
-import { useSelectedTokenList } from '../state/lists/hooks'
-import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
-// eslint-disable-next-line import/no-cycle
-import { useUserAddedTokens } from '../state/user/hooks'
-import { isAddress } from '../utils'
+import { computed, ComputedRef, toRaw } from 'vue'
+import tokens from '../constants/tokens'
+import { Token } from '../sdk'
+import { useStarknetCall } from '../starknet-vue/hooks/call'
+import { useStarknet } from '../starknet-vue/providers/starknet'
+import { isAddress, BN2String } from '../utils'
+import { StarknetChainId } from '../constants/index'
+import { useTokenContract } from './Contract'
 
-import { useActiveWeb3React } from './index'
-import { useBytes32TokenContract, useTokenContract } from './useContract'
+const tokenCaches = (Object.keys(tokens) as StarknetChainId[]).reduce((memo, key) => {
+  memo[key] = tokens[key].reduce((memo, item) => {
+    memo[item.address] = item
+    return memo
+  }, {} as { [address: string]: Token })
+  return memo
+}, {} as { [chainId in StarknetChainId]: { [address: string]: Token } })
 
-export function useAllTokens(): { [address: string]: Token } {
-  const { chainId } = useActiveWeb3React()
-  const userAddedTokens = useUserAddedTokens()
-  const allTokens = useSelectedTokenList()
-
-  return useMemo(() => {
-    if (!chainId) return {}
-    return (
-      userAddedTokens
-        // reduce into all ALL_TOKENS filtered by the current chain
-        .reduce<{ [address: string]: Token }>(
-          (tokenMap, token) => {
-            tokenMap[token.address] = token
-            return tokenMap
-          },
-          // must make a copy because reduce modifies the map, and we do not
-          // want to make a copy in every iteration
-          { ...allTokens[chainId] }
-        )
-    )
-  }, [chainId, userAddedTokens, allTokens])
-}
-
-// Check if currency is included in custom list from user storage
-export function useIsUserAddedToken(currency: Currency): boolean {
-  const userAddedTokens = useUserAddedTokens()
-  return !!userAddedTokens.find((token) => currencyEquals(currency, token))
-}
-
-// parse a name or symbol from a token response
-const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/
-function parseStringOrBytes32(str: string | undefined, bytes32: string | undefined, defaultValue: string): string {
-  return str && str.length > 0
-    ? str
-    : bytes32 && BYTES32_REGEX.test(bytes32)
-    ? parseBytes32String(bytes32)
-    : defaultValue
-}
-
-// undefined if invalid or does not exist
 // null if loading
 // otherwise returns the token
-export function useToken(tokenAddress?: string): Token | undefined | null {
-  const { chainId } = useActiveWeb3React()
-  const tokens = useAllTokens()
+export function useToken(tokenAddress: ComputedRef<string | undefined>): ComputedRef<Token | undefined | null> {
+  const {
+    state: { chainId },
+  } = useStarknet()
 
-  const address = isAddress(tokenAddress)
+  const address = computed(() => (isAddress(tokenAddress?.value) ? tokenAddress?.value : undefined))
 
-  const tokenContract = useTokenContract(address || undefined, false)
-  const tokenContractBytes32 = useBytes32TokenContract(address || undefined, false)
-  const token: Token | undefined = address ? tokens[address] : undefined
-
-  const tokenName = useSingleCallResult(token ? undefined : tokenContract, 'name', undefined, NEVER_RELOAD)
-  const tokenNameBytes32 = useSingleCallResult(
-    token ? undefined : tokenContractBytes32,
-    'name',
-    undefined,
-    NEVER_RELOAD
+  const tokenContract = useTokenContract(address)
+  const token: ComputedRef<Token | undefined> = computed(() =>
+    address.value && chainId.value ? tokenCaches[chainId.value][address.value] : undefined
   )
-  const symbol = useSingleCallResult(token ? undefined : tokenContract, 'symbol', undefined, NEVER_RELOAD)
-  const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
-  const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
 
-  return useMemo(() => {
-    if (token) return token
-    if (!chainId || !address) return undefined
-    if (decimals.loading || symbol.loading || tokenName.loading) return null
-    if (decimals.result) {
+  const contract = computed(() => (token.value ? undefined : tokenContract.value))
+  const tokenName = useStarknetCall(contract, 'name')
+  const symbol = useStarknetCall(contract, 'symbol')
+  const decimals = useStarknetCall(contract, 'decimals')
+
+  return computed(() => {
+    if (token.value) return token.value
+    if (!chainId.value || !address.value) return undefined
+    if (decimals.state.loading || symbol.state.loading || tokenName.state.loading) return null
+    if (decimals.state.data) {
       return new Token(
-        chainId,
-        address,
-        decimals.result[0],
-        parseStringOrBytes32(symbol.result?.[0], symbolBytes32.result?.[0], 'UNKNOWN'),
-        parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token')
+        chainId.value,
+        address.value,
+        toRaw(decimals.state.data[0]).toNumber(),
+        BN2String(symbol.state.data?.[0]),
+        BN2String(tokenName.state.data?.[0])
       )
     }
     return undefined
-  }, [
-    address,
-    chainId,
-    decimals.loading,
-    decimals.result,
-    symbol.loading,
-    symbol.result,
-    symbolBytes32.result,
-    token,
-    tokenName.loading,
-    tokenName.result,
-    tokenNameBytes32.result,
-  ])
-}
-
-export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const isBNB = currencyId?.toUpperCase() === 'BNB'
-  const token = useToken(isBNB ? undefined : currencyId)
-  return isBNB ? ETHER : token
+  })
 }

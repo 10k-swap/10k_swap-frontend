@@ -28,6 +28,9 @@ export default function useConnector() {
   })
 
   useArgentXRejectCallback(() => {
+    if (account.value) {
+      return
+    }
     if (showConnectingModal.value) {
       store.toggleConnectingModal(false)
     }
