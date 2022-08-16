@@ -28,9 +28,8 @@ export class Pair {
 
   public static getAddress(tokenA: Token, tokenB: Token): string {
     const tokens = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
-
     const CONTRACT_ADDRESS_PREFIX = shortString.encodeShortString('STARKNET_CONTRACT_ADDRESS')
-    const salt = pedersen([tokens[0], tokens[1]])
+    const salt = pedersen([tokens[0].address, tokens[1].address])
     const constructorCalldataHash = computeHashOnElements([])
 
     if (PAIR_ADDRESS_CACHE?.[tokens[0].address]?.[tokens[1].address] === undefined) {

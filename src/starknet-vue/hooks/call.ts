@@ -1,4 +1,5 @@
 import { Contract, Result } from 'starknet'
+import * as objectHash from 'object-hash'
 import { computed, ComputedRef, onMounted, reactive, watch } from 'vue'
 import { BN } from '../../utils'
 import { useStarknetBlock } from '../providers/block'
@@ -17,6 +18,18 @@ interface UseStarknetCallOptions {
 export interface UseStarknetCall {
   refresh: () => void
 }
+
+function toCallKey(address: string, method: string, block: string | undefined, data: string): string {
+  return `${address}-${method}-${block}-${data}`
+}
+
+function argsToHash(args: any) {
+  return objectHash.sha1(JSON.stringify(args))
+}
+
+const caches: {
+  [key: string]: Result
+} = {}
 
 export function useStarknetCall<T extends unknown[]>(
   contract: ComputedRef<Contract | undefined>,
@@ -38,7 +51,17 @@ export function useStarknetCall<T extends unknown[]>(
 
   const callContract = async () => {
     if (contract.value && method) {
-      return await contract.value.call(method, args && args.value ? args.value : [])
+      const arg = args && args.value ? args.value : []
+
+      const key = toCallKey(contract.value.address, method, block.value?.block_hash, argsToHash(arg))
+      const current = caches[key]
+      if (current) {
+        return current
+      }
+
+      const result = await contract.value.call(method, arg)
+      caches[key] = result
+      return result
     }
   }
 
@@ -112,10 +135,21 @@ export function useStarknetCalls<T extends unknown[]>(
 
   const callContract = async () => {
     if (contracts.value && methods.value) {
-      const calls = contracts.value.map((contract, i) => {
-        const args = argsList && argsList.value?.[i] ? argsList.value[i] : undefined
-        return contract.call(methods.value?.[i] as string, args ?? [])
+      const calls = contracts.value.map(async (contract, i) => {
+        const args = argsList && argsList.value?.[i] ? argsList.value[i] : []
+        const method = methods.value && methods.value?.[i] ? methods.value?.[i] : ''
+        const key = toCallKey(contract.address, method, block.value?.block_hash, argsToHash(args))
+        const current = caches[key]
+
+        if (current) {
+          return current
+        }
+
+        const result: Result = await contract.call(method, args)
+        caches[key] = result
+        return result
       })
+
       return await Promise.all(calls)
     }
   }

@@ -46,7 +46,9 @@ export default {
       connect: 'Connect Wallet',
     },
   },
-  pool: {
+  swap: {
     title: 'Swap',
+    connect: 'Connect Wallet',
+    insufficient_liquidity: "Insufficient liquidity for this trade."
   },
 }

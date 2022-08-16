@@ -19,11 +19,11 @@ export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefin
     state: { library },
   } = useStarknet()
 
-  const pairAddresses = computed(() =>
-    tokens.value.map(([tokenA, tokenB]) => {
+  const pairAddresses = computed(() => {
+    return tokens.value.map(([tokenA, tokenB]) => {
       return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
     })
-  )
+  })
 
   const contracts = computed(() => {
     if (!pairAddresses.value) {
@@ -48,7 +48,6 @@ export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefin
       // uint256ToBN
       const tokenA = tokens.value[i][0]
       const tokenB = tokens.value[i][1]
-
       if (states.loading) return [PairState.LOADING, null]
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
       if (!reserves) return [PairState.NOT_EXISTS, null]

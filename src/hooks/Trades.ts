@@ -27,7 +27,6 @@ function useAllCommonPairs(currencyA: ComputedRef<Token | null | undefined>, cur
     if (!tokens.value[0] || !tokens.value[1]) {
       return []
     }
-
     return (
       [
         // the direct pair

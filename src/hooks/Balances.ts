@@ -1,4 +1,4 @@
-import { computed, ComputedRef, Ref, toRaw } from 'vue'
+import { computed, ComputedRef, Ref, toRaw, watch } from 'vue'
 import JSBI from 'jsbi'
 import { Token, TokenAmount } from '../sdk'
 import { useStarknetCalls } from '../starknet-vue/hooks/call'
@@ -30,27 +30,34 @@ export function useTokenBalancesWithLoadingIndicator(
 
   const anyLoading = computed(() => balances.states.loading)
 
-  return [
-    computed(() => {
-      return address && validatedTokens.value.length > 0
-        ? validatedTokens.value.reduce<{ [tokenAddress: string]: TokenAmount | null | undefined }>((memo, token, i) => {
-            const value = balances.states.data?.[i]?.[0]
-            const amount = value ? JSBI.BigInt(uint256ToBN(value).toString()) : undefined
-            if (balances.states.loading) {
-              memo[token.address] = null
-            }
-            if (amount) {
-              memo[token.address] = new TokenAmount(token, amount)
-            }
-            return memo
-          }, {})
-        : {}
-    }),
-    anyLoading,
-  ]
+  const data = computed(() => {
+    return address && validatedTokens.value.length > 0
+      ? validatedTokens.value.reduce<{ [tokenAddress: string]: TokenAmount | null | undefined }>((memo, token, i) => {
+          const value = balances.states.data?.[i]?.[0]
+          const amount = value ? JSBI.BigInt(uint256ToBN(value).toString()) : undefined
+
+          if (amount) {
+            memo[token.address] = new TokenAmount(token, amount)
+          }
+          if (anyLoading.value) {
+            memo[token.address] = null
+          }
+          return memo
+        }, {})
+      : {}
+  })
+
+  return [data, anyLoading]
 }
 
-export function useTokenBalances(address: Ref<string | undefined> | ComputedRef<string | undefined>, tokens: ComputedRef<(Token | undefined)[]>) {
+export function useTokensBalances(address: Ref<string | undefined> | ComputedRef<string | undefined>, tokens: ComputedRef<(Token | undefined)[]>) {
   const [balances] = useTokenBalancesWithLoadingIndicator(address, tokens)
   return computed(() => tokens?.value.map((token) => (token?.address ? balances.value[token.address] : undefined)))
+}
+
+export function useTokenBalances(address: Ref<string | undefined> | ComputedRef<string | undefined>, token: ComputedRef<Token | null | undefined>) {
+  const tokens = computed(() => [token.value ?? undefined])
+  const [balances, loading] = useTokenBalancesWithLoadingIndicator(address, tokens)
+
+  return computed(() => (loading.value ? null : token.value ? balances.value[token.value.address] : undefined))
 }

@@ -3,7 +3,7 @@ import { useSwapStore } from '.'
 import { useTokenBalances } from '../../hooks/Balances'
 import { useToken } from '../../hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
-import { Token, TokenAmount, Trade } from '../../sdk'
+import { Token, Trade } from '../../sdk'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { isAddress } from '../../utils'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
@@ -26,7 +26,7 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
 export function useSwapActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Token) => void
   onSwitchTokens: () => void
-  onUserInput: (field: Field, typedValue: string|number) => void
+  onUserInput: (field: Field, typedValue: string | number) => void
 } {
   const store = useSwapStore()
 
@@ -41,7 +41,7 @@ export function useSwapActionHandlers(): {
     store.switchCurrencies()
   }
 
-  const onUserInput = (field: Field, typedValue: string|number) => {
+  const onUserInput = (field: Field, typedValue: string | number) => {
     store.typeInput(field, typedValue)
   }
 
@@ -73,12 +73,13 @@ export function useDerivedSwapInfo() {
   const outputCurrency = useToken(outputCurrencyId)
   const to = computed(() => (swapState.value.recipient === null ? swapState.value.recipient : account.value ?? null))
 
-  const tokens = computed(() => [inputCurrency.value ?? undefined, outputCurrency.value ?? undefined])
-  const relevantTokenBalances = useTokenBalances(account, tokens)
+  const relevantTokenBalances = [useTokenBalances(account, inputCurrency), useTokenBalances(account, outputCurrency)]
 
   const isExactIn = computed(() => independentField.value === Field.INPUT)
   const token = computed(() => (isExactIn.value ? inputCurrency.value : outputCurrency.value))
-  const parsedAmount = computed(() => tryParseAmount(typedValue.value, token.value ?? undefined))
+  const parsedAmount = computed(() => {
+    return tryParseAmount(typedValue.value, token.value ?? undefined)
+  })
 
   const currencyAmountIn = computed(() => (isExactIn.value ? parsedAmount.value : undefined))
   const bestTradeExactIn = useTradeExactIn(currencyAmountIn, outputCurrency)
@@ -88,8 +89,8 @@ export function useDerivedSwapInfo() {
   const v2Trade = computed(() => (isExactIn.value ? bestTradeExactIn.value : bestTradeExactOut.value))
 
   const currencyBalances = computed(() => ({
-    [Field.INPUT]: relevantTokenBalances.value[0],
-    [Field.OUTPUT]: relevantTokenBalances.value[1],
+    [Field.INPUT]: relevantTokenBalances[0]?.value,
+    [Field.OUTPUT]: relevantTokenBalances[1]?.value,
   }))
 
   const currencies: ComputedRef<{ [field in Field]?: Token }> = computed(() => ({
@@ -113,7 +114,6 @@ export function useDerivedSwapInfo() {
     if (!account.value) {
       inputError.value = 'Connect Wallet'
     }
-
     if (!parsedAmount.value) {
       inputError.value = inputError.value ?? 'Enter an amount'
     }

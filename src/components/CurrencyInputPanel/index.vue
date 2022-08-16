@@ -1,14 +1,14 @@
 <template>
   <div class="l0k-swap-currency-input-panel">
     <div class="inputs">
-      <input type="number" v-model="typedValue">
+      <input type="number" v-model="typedValue" placeholder="0.0">
       <TokenSelect :token="token ?? null" @select="onSelect" />
     </div>
     <div class="balance">
       <Text :color="'description-text'" :size="'mini'">
         {{ t('currency_input_panel.balance', {
             balance: selectedCurrencyBalance ===
-              null ? 'loading...' : selectedCurrencyBalance?.toExact() ?? '-'
+              null ? 'loading...' : selectedCurrencyBalance?.toSignificant() ?? '-'
           })
         }}
       </Text>
@@ -81,6 +81,24 @@ export default defineComponent({
 
     input[type="number"] {
       -moz-appearance: textfield;
+    }
+
+    input {
+      width: 50%;
+      background: transparent;
+      border: 0;
+      font-weight: 700;
+      font-size: 28px;
+      margin-right: 10px;
+      outline: none;
+
+      &::placeholder {
+        color:rgba($color: $color-transparent-text, $alpha: 1) ;
+      }
+
+      &:hover {
+        border: 0;
+      }
     }
   }
 
