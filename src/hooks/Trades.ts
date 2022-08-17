@@ -6,7 +6,10 @@ import { PairState, usePairs } from '../data/Reserves'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { computed, ComputedRef } from 'vue'
 
-function useAllCommonPairs(currencyA: ComputedRef<Token | null | undefined>, currencyB: ComputedRef<Token | null | undefined>): ComputedRef<Pair[]> {
+function useAllCommonPairs(
+  currencyA: ComputedRef<Token | null | undefined>,
+  currencyB: ComputedRef<Token | null | undefined>
+): ComputedRef<[Pair[], boolean]> {
   const {
     state: { chainId },
   } = useStarknet()
@@ -62,18 +65,21 @@ function useAllCommonPairs(currencyA: ComputedRef<Token | null | undefined>, cur
   const allPairs = usePairs(allPairCombinations)
 
   // only pass along valid pairs, non-duplicated pairs
-  return computed(() =>
-    Object.values(
-      allPairs.value
-        // filter out invalid pairs
-        .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
-        // filter out duplicated pairs
-        .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
-          memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
-          return memo
-        }, {})
-    )
-  )
+  return computed(() => {
+    return [
+      Object.values(
+        allPairs.value
+          // filter out invalid pairs
+          .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
+          // filter out duplicated pairs
+          .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
+            memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
+            return memo
+          }, {})
+      ),
+      !!allPairs.value.some(([pairState]) => pairState === PairState.LOADING),
+    ]
+  })
 }
 
 /**
@@ -82,15 +88,20 @@ function useAllCommonPairs(currencyA: ComputedRef<Token | null | undefined>, cur
 export function useTradeExactIn(
   currencyAmountIn: ComputedRef<TokenAmount | undefined>,
   currencyOut: ComputedRef<Token | null | undefined>
-): ComputedRef<Trade | null> {
+): ComputedRef<Trade | undefined | null> {
   const currencyIn = computed(() => currencyAmountIn.value?.currency)
   const allowedPairs = useAllCommonPairs(currencyIn, currencyOut)
 
   return computed(() => {
-    if (currencyAmountIn.value && currencyOut.value && allowedPairs.value.length > 0) {
-      return Trade.bestTradeExactIn(allowedPairs.value, currencyAmountIn.value, currencyOut.value, { maxHops: 3, maxNumResults: 1 })[0] ?? null
+    if (allowedPairs.value[1]) {
+      return null
     }
-    return null
+    if (currencyAmountIn.value && currencyOut.value && allowedPairs.value[0].length > 0) {
+      return (
+        Trade.bestTradeExactIn(allowedPairs.value[0], currencyAmountIn.value, currencyOut.value, { maxHops: 3, maxNumResults: 1 })[0] ?? undefined
+      )
+    }
+    return undefined
   })
 }
 
@@ -100,14 +111,19 @@ export function useTradeExactIn(
 export function useTradeExactOut(
   currencyIn: ComputedRef<Token | null | undefined>,
   currencyAmountOut: ComputedRef<TokenAmount | undefined>
-): ComputedRef<Trade | null> {
+): ComputedRef<Trade | undefined | null> {
   const out = computed(() => currencyAmountOut.value?.token)
   const allowedPairs = useAllCommonPairs(currencyIn, out)
 
   return computed(() => {
-    if (currencyIn.value && currencyAmountOut.value && allowedPairs.value.length > 0) {
-      return Trade.bestTradeExactOut(allowedPairs.value, currencyIn.value, currencyAmountOut.value, { maxHops: 3, maxNumResults: 1 })[0] ?? null
+    if (allowedPairs.value[1]) {
+      return null
     }
-    return null
+    if (currencyIn.value && currencyAmountOut.value && allowedPairs.value[0].length > 0) {
+      return (
+        Trade.bestTradeExactOut(allowedPairs.value[0], currencyIn.value, currencyAmountOut.value, { maxHops: 3, maxNumResults: 1 })[0] ?? undefined
+      )
+    }
+    return undefined
   })
 }

@@ -49,6 +49,15 @@ export default {
   swap: {
     title: 'Swap',
     connect: 'Connect Wallet',
-    insufficient_liquidity: "Insufficient liquidity for this trade."
+    insufficient_liquidity: 'Insufficient liquidity for this trade.',
+    fetching: 'Fetching best price',
+    expected_output: 'Expected Output',
+    expected_input: 'Expected Input',
+    price_impact: 'Price Impact',
+    minimun_received: 'Minimun received after slippage (%{slippage}%)',
+    maximum_received: 'Maximum sold after slippage (%{slippage}%)',
+    confirm_swap: 'Confirm Swap',
+    swap: 'Swap',
+    confirm: 'Confirm',
   },
 }

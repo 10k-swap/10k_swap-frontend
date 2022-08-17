@@ -36,7 +36,8 @@ import Modal from '../Modal/Modal.vue'
 import ModalHeader from '../Modal/ModalHeader.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
-import { useModalStore, useSlippageToleranceSettingsStore, DEFAULT_SLIPPAGE, RISKY_SLIPPAGE_LOW, MAX_SLIPPAGE } from '../../state'
+import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants/index'
+import { useModalStore, useSlippageToleranceSettingsStore, RISKY_SLIPPAGE_LOW, MAX_SLIPPAGE } from '../../state'
 
 export default defineComponent({
   components: {
@@ -85,7 +86,7 @@ export default defineComponent({
 
 
     const onAuto = () => {
-      typedValue.value = DEFAULT_SLIPPAGE / 100
+      typedValue.value = INITIAL_ALLOWED_SLIPPAGE / 100
     }
     const onConfirm = () => {
       slippageToleranceSettingsStore.updateSlippageTolerance(parsedTypedValue.value)

@@ -58,10 +58,14 @@ export function useStarknetCall<T extends unknown[]>(
       if (current) {
         return current
       }
-
-      const result = await contract.value.call(method, arg)
-      caches[key] = result
-      return result
+      try {
+        const result = await contract.value.call(method, arg)
+        caches[key] = result
+        return result
+      } catch (error) {
+        console.log('call:call error', error)
+        throw error
+      }
     }
   }
 
@@ -109,7 +113,7 @@ export function useStarknetCall<T extends unknown[]>(
 }
 
 interface CallsState {
-  data?: Array<BN[] & { [key: string]: BN }>
+  data: Array<(BN[] & { [key: string]: BN }) | undefined>
   loading: boolean
   error?: string
   lastUpdatedAt: string
@@ -145,9 +149,14 @@ export function useStarknetCalls<T extends unknown[]>(
           return current
         }
 
-        const result: Result = await contract.call(method, args)
-        caches[key] = result
-        return result
+        try {
+          const result: Result = await contract.call(method, args)
+          caches[key] = result
+          return result
+        } catch (error) {
+          console.log('calls:call error', error)
+          return undefined
+        }
       })
 
       return await Promise.all(calls)

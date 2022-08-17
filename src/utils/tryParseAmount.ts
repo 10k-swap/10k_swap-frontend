@@ -7,6 +7,8 @@ export function tryParseAmount(value?: string | number, currency?: Token): Token
   if (!value || !currency) {
     return undefined
   }
+  value = value.toString().indexOf('e') > 0 ? JSBI.BigInt(value).toString() : value
+
   try {
     const typedValueParsed = parseUnits(value.toString(), currency.decimals).toString()
     if (typedValueParsed !== '0') {

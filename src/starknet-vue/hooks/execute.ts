@@ -1,11 +1,8 @@
-import { AccountInterface, AddTransactionResponse, Overrides, Call, Abi, ProviderInterface } from 'starknet'
+import {  AddTransactionResponse, Overrides, Call, Abi, ProviderInterface } from 'starknet'
 import { ComputedRef, reactive, toRaw } from 'vue'
 import { useStarknet } from '../providers/starknet'
 import { useStarknetTransactionManager } from '../providers/transaction/hooks'
-
-const isAccountInterface = (library: AccountInterface | ProviderInterface): library is AccountInterface => {
-  return !!(library as AccountInterface)?.execute
-}
+import { isAccountInterface } from '../utils'
 
 interface State {
   data?: string | undefined

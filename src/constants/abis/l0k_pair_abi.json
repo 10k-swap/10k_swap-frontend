@@ -435,21 +435,6 @@
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "name": "token0",
-                "type": "felt"
-            },
-            {
-                "name": "token1",
-                "type": "felt"
-            }
-        ],
-        "name": "initialize",
-        "outputs": [],
-        "type": "function"
-    },
-    {
         "inputs": [],
         "name": "getReserves",
         "outputs": [
@@ -466,6 +451,22 @@
                 "type": "felt"
             }
         ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "token0",
+                "type": "felt"
+            },
+            {
+                "name": "token1",
+                "type": "felt"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
         "type": "function"
     },
     {

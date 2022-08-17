@@ -1,5 +1,4 @@
 import invariant from 'tiny-invariant'
-import warning from 'tiny-warning'
 import JSBI from 'jsbi'
 import { validateAndParseAddress as getAddress } from 'starknet/utils/address'
 
@@ -14,7 +13,7 @@ export function validateSolidityTypeInstance(value: JSBI, solidityType: Solidity
 export function validateAndParseAddress(address: string): string {
   try {
     const checksummedAddress = getAddress(address)
-    warning(address === checksummedAddress, `${address} is not checksummed.`)
+    // warning(address === checksummedAddress, `${address} is not checksummed.`)
     return checksummedAddress
   } catch (error) {
     invariant(false, `${address} is not a valid address.`)

@@ -1,3 +1,4 @@
+import { useDebounce } from '@vueuse/core'
 import { computed, ComputedRef, ref, watch } from 'vue'
 import { useSwapStore } from '.'
 import { useTokenBalances } from '../../hooks/Balances'
@@ -68,17 +69,18 @@ export function useDerivedSwapInfo() {
   const outputCurrencyId = computed(() => swapState.value.OUTPUT.currencyId)
   const independentField = computed(() => swapState.value.independentField)
   const typedValue = computed(() => swapState.value.typedValue)
+  const debouncedTypedValue = useDebounce(typedValue, 400)
 
   const inputCurrency = useToken(inputCurrencyId)
   const outputCurrency = useToken(outputCurrencyId)
-  const to = computed(() => (swapState.value.recipient === null ? swapState.value.recipient : account.value ?? null))
+  const to = computed(() => (swapState.value.recipient !== null ? swapState.value.recipient : account.value ?? null))
 
   const relevantTokenBalances = [useTokenBalances(account, inputCurrency), useTokenBalances(account, outputCurrency)]
 
   const isExactIn = computed(() => independentField.value === Field.INPUT)
   const token = computed(() => (isExactIn.value ? inputCurrency.value : outputCurrency.value))
   const parsedAmount = computed(() => {
-    return tryParseAmount(typedValue.value, token.value ?? undefined)
+    return tryParseAmount(debouncedTypedValue.value, token.value ?? undefined)
   })
 
   const currencyAmountIn = computed(() => (isExactIn.value ? parsedAmount.value : undefined))
@@ -86,7 +88,9 @@ export function useDerivedSwapInfo() {
   const currencyAmountOut = computed(() => (!isExactIn.value ? parsedAmount.value : undefined))
   const bestTradeExactOut = useTradeExactOut(inputCurrency, currencyAmountOut)
 
-  const v2Trade = computed(() => (isExactIn.value ? bestTradeExactIn.value : bestTradeExactOut.value))
+  const v2Trade = computed(() => {
+    return isExactIn.value ? bestTradeExactIn.value : bestTradeExactOut.value
+  })
 
   const currencyBalances = computed(() => ({
     [Field.INPUT]: relevantTokenBalances[0]?.value,
@@ -111,6 +115,8 @@ export function useDerivedSwapInfo() {
   const amountIn = computed(() => (slippageAdjustedAmounts.value ? slippageAdjustedAmounts.value[Field.INPUT] : null))
 
   watch([account, parsedAmount, currencies, balanceIn, amountIn, to], () => {
+    inputError.value = undefined
+
     if (!account.value) {
       inputError.value = 'Connect Wallet'
     }

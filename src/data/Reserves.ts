@@ -14,7 +14,8 @@ export enum PairState {
   INVALID,
 }
 
-export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefined][]>): ComputedRef<Array<[PairState, Pair | null]>> {
+// null if loading
+export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefined][]>): ComputedRef<Array<[PairState, Pair | undefined | null]>> {
   const {
     state: { library },
   } = useStarknet()
@@ -44,24 +45,25 @@ export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefin
     if (!states.data) {
       return []
     }
+    // one loading,all loading
+    if (states.loading) {
+      return [[PairState.LOADING, null]]
+    }
     return states.data?.map((reserves, i) => {
-      // uint256ToBN
-      const tokenA = tokens.value[i][0]
-      const tokenB = tokens.value[i][1]
+      const tokenA = tokens.value[i]?.[0]
+      const tokenB = tokens.value[i]?.[1]
+
       if (states.loading) return [PairState.LOADING, null]
-      if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
-      if (!reserves) return [PairState.NOT_EXISTS, null]
+      if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, undefined]
+      if (!reserves) return [PairState.NOT_EXISTS, undefined]
       const { reserve0, reserve1 } = reserves
       const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
-      return [
-        PairState.EXISTS,
-        new Pair(new TokenAmount(token0, uint256ToBN(reserve0).toString()), new TokenAmount(token1, uint256ToBN(reserve1).toString())),
-      ]
+      return [PairState.EXISTS, new Pair(new TokenAmount(token0, reserve0.toString()), new TokenAmount(token1, reserve1.toString()))]
     })
   })
 }
 
-export function usePair(tokenA?: Ref<Token>, tokenB?: Ref<Token>): ComputedRef<[PairState, Pair | null]> {
+export function usePair(tokenA?: Ref<Token>, tokenB?: Ref<Token>): ComputedRef<[PairState, Pair | undefined | null]> {
   const pairs = usePairs(computed(() => [[tokenA?.value, tokenB?.value]]))
 
   return computed(() => {
