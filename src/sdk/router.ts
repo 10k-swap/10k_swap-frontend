@@ -39,7 +39,7 @@ export interface SwapParameters {
   /**
    * The arguments to pass to the method, all hex encoded.
    */
-  args: (Uint256 | string | string[])[]
+  args: (any | string)[]
 }
 
 function toHex(currencyAmount: CurrencyAmount) {
@@ -66,22 +66,22 @@ export abstract class Router {
     const amountIn: Uint256 = bnToUint256(trade.maximumAmountIn(options.allowedSlippage).raw.toString())
     const amountOut: Uint256 = bnToUint256(trade.minimumAmountOut(options.allowedSlippage).raw.toString())
     const path: string[] = trade.route.path.map((token) => token.address)
-    const deadline = `0x${(Math.floor(new Date().getTime() / 1000) + options.ttl).toString(16)}`
+    const deadline = `${(Math.floor(new Date().getTime() / 1000) + options.ttl).toString()}`
     const useFeeOnTransfer = Boolean(options.feeOnTransfer)
 
     let methodName: string
-    let args: (Uint256 | string | string[])[]
+    let args: (Uint256 | string)[]
     switch (trade.tradeType) {
       case TradeType.EXACT_INPUT:
         methodName = useFeeOnTransfer ? 'swapExactTokensForTokensSupportingFeeOnTransferTokens' : 'swapExactTokensForTokens'
         // (uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)
-        args = [amountIn, amountOut, path, to, deadline]
+        args = [amountIn.low, amountIn.high, amountOut.low, amountOut.high, path.length + '', ...path, to, deadline]
         break
       case TradeType.EXACT_OUTPUT:
         invariant(!useFeeOnTransfer, 'EXACT_OUT_FOT')
         methodName = 'swapTokensForExactTokens'
         // (uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
-        args = [amountOut, amountIn, path, to, deadline]
+        args = [amountOut.low, amountOut.high, amountIn.low, amountIn.high, path.length + '', ...path, to, deadline]
         break
     }
     return {

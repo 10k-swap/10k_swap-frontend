@@ -1,4 +1,4 @@
-import { inject, ref, Ref, ToRefs } from 'vue'
+import { inject, ref, Ref, toRaw, ToRefs } from 'vue'
 import { Transaction, StarknetTransactionManager } from './model'
 import { StarknetTransactionStateSymbol, StarknetTransactionMethodsSymbol } from './const'
 import { noop } from '../../utils'
@@ -14,7 +14,7 @@ export function useStarknetTransactionManager(): StarknetTransactionManager & { 
 
   if (transactions) {
     return {
-      transactions: ref(transactions.transactions),
+      transactions: toRaw(transactions.transactions),
       ...methods,
     }
   }

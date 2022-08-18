@@ -31,8 +31,6 @@ export default defineComponent({
   props: {
     token: {
       type: Object as PropType<Token | null>,
-      validator: (token: Token | null) => token === null || token instanceof Token,
-      required: true,
     }
   },
   components: {

@@ -1,4 +1,4 @@
-import { defineComponent, h, toRefs, onMounted, onBeforeUnmount, watch, provide, readonly, reactive } from 'vue'
+import { defineComponent, h, toRefs, onMounted, onBeforeUnmount, watch, provide, readonly, reactive, toRaw } from 'vue'
 import { Status, TransactionStatus } from 'starknet'
 import { useStarknet } from '../starknet/hooks'
 import { DEFAULT_INTERVAL, StarknetTransactionMethodsSymbol, StarknetTransactionStateSymbol } from './const'
@@ -42,22 +42,30 @@ export const StarknetTransactionManagerProvider = defineComponent({
     interval: Number,
   },
   setup(props, { slots }) {
-
     const { interval } = toRefs(props)
     const {
       state: { library, account },
     } = useStarknet()
 
-    const state = reactive<{ transactions: Transaction[] }>({ transactions: TransactionStorageManager.at(account.value) })
+    const state = reactive<{ transactions: Transaction[] }>({ transactions: [] })
 
     const addTransaction = (transaction: TransactionSubmitted) => {
       state.transactions = state.transactions.concat([{ loading: true, scuccess: false, fail: false, ...transaction }])
+      if (account.value) {
+        TransactionStorageManager.set(toRaw(state.transactions), account.value)
+      }
     }
     const removeTransaction = (transactionHash: string) => {
       state.transactions = state.transactions.filter((tx) => tx.transactionHash !== transactionHash)
+      if (account.value) {
+        TransactionStorageManager.set(toRaw(state.transactions), account.value)
+      }
     }
     const clearTransactions = () => {
       state.transactions = []
+      if (account.value) {
+        TransactionStorageManager.set([], account.value)
+      }
     }
     const refreshTransaction = async (transactionHash: string) => {
       try {
@@ -120,12 +128,8 @@ export const StarknetTransactionManagerProvider = defineComponent({
 
     watch([state.transactions, library, interval], () => refreshAllTransactions())
 
-    watch([account], () => (state.transactions = TransactionStorageManager.at(account.value)))
-    onBeforeUnmount(() => {
-      if (!account.value) {
-        return
-      }
-      TransactionStorageManager.set(state.transactions, account.value)
+    watch([account], () => {
+      state.transactions = TransactionStorageManager.at(account.value)
     })
 
     return slots.default

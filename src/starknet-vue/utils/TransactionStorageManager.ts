@@ -27,7 +27,6 @@ export default class TransactionStorageManager {
     }
 
     const data = TransactionStorageManager.get()
-
-    return data && data[account] ? data[account] : []
+    return data?.[account] ?? []
   }
 }

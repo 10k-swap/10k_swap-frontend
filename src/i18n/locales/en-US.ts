@@ -60,4 +60,13 @@ export default {
     swap: 'Swap',
     confirm: 'Confirm',
   },
+  transaction: {
+    waitting_modal_label: 'Waiting For Confirmation...',
+    tips: 'Confirm this transaction in your wallet',
+    transaction_rejected: 'Transaction Rejected',
+    dismiss: 'Dismiss',
+    transaction_submitted: 'Transaction Submitted',
+    close: 'Close',
+    view_on_scan: 'View on Voyage',
+  },
 }

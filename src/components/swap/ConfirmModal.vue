@@ -69,7 +69,7 @@ export default defineComponent({
     TokenLogo,
     DownIcon
   },
-  emits: ['update:show', 'swap'],
+  emits: ['dismiss', 'swap'],
   setup(props, { emit }) {
     const { show, trade } = toRefs(props)
     const { t } = useI18n()
@@ -77,7 +77,9 @@ export default defineComponent({
     const showModal = computed({
       get: () => show.value,
       set(newValue) {
-        emit('update:show', newValue)
+        if (!newValue) {
+          emit('dismiss')
+        }
       }
     })
 

@@ -33,18 +33,20 @@
           {{ t('swap.insufficient_liquidity') }}
         </Button>
         <Button :type="'primary'" :size="'large'" v-else @click="onSwapClick"
-          :disabled="!isValid || loadingTrade || !v2Trade || !!swapCallbackError">
+          :disabled="!isValid || loadingTrade || !v2Trade || (tradeToConfirm && !!swapCallbackError)">
           {{ !isValid ? swapInputError : t('swap.swap') }}
         </Button>
       </div>
     </div>
   </Page>
-  <ConfirmModal :trade="swapState.tradeToConfirm" :show="swapState.showConfirm"
-    @update:show="() => swapState.showConfirm = false" @swap="handleSwap"/>
+  <ConfirmModal :trade="tradeToConfirm" :show="swapState.showConfirm" @swap="handleSwap" @dismiss="onReset" />
+  <WaittingModal :show="swapState.attemptingTxn" :desc="summary" @dismiss="onReset" />
+  <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
+  <ScuccessModal :show="!!swapState.txHash" :tx="swapState.txHash" @dismiss="onReset" />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, watch } from 'vue'
+import { computed, defineComponent, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import JSBI from 'jsbi'
 import Text from '../../components/Text/Text.vue'
@@ -54,6 +56,9 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel/index.vue'
 import TradePrice from '../../components/swap/TradePrice.vue'
 import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails.vue'
 import ConfirmModal from '../../components/swap/ConfirmModal.vue'
+import WaittingModal from '../../components/transaction/WaittingModal.vue'
+import RejectedModal from '../../components/transaction/RejectedModal.vue'
+import ScuccessModal from '../../components/transaction/ScuccessModal.vue'
 import { SettingIcon, SwitchIcon, LoadingIcon } from '../../components/Svg'
 import { Token, Trade } from '../../sdk'
 import { useModalStore, useSlippageToleranceSettingsStore } from '../../state'
@@ -64,6 +69,7 @@ import useConnector from '../../hooks/useConnector'
 import useSwapCallback from '../../hooks/useSwapCallback'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useUserSwapSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
+import useSwapSummary from '../../hooks/useSwapSummary'
 
 export default defineComponent({
   components: {
@@ -76,7 +82,10 @@ export default defineComponent({
     LoadingIcon,
     TradePrice,
     AdvancedSwapDetails,
-    ConfirmModal
+    ConfirmModal,
+    WaittingModal,
+    RejectedModal,
+    ScuccessModal
   },
   setup() {
     const { t } = useI18n()
@@ -94,9 +103,6 @@ export default defineComponent({
     const isValid = computed(() => !swapInputError.value)
     const dependentField = computed(() => independentField.value === Field.INPUT ? Field.OUTPUT : Field.INPUT)
 
-    const swapCallbacks = useSwapCallback(v2Trade, userSwapSlippageTolerance)
-    const swapCallbackError = computed(() => swapCallbacks.value.error)
-
     const parsedAmounts = computed(() => ({
       [Field.INPUT]: independentField.value === Field.INPUT ? parsedAmount.value : v2Trade.value?.inputAmount,
       [Field.OUTPUT]: independentField.value === Field.OUTPUT ? parsedAmount.value : v2Trade.value?.outputAmount,
@@ -111,20 +117,24 @@ export default defineComponent({
     const noRoute = computed(() => !(v2Trade.value?.route))
     const noTrade = computed(() => v2Trade.value === undefined)
     const loadingTrade = computed(() => v2Trade.value === null)
+    const showRejectedModal = computed(() => !!swapState.swapErrorMessage && swapState.swapErrorMessage.includes('User abort'))
 
+    const tradeToConfirm = ref<Trade>()
     const swapState = reactive<{
       showConfirm: boolean
-      tradeToConfirm: Trade | undefined
       attemptingTxn: boolean
       swapErrorMessage: string | undefined
       txHash: string | undefined
     }>({
       showConfirm: false,
-      tradeToConfirm: undefined,
       attemptingTxn: false,
       swapErrorMessage: undefined,
       txHash: undefined,
     })
+
+    const summary = useSwapSummary(tradeToConfirm, userSwapSlippageTolerance)
+    const swapCallbacks = useSwapCallback(tradeToConfirm, userSwapSlippageTolerance)
+    const swapCallbackError = computed(() => swapCallbacks.value.error)
 
     const handleTypeInput = (value: string | number) => {
       onUserInput(Field.INPUT, value)
@@ -150,18 +160,19 @@ export default defineComponent({
         return
       }
       swapState.showConfirm = true
-      swapState.tradeToConfirm = v2Trade.value
+      tradeToConfirm.value = v2Trade.value
     }
 
     const handleSwap = () => {
       if (!swapCallbacks.value.callback) {
         return
       }
+      swapState.showConfirm = false
       swapState.attemptingTxn = true
 
       swapCallbacks.value.callback()
         .then((hash) => {
-          swapState.attemptingTxn = true
+          swapState.attemptingTxn = false
           swapState.txHash = hash
         })
         .catch((error) => {
@@ -171,11 +182,24 @@ export default defineComponent({
         })
     }
 
+
+    const onReset = () => {
+      if (swapState.txHash) {
+        onUserInput(Field.INPUT, '')
+      }
+      swapState.showConfirm = false
+      tradeToConfirm.value = undefined
+      swapState.attemptingTxn = false
+      swapState.swapErrorMessage = undefined
+      swapState.txHash = undefined
+    }
+
     return {
       swapState,
       Field,
       isValid,
       v2Trade,
+      summary,
       account,
       noRoute,
       noTrade,
@@ -186,6 +210,8 @@ export default defineComponent({
       userHasSpecifiedInputOutput,
       swapInputError,
       swapCallbackError,
+      showRejectedModal,
+      tradeToConfirm,
 
       t,
       onSetting,
@@ -194,6 +220,7 @@ export default defineComponent({
       onSwitch,
       onOutputSelect,
       onSwapClick,
+      onReset,
       handleTypeInput,
       handleTypeOutput,
       handleSwap
