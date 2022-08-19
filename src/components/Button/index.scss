@@ -48,16 +48,28 @@ $button-prefix: '#{$prefix}-button';
     border: none;
   }
 
-  // &--secondary {
-  //   color: $color-primary;
-  //   background-color: $color-white;
-  //   border: 2px solid $color-primary;
-  // }
+  &--secondary {
+    color: $color-primary-text;
+    background-color: $color-white;
+    border: 1px solid $color-bg-transparent;
+    &:disabled {
+      border: 0;
+      background-color: $color-bg-transparent;
+      color: $color-white;
+      opacity: 1;
+    }
+  }
 
   &--default {
     color: $color-primary;
     background-color: $color-white;
     border: $color-primary solid 2px;
+  }
+
+  &--text {
+    color: $color-primary-text;
+    background-color: transparent;
+    border: 0;
   }
 
   &--danger {
@@ -88,7 +100,6 @@ $button-prefix: '#{$prefix}-button';
     &.#{$button-prefix}--warning {
       color: $color-blue;
     }
-
   }
 
   &--large {

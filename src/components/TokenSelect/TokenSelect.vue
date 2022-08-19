@@ -1,9 +1,14 @@
 <template>
-  <Popper :interactive="false">
+  <Popper :interactive="false" @close:popper="show = false" @open:popper="show = true">
     <div class="l0k-swap-select-token--button" role="button">
-      <TokenLogo class="l0k-swap-select-token--button-logo" :token="current" />
-      <Text bold class="text"> {{ current?.symbol }} </Text>
-      <ArrowDownIcon class="arrow" width="11px" />
+      <template v-if="current">
+        <TokenLogo class="l0k-swap-select-token--button-logo" :token="current" />
+        <Text bold class="text"> {{ current?.symbol }} </Text>
+      </template>
+      <template v-else>
+        <Text class="select">{{ t('token_select.label') }}</Text>
+      </template>
+      <ArrowDownIcon class="arrow" :class="{ show: show }" width="11px" />
     </div>
     <template #content>
       <div class="l0k-swap-select-token--tokens">
@@ -18,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from 'vue'
+import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import Popper from 'vue3-popper'
 import TokenLogo from '../TokenLogo/TokenLogo'
 import tokensList from '../../constants/tokens'
@@ -26,6 +31,7 @@ import Text from '../Text/Text.vue'
 import { ArrowDownIcon } from '../Svg'
 import { Token } from '../../sdk'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   props: {
@@ -43,6 +49,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const { token } = toRefs(props)
     const { state: { chainId } } = useStarknet()
+    const { t } = useI18n()
+
+    const show = ref(false)
 
     const tokens = computed(() => chainId.value ? tokensList[chainId.value] : [])
 
@@ -60,7 +69,9 @@ export default defineComponent({
     return {
       current,
       tokens,
+      show,
 
+      t,
       onSelect
     }
   }
@@ -74,15 +85,20 @@ export default defineComponent({
   display: flex;
   align-items: center;
   position: relative;
-  height: 40px;
   width: 120px;
+  height: 40px;
   background: $color-white;
   border-radius: 20px;
   padding: 0 30px 0 8px;
   cursor: pointer;
+  box-sizing: border-box;
 
   .l0k-swap-select-token--button-logo {
     margin-right: 8px;
+  }
+
+  .select {
+    margin-left: 10px
   }
 
   .text {
@@ -94,6 +110,11 @@ export default defineComponent({
     right: 13px;
     top: 50%;
     transform: translateY(-50%);
+    transition: all .3s;
+
+    &.show {
+      transform: translateY(-50%) rotate(0.5turn);
+    }
   }
 }
 

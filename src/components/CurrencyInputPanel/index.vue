@@ -2,7 +2,7 @@
   <div class="l0k-swap-currency-input-panel">
     <div class="inputs">
       <input type="number" v-model="typedValue" placeholder="0.0">
-      <TokenSelect :token="token ?? null" @select="onSelect" />
+      <TokenSelect class="token-select" :token="token ?? null" @select="onSelect" />
     </div>
     <div class="balance">
       <Text :color="'description-text'" :size="'mini'">
@@ -93,12 +93,16 @@ export default defineComponent({
       outline: none;
 
       &::placeholder {
-        color:rgba($color: $color-transparent-text, $alpha: 1) ;
+        color: rgba($color: $color-transparent-text, $alpha: 1);
       }
 
       &:hover {
         border: 0;
       }
+    }
+
+    .token-select {
+      width: 120px;
     }
   }
 

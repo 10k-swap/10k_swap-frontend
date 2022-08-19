@@ -63,8 +63,12 @@ export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefin
   })
 }
 
-export function usePair(tokenA?: Ref<Token>, tokenB?: Ref<Token>): ComputedRef<[PairState, Pair | undefined | null]> {
-  const pairs = usePairs(computed(() => [[tokenA?.value, tokenB?.value]]))
+export function usePair(
+  tokenA: Ref<Token | undefined> | ComputedRef<Token | undefined>,
+  tokenB?: ComputedRef<Token | undefined> | Ref<Token | undefined>
+): ComputedRef<[PairState, Pair | undefined | null]> {
+  const tokens = computed<[Token | undefined, Token | undefined][]>(() => [[tokenA?.value, tokenB?.value]])
+  const pairs = usePairs(tokens)
 
   return computed(() => {
     return pairs.value?.[0]

@@ -13,9 +13,8 @@ export default function useSwapSummary(trade: Ref<Trade | null | undefined>, all
     const outputSymbol = trade.value.outputAmount.currency.symbol
     const inputAmount = trade.value.inputAmount.toSignificant(3)
     const outputAmount = trade.value.outputAmount.toSignificant(3)
+    const approveAmount = swapApproveAmount.value?.toSignificant(3)
 
-    return `Approve ${swapApproveAmount.value?.toSignificant(
-      3
-    )} ${inputSymbol} & Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+    return `Approve ${approveAmount} ${inputSymbol} & Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
   })
 }

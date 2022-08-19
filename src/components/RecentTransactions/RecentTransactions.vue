@@ -19,10 +19,10 @@
             <LoadingIcon v-else-if="transaction.loading" :color="'minor'" width="16px" />
             <FailIcon v-else-if="transaction.fail" color="red" width="16px" />
           </div>
-          <Text class="text" :color="'secondary-text'" :size="'small'">
+          <Text class="text" :color="'secondary-text'" :size="isMobile ? 'mini' : 'small'">
             {{ transaction.metadata?.message }}
           </Text>
-          <a href="#">
+          <a target="_blank" :href="chainId && getScanLink(chainId, transaction.transactionHash, 'transaction')">
             <ShareIcon :color="'transparent'" width="12px" />
           </a>
         </div>
@@ -31,7 +31,6 @@
     <template v-else>
       <Text :color="'secondary-text'" :size="'small'">
         {{ t('recent_transactions.tips') }}
-        {{ transactions }}
       </Text>
     </template>
   </div>
@@ -43,6 +42,9 @@ import { useI18n } from 'vue-i18n'
 import Text from '../Text/Text.vue'
 import { ClearIcon, ScuccessIcon, LoadingIcon, FailIcon, ShareIcon } from '../Svg'
 import { useStarknetTransactionManager } from '../../starknet-vue/providers/transaction'
+import { getScanLink } from '../../utils/getScanLink'
+import { useStarknet } from '../../starknet-vue/providers/starknet'
+import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
   components: {
@@ -54,13 +56,18 @@ export default defineComponent({
     ShareIcon
   },
   setup() {
+    const { state: { chainId } } = useStarknet()
     const { t } = useI18n()
     const { transactions, clearTransactions } = useStarknetTransactionManager()
+    const isMobile = useIsMobile()
 
     return {
+      chainId,
+      isMobile,
       transactions,
 
       t,
+      getScanLink,
       clearTransactions
     }
   },

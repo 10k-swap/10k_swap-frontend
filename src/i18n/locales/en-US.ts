@@ -1,6 +1,7 @@
 export default {
   main_network: 'Main',
   goerli_test_network: 'Goerli',
+  loading: 'loading...',
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',
@@ -68,5 +69,23 @@ export default {
     transaction_submitted: 'Transaction Submitted',
     close: 'Close',
     view_on_scan: 'View on Voyage',
+  },
+  token_select: {
+    label: 'Select',
+  },
+  pool: {
+    title: 'Pools Overview',
+    my_pools: 'My pools',
+    new_position: '+ New position',
+  },
+  poolModal: {
+    addLiqiudit: 'Add liqiudit',
+    withdraw: 'Withdraw',
+  },
+  add_liqiudit: {
+    liqiudity: 'Liqiudity: %{value}',
+    no_liqiudity: 'No Liqiudity',
+    share_of_pool: 'Share of Pool',
+    no_liqiudity_tips: 'Initial prices and pool share',
   },
 }

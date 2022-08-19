@@ -1,4 +1,4 @@
-import { computed, ComputedRef, Ref, toRaw, watch } from 'vue'
+import { computed, ComputedRef, Ref, toRaw } from 'vue'
 import JSBI from 'jsbi'
 import { Token, TokenAmount } from '../sdk'
 import { useStarknetCalls } from '../starknet-vue/hooks/call'
@@ -55,7 +55,10 @@ export function useTokensBalances(address: Ref<string | undefined> | ComputedRef
   return computed(() => tokens?.value.map((token) => (token?.address ? balances.value[token.address] : undefined)))
 }
 
-export function useTokenBalances(address: Ref<string | undefined> | ComputedRef<string | undefined>, token: ComputedRef<Token | null | undefined>) {
+export function useTokenBalances(
+  address: Ref<string | undefined> | ComputedRef<string | undefined>,
+  token: ComputedRef<Token | null | undefined> | Ref<Token | undefined>
+) {
   const tokens = computed(() => [token.value ?? undefined])
   const [balances, loading] = useTokenBalancesWithLoadingIndicator(address, tokens)
 

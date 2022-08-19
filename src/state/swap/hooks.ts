@@ -69,7 +69,7 @@ export function useDerivedSwapInfo() {
   const outputCurrencyId = computed(() => swapState.value.OUTPUT.currencyId)
   const independentField = computed(() => swapState.value.independentField)
   const typedValue = computed(() => swapState.value.typedValue)
-  const debouncedTypedValue = useDebounce(typedValue, 400)
+  const debouncedTypedValue = useDebounce(typedValue, 150)
 
   const inputCurrency = useToken(inputCurrencyId)
   const outputCurrency = useToken(outputCurrencyId)

@@ -28,5 +28,6 @@ export default defineComponent({
   @include bg-prefix('./bg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  overflow: hidden;
 }
 </style>
