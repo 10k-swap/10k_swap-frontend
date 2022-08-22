@@ -1,5 +1,4 @@
 import JSBI from 'jsbi'
-import { StarknetChainId } from 'starknet/constants'
 
 // exports for external consumption
 export type BigintIsh = JSBI | bigint | string
@@ -16,10 +15,6 @@ export enum Rounding {
   ROUND_HALF_UP,
   ROUND_UP,
 }
-
-export const FACTORY_ADDRESS = '0x0492f41499a6419abb7e98eb276ccb4be0994f2462e57b3b51262bfa1dac8b3e'
-
-export const PAIR_CONTRACT_CLASS_HASH = '0x78062101eb540ba039dc779bbf908e98b64efb4439bc9abd731e1156abd12cd'
 
 export const MINIMUM_LIQUIDITY = JSBI.BigInt(1000)
 

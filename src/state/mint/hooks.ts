@@ -9,6 +9,7 @@ import { Field } from './types'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { ZERO } from '../../sdk/constants'
 import { useTokenBalances } from '../../hooks/Balances'
+import { useDebounce } from '@vueuse/core'
 
 export function useMintState() {
   const store = useMintStore()
@@ -42,6 +43,9 @@ export function useDerivedMintInfo(
   const typedValue = computed(() => mintState.value.typedValue)
   const otherTypedValue = computed(() => mintState.value.otherTypedValue)
 
+  const debouncedTypedValue = useDebounce(typedValue, 150)
+  const debouncedOtherTypedValue = useDebounce(otherTypedValue, 150)
+
   const dependentField = computed(() => (independentField.value === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A))
 
   // tokens
@@ -71,12 +75,12 @@ export function useDerivedMintInfo(
 
   // amounts
   const independentAmount: ComputedRef<TokenAmount | undefined> = computed(() =>
-    tryParseAmount(typedValue.value, currencies.value[independentField.value])
+    tryParseAmount(debouncedTypedValue.value, currencies.value[independentField.value])
   )
   const dependentAmount: ComputedRef<TokenAmount | undefined> = computed(() => {
     if (noLiquidity.value) {
-      if (otherTypedValue.value && currencies.value[dependentField.value]) {
-        return tryParseAmount(otherTypedValue.value, currencies.value[dependentField.value])
+      if (debouncedOtherTypedValue.value && currencies.value[dependentField.value]) {
+        return tryParseAmount(debouncedOtherTypedValue.value, currencies.value[dependentField.value])
       }
       return undefined
     }
@@ -116,6 +120,11 @@ export function useDerivedMintInfo(
     if (pair.value && totalSupply.value && tokenAmountA && tokenAmountB) {
       return pair.value.getLiquidityMinted(totalSupply.value, tokenAmountA, tokenAmountB)
     }
+    // first mint
+    if (noLiquidity.value && tokenAmountA && tokenAmountB) {
+      const pair = new Pair(new TokenAmount(tokenAmountA.token, '0'), new TokenAmount(tokenAmountB.token, '0'))
+      return pair.getLiquidityMinted(new TokenAmount(pair.liquidityToken, '0'), tokenAmountA, tokenAmountB)
+    }
     return undefined
   })
 
@@ -138,13 +147,14 @@ export function useDerivedMintInfo(
       error.value = error.value ?? 'Invalid pair'
     }
 
+    if (!currencies.value[Field.CURRENCY_A] || !currencies.value[Field.CURRENCY_B]) {
+      error.value = error.value ?? 'Select a token'
+    }
+
     if (!parsedAmounts.value[Field.CURRENCY_A] || !parsedAmounts.value[Field.CURRENCY_B]) {
       error.value = error.value ?? 'Enter an amount'
     }
 
-    if (!currencies.value[Field.CURRENCY_A] || !currencies.value[Field.CURRENCY_A]) {
-      error.value = error.value ?? 'Select a token'
-    }
     const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts.value
 
     if (currencyAAmount && currencyBalances.value?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {

@@ -35,7 +35,7 @@ export const useMintStore = defineStore<'mint', MintState, {}, MintActions>('min
         } else {
           // they're typing into a new field, store the other value
           this.otherTypedValue = this.typedValue
-          this.typedValue = this.typedValue
+          this.typedValue = typedValue
           this.independentField = field
         }
       } else {

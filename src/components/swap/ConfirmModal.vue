@@ -3,7 +3,7 @@
     <template v-slot:header>
       <ModalHeader @dismiss="() => showModal = false" :title="t('swap.confirm_swap')" />
     </template>
-    <div class="l0k-swap-confirm-swap-modal-modal">
+    <div class="l0k-swap-confirm-swap-modal">
       <div class="card">
         <Text :size="'large'" bold>
           {{ trade?.inputAmount.toSignificant() }}
@@ -28,7 +28,7 @@
       <TradePrice class="trade-price" :price="trade?.executionPrice" />
       <AdvancedSwapDetails :trade="trade" />
       <div class="confirm">
-        <Button class="retry" :type="'primary'" bold @click="onConfirm">
+        <Button :type="'primary'" bold @click="onConfirm">
           {{ t('swap.confirm') }}
         </Button>
       </div>
@@ -101,7 +101,7 @@ export default defineComponent({
 <style lang="scss" >
 @import '../../styles/index.scss';
 
-.l0k-swap-confirm-swap-modal-modal {
+.l0k-swap-confirm-swap-modal {
   .card {
     display: flex;
     align-items: center;

@@ -9,11 +9,7 @@ export default defineComponent({
     token: {
       type: Object as PropType<Token>,
     },
-    width: {
-      type: Number,
-      default: 24,
-    },
-    height: {
+    size: {
       type: Number,
       default: 24,
     },
@@ -22,7 +18,7 @@ export default defineComponent({
   setup(props) {
     const hasError = ref(false)
 
-    const { token, alt, width, height } = toRefs(props)
+    const { token, alt, size } = toRefs(props)
 
     const src = computed(() => {
       if (hasError.value || !token.value) {
@@ -42,6 +38,6 @@ export default defineComponent({
       hasError.value = true
     }
 
-    return () => <img src={src.value} alt={alt.value} width={width.value} height={height.value} onError={onError} />
+    return () => <img src={src.value} alt={alt.value} width={size.value} height={size.value} onError={onError} />
   },
 })

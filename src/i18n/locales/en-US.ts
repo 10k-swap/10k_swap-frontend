@@ -87,5 +87,13 @@ export default {
     no_liqiudity: 'No Liqiudity',
     share_of_pool: 'Share of Pool',
     no_liqiudity_tips: 'Initial prices and pool share',
+    deposit: 'Deposit',
+    desc: 'Liquidity  providers earn  a 0.25% fee  on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time  and can be claimed by withdrawing your liquidity.',
+    confirm_title: 'You will receive',
+    pool_token: '%{tokens} Pool Tokens',
+    confirm_tips: 'Output is estimated.If the price changes by more than %{slippage}% your transaction will revert',
+    deposited: '%{token} Deposited',
+    rates: 'Rates',
+    confirm: 'Confirm Supply',
   },
 }

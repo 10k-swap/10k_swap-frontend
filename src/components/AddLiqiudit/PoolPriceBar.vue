@@ -2,33 +2,27 @@
   <div class="pool-price-bar">
     <div class="column">
       <Text :size="'small'">{{ price?.toSignificant(6) ?? '-' }}</Text>
-      <Text :size="'small'" :color="'description-text'">{{ `${currencies?.[Field.CURRENCY_B]?.symbol} per
-              ${currencies?.[Field.CURRENCY_A]?.symbol}`
-      }}</Text>
+      <Text :size="'small'" :color="'description-text'">{{ label1 }}</Text>
     </div>
     <div class="column">
       <Text :size="'small'">{{ price?.invert()?.toSignificant(6) ?? '-' }}</Text>
-      <Text :size="'small'" :color="'description-text'">{{ `${currencies?.[Field.CURRENCY_A]?.symbol} per
-              ${currencies?.[Field.CURRENCY_B]?.symbol}`
-      }}</Text>
+      <Text :size="'small'" :color="'description-text'">{{ label2 }}</Text>
     </div>
     <div class="column">
       <Text :size="'small'">
-        {{ noLiquidity && price
-            ? '100'
-            : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'
-        }}%</Text>
-          <Text :size="'small'" :color="'description-text'">
-            {{ t('add_liqiudit.share_of_pool') }}
-          </Text>
+        {{ poolTokenPercentageLabel }}%</Text>
+      <Text :size="'small'" :color="'description-text'">
+        {{ t('add_liqiudit.share_of_pool') }}
+      </Text>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ONE_BIPS } from '../../constants'
+import usePoolTokenPercentageLabel from '../../hooks/usePoolTokenPercentageLabel'
 import { Percent, Price, Token } from '../../sdk'
 import { Field } from '../../state/mint/types'
 import Text from '../Text/Text.vue'
@@ -49,12 +43,23 @@ export default defineComponent({
   components: {
     Text
   },
-  setup() {
+  setup(props) {
     const { t } = useI18n()
+    const { currencies, noLiquidity, price, poolTokenPercentage } = toRefs(props)
+
+    const label1 = computed(() => {
+      return `${currencies.value?.[Field.CURRENCY_B]?.symbol} per ${currencies.value?.[Field.CURRENCY_A]?.symbol}`
+    })
+    const label2 = computed(() => {
+      return `${currencies.value?.[Field.CURRENCY_A]?.symbol} per ${currencies.value?.[Field.CURRENCY_B]?.symbol}`
+    })
+    const poolTokenPercentageLabel = usePoolTokenPercentageLabel(poolTokenPercentage, price, noLiquidity)
 
     return {
       Field,
-      ONE_BIPS,
+      label1,
+      label2,
+      poolTokenPercentageLabel,
 
       t
     }

@@ -2,23 +2,14 @@ import { Price } from './fractions/price'
 import { TokenAmount } from './fractions/tokenAmount'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
-import { shortString } from "starknet";
-import { computeHashOnElements, pedersen } from "starknet/dist/utils/hash";
-import {
-  BigintIsh,
-  FACTORY_ADDRESS,
-  PAIR_CONTRACT_CLASS_HASH,
-  MINIMUM_LIQUIDITY,
-  ZERO,
-  ONE,
-  FIVE,
-  FEES_NUMERATOR,
-  FEES_DENOMINATOR,
-  ChainId,
-} from '../constants'
+import { shortString } from 'starknet'
+import { computeHashOnElements, pedersen } from 'starknet/dist/utils/hash'
+import { BigintIsh, MINIMUM_LIQUIDITY, ZERO, ONE, FIVE, FEES_NUMERATOR, FEES_DENOMINATOR, ChainId } from '../constants'
 import { sqrt, parseBigintIsh } from '../utils'
 import { InsufficientReservesError, InsufficientInputAmountError } from '../errors'
 import { Token } from './token'
+import { FACTORY_ADDRESSES } from '../../constants/address'
+import { PAIR_CONTRACT_CLASS_HASH } from '../../constants'
 
 let PAIR_ADDRESS_CACHE: { [token0Address: string]: { [token1Address: string]: string } } = {}
 
@@ -39,7 +30,7 @@ export class Pair {
           ...PAIR_ADDRESS_CACHE?.[tokens[0].address],
           [tokens[1].address]: computeHashOnElements([
             CONTRACT_ADDRESS_PREFIX,
-            FACTORY_ADDRESS,
+            FACTORY_ADDRESSES[tokenA.chainId],
             salt,
             PAIR_CONTRACT_CLASS_HASH,
             constructorCalldataHash,

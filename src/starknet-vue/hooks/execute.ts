@@ -1,4 +1,4 @@
-import {  AddTransactionResponse, Overrides, Call, Abi, ProviderInterface } from 'starknet'
+import { AddTransactionResponse, Overrides, Call, Abi, ProviderInterface } from 'starknet'
 import { ComputedRef, reactive, toRaw } from 'vue'
 import { useStarknet } from '../providers/starknet'
 import { useStarknetTransactionManager } from '../providers/transaction/hooks'
@@ -32,11 +32,13 @@ const INIT_STATE = {
 }
 
 export function useStarknetExecute<T extends unknown[]>(
-  contractAddresses: ComputedRef<string[]>,
+  contractAddresses: ComputedRef<string[] | undefined>,
   abis: Abi[],
   methods: string[]
 ): UseStarknetExecute<T> {
-  const { state: { library } } = useStarknet()
+  const {
+    state: { library },
+  } = useStarknet()
 
   const { addTransaction } = useStarknetTransactionManager()
   const state = reactive<State>(INIT_STATE)
@@ -78,8 +80,8 @@ export function useStarknetExecute<T extends unknown[]>(
         return response
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err)
-        console.error(message)
         state.error = message
+        console.error(message)
       } finally {
         state.loading = false
       }

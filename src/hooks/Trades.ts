@@ -1,10 +1,10 @@
 import { TokenAmount, Pair, Token, Trade } from '../sdk'
 import { flatMap } from 'lodash'
 
-import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { computed, ComputedRef } from 'vue'
+import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants/tokens'
 
 function useAllCommonPairs(
   currencyA: ComputedRef<Token | null | undefined>,

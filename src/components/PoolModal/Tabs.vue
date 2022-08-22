@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { Action } from './type'
+import { Actions } from '../../state/poolModal'
 import Button from '../Button/Button'
 
 export default defineComponent({
@@ -20,14 +20,14 @@ export default defineComponent({
   emits: ['change'],
   props: {
     tabs: {
-      type: Array as PropType<{ label: string, value: Action }[]>,
+      type: Array as PropType<{ label: string, value: Actions }[]>,
     },
     current: {
-      type: String as PropType<Action>,
+      type: Object as PropType<Actions>,
     }
   },
   setup(_, { emit }) {
-    const onChange = (tab: Action) => {
+    const onChange = (tab: Actions) => {
       emit('change', tab)
     }
 

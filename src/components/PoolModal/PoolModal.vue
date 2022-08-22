@@ -12,7 +12,8 @@
       </ModalHeader>
     </template>
     <div class="l0k-swap-pair-modal">
-      <AddLiqiudit :token0="token0" :token1="token1" />
+      <AddLiqiudit v-if="currentTab === Actions.MINT" :token0="tokens[0]" :token1="tokens[1]" />
+      <RemoveLiqiudit v-if="currentTab === Actions.BURN" :pair="removeLiqiuditPair" />
     </div>
   </Modal>
 </template>
@@ -25,12 +26,10 @@ import ModalHeader from '../Modal/ModalHeader.vue'
 import Text from '../Text/Text.vue'
 import Tabs from './Tabs.vue'
 import AddLiqiudit from '../AddLiqiudit/AddLiqiudit.vue'
+import RemoveLiqiudit from '../RemoveLiqiudit/RemoveLiqiudit.vue'
 import { BackIcon, SettingIcon } from '../Svg'
 import { useModalStore, useSlippageToleranceSettingsStore, usePoolModalStore } from '../../state'
-import { useTokenBalances } from '../../hooks/Balances'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
-import { ZERO } from '../../sdk/constants'
-import { Action } from './type'
+import { Actions } from '../../state/poolModal'
 
 export default defineComponent({
   components: {
@@ -40,7 +39,8 @@ export default defineComponent({
     SettingIcon,
     Text,
     Tabs,
-    AddLiqiudit
+    AddLiqiudit,
+    RemoveLiqiudit
   },
   setup() {
     const { t } = useI18n()
@@ -48,10 +48,9 @@ export default defineComponent({
     const poolModalStore = usePoolModalStore()
     const slippageToleranceSettingsStore = useSlippageToleranceSettingsStore()
 
-    const { state: { account } } = useStarknet()
-
-    const liquidityToken = computed(() => poolModalStore.pair?.liquidityToken)
-    const liquidityTokenBalances = useTokenBalances(account, liquidityToken)
+    const addLiqiuditPair = computed(() => poolModalStore.addLiqiuditPair)
+    const tokens = computed(() => [addLiqiuditPair.value?.token0, addLiqiuditPair.value?.token1])
+    const removeLiqiuditPair = computed(() => poolModalStore.removeLiqiuditPair)
 
     const showModal = computed({
       get: () => poolModalStore.show,
@@ -60,15 +59,16 @@ export default defineComponent({
       }
     })
 
-    const current = ref<Action>('mint')
-    const fromWithdraw = computed(() => poolModalStore.fromWithdraw)
-    watch(fromWithdraw, () => current.value = 'burn')
+    const current = ref<Actions>()
+    const action = computed(() => poolModalStore.action)
+    const currentTab = computed<Actions>(() => current.value ? current.value : action.value)
+
     const tabs = computed(() => {
-      const base: { label: string; value: Action }[] = [{ label: t('poolModal.addLiqiudit'), value: 'mint' }]
-      if (liquidityTokenBalances.value?.greaterThan(ZERO) || fromWithdraw.value) {
+      const base: { label: string; value: Actions }[] = [{ label: t('poolModal.addLiqiudit'), value: Actions.MINT }]
+      if (action.value === Actions.BURN) {
         base.push({
           label: t('poolModal.withdraw'),
-          value: 'burn'
+          value: Actions.BURN
         })
       }
       return base
@@ -78,7 +78,7 @@ export default defineComponent({
       modalStore.toggleSlippageToleranceSettingsModal(true)
       slippageToleranceSettingsStore.updateCurrentSet('addLiqiudit')
     }
-    const onChange = (tab: Action) => {
+    const onChange = (tab: Actions) => {
       current.value = tab
     }
 
@@ -86,8 +86,10 @@ export default defineComponent({
       showModal,
       tabs,
       current,
-      token0: computed(() => poolModalStore.pair?.token0),
-      token1: computed(() => poolModalStore.pair?.token1),
+      currentTab,
+      removeLiqiuditPair,
+      tokens,
+      Actions,
 
       onSetting,
       onChange,
@@ -103,6 +105,4 @@ export default defineComponent({
 .l0k-swap-pair-modal-icon {
   cursor: pointer;
 }
-
-.l0k-swap-pair-modal {}
 </style>

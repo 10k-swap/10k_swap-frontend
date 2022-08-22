@@ -1,7 +1,12 @@
 import { StarknetChainId } from 'starknet/constants'
 import { Token } from '../sdk'
 
-const tokens: { [chainId in StarknetChainId]: Token[] } = {
+// a list of tokens by chain
+type ChainTokenList = {
+  readonly [chainId in StarknetChainId]: Token[]
+}
+
+const tokens: ChainTokenList = {
   [StarknetChainId.MAINNET]: [],
   [StarknetChainId.TESTNET]: [
     new Token(StarknetChainId.TESTNET, '0x01f16ff16e38786750800d81b89f442e7c88a282b58929516921115e551a14cf', 18, 'TKA', 'TestMainnet Token'),
@@ -11,6 +16,20 @@ const tokens: { [chainId in StarknetChainId]: Token[] } = {
     // new Token(StarknetChainId.TESTNET, '0x055ae6909088751ccbe4d5ad4653c037ce98798e4ce9bae451b22d43b9cd1ced', 6, 'TKF', 'TestMainnet Token'),
     // new Token(StarknetChainId.TESTNET, '0x03e14d3e29e25b676f31dcbd5b745206a1f0fb7934409bdee0a932e316b14b3e', 6, 'TKE', 'TestMainnet Token'),
   ],
+}
+
+// used to construct intermediary pairs for trading
+export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
+  [StarknetChainId.MAINNET]: [],
+  [StarknetChainId.TESTNET]: [],
+}
+
+/**
+ * Some tokens can only be swapped via certain pairs, so we override the list of bases that are considered for these
+ * tokens.
+ */
+export const CUSTOM_BASES: { [chainId in StarknetChainId]?: { [tokenAddress: string]: Token[] } } = {
+  [StarknetChainId.MAINNET]: {},
 }
 
 export default tokens
