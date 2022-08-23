@@ -2,13 +2,13 @@
   <div class="l0k-swap-add-liqiudit">
     <div class="l0k-swap-add-content">
       <CurrencyInputPanel :value="formattedAmounts[Field.CURRENCY_A]" :token="currencies[Field.CURRENCY_A]"
-        :selectedCurrencyBalance="currencyBalances[Field.CURRENCY_A]" @token-select="handleCurrencyASelect"
+        :currencyBalance="currencyBalances[Field.CURRENCY_A]" @token-select="handleCurrencyASelect"
         @input="onFieldAInput" />
       <div class="add-wrap">
         <AddIcon :color="'minor'" :width="'12px'" />
       </div>
       <CurrencyInputPanel :value="formattedAmounts[Field.CURRENCY_B]" :token="currencies[Field.CURRENCY_B]"
-        :selectedCurrencyBalance="currencyBalances[Field.CURRENCY_B]" @token-select="handleCurrencyBSelect"
+        :currencyBalance="currencyBalances[Field.CURRENCY_B]" @token-select="handleCurrencyBSelect"
         @input="onFieldBInput" />
       <Text class="liqiudity" :color="'description-text'" :size="'mini'">
         {{ t('add_liqiudit.liqiudity', { value: LPTotalSupply }) }}
@@ -18,7 +18,10 @@
       </Text>
       <PoolPriceBar class="pool-price-bar" v-if="tokenA && tokenB" :currencies="currencies" :noLiquidity="noLiquidity"
         :poolTokenPercentage="poolTokenPercentage" :price="price" />
-      <Button class="deposit" :disabled="!!error" :size="'large'" :type="'primary'" @click="onDeposit">
+      <Button class="deposit" :type="'primary'" :size="'large'" v-if="!account" @click="onConnect">
+        {{ t('connect') }}
+      </Button>
+      <Button class="deposit" v-else :disabled="!!error" :size="'large'" :type="'primary'" @click="onDeposit">
         {{ error ? error : t('add_liqiudit.deposit') }}
       </Button>
       <Text class="desc" :size="'mini'" :color="'description-text'">
@@ -28,7 +31,7 @@
   </div>
   <ConfirmModal :show="showConfirm" :price="price" :liquidity="liquidityMinted" :currencies="currencies"
     :parsedAmounts="parsedAmounts" :noLiquidity="noLiquidity" @dismiss="showConfirm = false" @mint="onMint" />
-  <WaittingModal :show="executeState.loading" :desc="summary" @click="onReset"/>
+  <WaittingModal :show="executeState.loading" :desc="summary" @click="onReset" />
   <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
   <ScuccessModal :show="!!txHash" :tx="txHash" @dismiss="onReset" />
 </template>
@@ -56,8 +59,9 @@ import erc20 from '../../constants/abis/erc20.json'
 import { Abi } from 'starknet'
 import { bnToUint256 } from 'starknet/dist/utils/uint256'
 import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
-import { useUserAddLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
+import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { ROUTER_ADDRESSES } from '../../constants/address'
+import useConnector from '../../hooks/useConnector'
 
 export default defineComponent({
   components: {
@@ -88,13 +92,14 @@ export default defineComponent({
 
     const showConfirm = ref(false)
     const txHash = ref<string>()
+    const { onConnect } = useConnector()
 
     const { state: { chainId, account } } = useStarknet()
     const { t } = useI18n()
     const { noLiquidity, dependentField, parsedAmounts, currencyBalances, currencies, totalSupply, poolTokenPercentage, price, error, pair, liquidityMinted } = useDerivedMintInfo(tokenA, tokenB)
     const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
     const mintState = useMintState()
-    const allowedSlippage = useUserAddLiqiuditSlippageTolerance()
+    const allowedSlippage = useUserLiqiuditSlippageTolerance()
 
     const routerAddress = computed(() => chainId.value && ROUTER_ADDRESSES[chainId.value])
     const executeContractAddresses = computed(() => {
@@ -130,7 +135,7 @@ export default defineComponent({
 
     const summary = computed(() => {
       const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts.value
-      return `Supplying ${currencyAAmount?.toSignificant(3)} ${currencyAAmount?.token.symbol} & ${currencyBAmount?.toSignificant(3)} ${currencyAAmount?.token.symbol} for ${liquidityMinted.value?.toSignificant(3)} LP`
+      return `Supplying ${currencyAAmount?.toSignificant(3)} ${currencyAAmount?.token.symbol} & ${currencyBAmount?.toSignificant(3)} ${currencyBAmount?.token.symbol} for ${liquidityMinted.value?.toSignificant(3)} LP`
     })
     const handleCurrencyASelect = (token: Token) => {
       if (selectdTokens.value.find(item => item?.address === token.address)) {
@@ -199,6 +204,7 @@ export default defineComponent({
       tokenA,
       tokenB,
       Field,
+      account,
       LPTotalSupply,
       currencies,
       formattedAmounts,
@@ -224,6 +230,7 @@ export default defineComponent({
       onDeposit,
       onMint,
       onReset,
+      onConnect
     }
   }
 })

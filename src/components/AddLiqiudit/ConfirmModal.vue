@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="confirm">
-      <Button :type="'primary'" bold @click="onConfirm">
+        <Button :type="'primary'" bold @click="onConfirm">
           {{ t('add_liqiudit.confirm') }}
         </Button>
       </div>
@@ -89,7 +89,7 @@ import DoubleLogo from '../DoubleLogo/index.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
 import { Price, TokenAmount, Token, Percent } from '../../sdk'
-import { useUserAddLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
+import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { Field } from '../../state/mint/types'
 import usePoolTokenPercentageLabel from '../../hooks/usePoolTokenPercentageLabel'
 
@@ -127,9 +127,8 @@ export default defineComponent({
     const { show, currencies, liquidity, parsedAmounts, poolTokenPercentage, price, noLiquidity } = toRefs(props)
     const { t } = useI18n()
 
-    const slippage = useUserAddLiqiuditSlippageTolerance()
+    const slippage = useUserLiqiuditSlippageTolerance()
     const poolTokenPercentageLabel = usePoolTokenPercentageLabel(poolTokenPercentage, price, noLiquidity)
-
 
     const showModal = computed({
       get: () => show.value,

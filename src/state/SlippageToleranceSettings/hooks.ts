@@ -6,7 +6,7 @@ export function useUserSwapSlippageTolerance(){
   return computed(() => store.$state.slippageTolerances.swap)
 }
 
-export function useUserAddLiqiuditSlippageTolerance(){
+export function useUserLiqiuditSlippageTolerance(){
   const store = useSlippageToleranceSettingsStore()
-  return computed(() => store.$state.slippageTolerances.addLiqiudit)
+  return computed(() => store.$state.slippageTolerances.liqiudit)
 }

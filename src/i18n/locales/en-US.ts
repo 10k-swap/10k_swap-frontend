@@ -2,6 +2,7 @@ export default {
   main_network: 'Main',
   goerli_test_network: 'Goerli',
   loading: 'loading...',
+  connect: 'Connect Wallet',
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',
@@ -95,5 +96,16 @@ export default {
     deposited: '%{token} Deposited',
     rates: 'Rates',
     confirm: 'Confirm Supply',
+  },
+  remove_liqiudit: {
+    tips: 'Tip: Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
+    approve: 'Approve',
+    price: 'Price',
+    your_position: 'Your position',
+    pool_share: 'Your pool share',
+    confirm_title: 'You will receive',
+    confirm_tips: 'Output is estimated.If the price changes by more than %{slippage}% your transaction will revert',
+    burned: '%{token} Burned',
+    confirm: 'Confirm',
   },
 }

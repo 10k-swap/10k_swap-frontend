@@ -21,7 +21,6 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ONE_BIPS } from '../../constants'
 import usePoolTokenPercentageLabel from '../../hooks/usePoolTokenPercentageLabel'
 import { Percent, Price, Token } from '../../sdk'
 import { Field } from '../../state/mint/types'

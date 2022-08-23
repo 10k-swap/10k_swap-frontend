@@ -23,7 +23,7 @@ export default defineComponent({
       type: Array as PropType<{ label: string, value: Actions }[]>,
     },
     current: {
-      type: Object as PropType<Actions>,
+      type: Number as PropType<Actions>,
     }
   },
   setup(_, { emit }) {

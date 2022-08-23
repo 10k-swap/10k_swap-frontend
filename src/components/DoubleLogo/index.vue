@@ -1,7 +1,7 @@
 <template>
   <div class="double-logo">
-    <TokenLogo :token="token0" />
-    <TokenLogo :token="token1" />
+    <TokenLogo :token="token0" :size="size" />
+    <TokenLogo :token="token1" :size="size" />
   </div>
 </template>
 
@@ -17,6 +17,10 @@ export default defineComponent({
     },
     token1: {
       type: Object as PropType<Token>
+    },
+    size: {
+      type: Number,
+      default: 24,
     }
   },
   components: {

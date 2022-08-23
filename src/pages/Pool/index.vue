@@ -4,7 +4,7 @@
       <Button class="my-pools" :size="'small'" :type="'secondary'" disabled>
         {{ t('pool.my_pools') }}
       </Button>
-      <Button :size="'small'" :type="'primary'" @click="onShowPoolModal">
+      <Button :size="'small'" :type="'primary'" @click="onNewPosition">
         {{ isMobile ? '+' : t('pool.new_position') }}
       </Button>
     </template>
@@ -49,15 +49,15 @@ export default defineComponent({
     const poolModalStore = usePoolModalStore()
     const indexs = useAllPairIndexs()
 
-    const onShowPoolModal = () => {
-      poolModalStore.togglePoolModal(true)
+    const onNewPosition = () => {
+      poolModalStore.newPosition()
     }
 
     return {
       isMobile,
       indexs,
 
-      onShowPoolModal,
+      onNewPosition,
       t
     }
   },

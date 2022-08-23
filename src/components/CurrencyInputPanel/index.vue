@@ -1,14 +1,22 @@
 <template>
-  <div class="l0k-swap-currency-input-panel">
+  <div class="l0k-swap-currency-input-panel" :class="classes">
     <div class="inputs">
       <input type="number" v-model="typedValue" placeholder="0.0">
-      <TokenSelect class="token-select" :token="token ?? null" @select="onSelect" />
+      <TokenSelector v-if="selector" class="token-select" :token="token ?? null" @select="onSelect" />
+      <div class="token" v-else>
+        <template v-if="slots.token">
+          <slot name="token"></slot>
+        </template>
+        <template v-else>
+          <TokenLogo :token="token" />
+          <Text class="symbol" bold> {{ token?.symbol }} </Text>
+        </template>
+      </div>
     </div>
     <div class="balance">
       <Text :color="'description-text'" :size="'mini'">
         {{ t('currency_input_panel.balance', {
-            balance: selectedCurrencyBalance ===
-              null ? 'loading...' : selectedCurrencyBalance?.toSignificant() ?? '-'
+            balance: currencyBalance === null ? 'loading...' : currencyBalance?.toSignificant() ?? '-'
           })
         }}
       </Text>
@@ -19,7 +27,8 @@
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Token, TokenAmount } from '../../sdk'
-import TokenSelect from '../TokenSelect/TokenSelect.vue'
+import TokenSelector from '../TokenSelector/TokenSelector.vue'
+import TokenLogo from '../TokenLogo/TokenLogo'
 import Text from '../Text/Text.vue'
 
 export default defineComponent({
@@ -28,15 +37,26 @@ export default defineComponent({
     value: {
       type: [String, Number]
     },
-    selectedCurrencyBalance: { type: Object as PropType<TokenAmount | undefined | null>, },
+    selectorDisabled: Boolean,
+    selector: {
+      default: true,
+      type: Boolean
+    },
+    size: {
+      default: 'normal',
+      type: String as PropType<'small' | 'normal'>
+    },
+    currencyBalance: { type: Object as PropType<TokenAmount | undefined | null>, },
   },
   components: {
-    TokenSelect,
+    TokenSelector,
+    TokenLogo,
     Text
   },
   emits: ['token-select', 'input'],
   setup(props, context) {
-    const { value, selectedCurrencyBalance } = toRefs(props)
+    const { value, currencyBalance, size } = toRefs(props)
+
 
     const { t } = useI18n()
 
@@ -55,8 +75,12 @@ export default defineComponent({
       t,
       onSelect,
 
+      slots: context.slots,
       typedValue,
-      selectedCurrencyBalance
+      classes: computed(() => ({
+        'l0k-swap-currency-input-panel-small': size.value === 'small'
+      })),
+      currencyBalance
     }
   },
 })
@@ -104,12 +128,35 @@ export default defineComponent({
     .token-select {
       width: 120px;
     }
+
+    .token {
+      display: flex;
+      align-items: center;
+
+      .symbol {
+        margin-left: 8px;
+      }
+    }
   }
 
   .balance {
     display: flex;
     justify-content: flex-end;
     margin-top: 8px;
+  }
+
+  &-small {
+    padding: 8px 10px;
+
+    .inputs {
+      input {
+        width: 40%;
+      }
+    }
+
+    .balance {
+      margin-top: 4px;
+    }
   }
 }
 </style>

@@ -71,6 +71,7 @@ export default defineComponent({
 
 .l0k-swap-connector {
   .connected {
+    display: flex;
     .network {
       cursor: default;
 

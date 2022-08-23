@@ -65,6 +65,7 @@ export default defineComponent({
   border-radius: 20px;
   overflow-y: scroll;
   @include no-scrollbar;
+  max-height: 90vh;
 
   @include mobile {
     width: 335px;

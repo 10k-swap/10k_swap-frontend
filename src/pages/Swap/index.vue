@@ -5,13 +5,13 @@
     </template>
     <div class="l0k-swap-swap-content">
       <CurrencyInputPanel :value="formattedAmounts[Field.INPUT]" :token="currencies[Field.INPUT]"
-        :selectedCurrencyBalance="currencyBalances[Field.INPUT]" @token-select="onInputSelect"
+        :currencyBalance="currencyBalances[Field.INPUT]" @token-select="onInputSelect"
         @input="handleTypeInput" />
       <div class="switch-wrap">
         <SwitchIcon class="switch" @click="onSwitch" />
       </div>
       <CurrencyInputPanel :value="formattedAmounts[Field.OUTPUT]" :token="currencies[Field.OUTPUT]"
-        :selectedCurrencyBalance="currencyBalances[Field.OUTPUT]" @token-select="onOutputSelect"
+        :currencyBalance="currencyBalances[Field.OUTPUT]" @token-select="onOutputSelect"
         @input="handleTypeOutput" />
       <div class="swap-info">
         <div class="loading" v-if="loadingTrade">
@@ -27,7 +27,7 @@
       </div>
       <div class="swap">
         <Button :type="'primary'" :size="'large'" v-if="!account" @click="onConnect">
-          {{ t('swap.connect') }}
+          {{ t('connect') }}
         </Button>
         <Button :type="'primary'" :size="'large'" disabled v-else-if="noTrade && userHasSpecifiedInputOutput">
           {{ t('swap.insufficient_liquidity') }}

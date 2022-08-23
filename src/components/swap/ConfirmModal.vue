@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="down">
-        <DownIcon :width="'10px'" />
+        <DownIcon :width="'10px'"  :color="'minor'"/>
       </div>
       <div class="card">
         <Text :size="'large'" bold>
