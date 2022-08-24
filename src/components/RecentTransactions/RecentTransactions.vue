@@ -1,6 +1,6 @@
 <template>
   <div class="l0k-swap-recent-transactions-wrap">
-    <template v-if="transactions.length">
+    <template v-if="sortdTransactions.length">
       <div class="l0k-swap-recent-transactions-head">
         <Text>
           {{ t('recent_transactions.title') }}
@@ -13,7 +13,8 @@
         </div>
       </div>
       <div class="l0k-swap-recent-transactions">
-        <div class="l0k-swap-recent-transaction" v-for="transaction in transactions" :key="transaction.transactionHash">
+        <div class="l0k-swap-recent-transaction" v-for="transaction in sortdTransactions"
+          :key="transaction.transactionHash">
           <div class="svgs">
             <ScuccessIcon v-if="transaction.scuccess" :color="'primary'" width="16px" />
             <LoadingIcon v-else-if="transaction.loading" :color="'minor'" width="16px" />
@@ -37,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from 'vue'
+import { computed, defineComponent, toRaw } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../Text/Text.vue'
 import { ClearIcon, ScuccessIcon, LoadingIcon, FailIcon, ShareIcon } from '../Svg'
@@ -60,11 +61,12 @@ export default defineComponent({
     const { t } = useI18n()
     const { transactions, clearTransactions } = useStarknetTransactionManager()
     const isMobile = useIsMobile()
+    const sortdTransactions = computed(() => toRaw(transactions.value).reverse())
 
     return {
       chainId,
       isMobile,
-      transactions,
+      sortdTransactions,
 
       t,
       getScanLink,
