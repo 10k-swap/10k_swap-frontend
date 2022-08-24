@@ -50,7 +50,9 @@ export const StarknetTransactionManagerProvider = defineComponent({
     const state = reactive<{ transactions: Transaction[] }>({ transactions: [] })
 
     const addTransaction = (transaction: TransactionSubmitted) => {
-      state.transactions = state.transactions.concat([{ loading: true, scuccess: false, fail: false, ...transaction }])
+      state.transactions = state.transactions.concat([
+        { loading: true, scuccess: false, fail: false, ...transaction, createAt: new Date().getTime() },
+      ])
       if (account.value) {
         TransactionStorageManager.set(toRaw(state.transactions), account.value)
       }
@@ -89,6 +91,7 @@ export const StarknetTransactionManagerProvider = defineComponent({
           scuccess: isSuccess(status),
           fail: isFail(status),
           loading: isLoading(status),
+          createAt: oldTransaction.createAt,
           transaction: transactionResponse.transaction,
           metadata: oldTransaction.metadata,
         }

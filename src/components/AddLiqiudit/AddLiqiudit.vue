@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, PropType, ref, toRefs } from 'vue'
+import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import { Token } from '../../sdk'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { Field } from '../../state/mint/types'
@@ -204,7 +204,6 @@ export default defineComponent({
     const onMint = async () => {
       executeReset()
       showConfirm.value = false
-      await nextTick()
       attemptingTxn.value = true
       const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts.value
       if (!parsedAmountA || !parsedAmountB || !routerAddress.value || !account.value) {

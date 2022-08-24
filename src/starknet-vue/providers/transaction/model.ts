@@ -22,6 +22,7 @@ export interface TransactionReceived {
 }
 
 export type Transaction = (TransactionSubmitted | TransactionReceived) & {
+  createAt: number
   loading: boolean
   scuccess: boolean
   fail: boolean

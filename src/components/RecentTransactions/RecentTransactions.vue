@@ -62,7 +62,7 @@ export default defineComponent({
     const { t } = useI18n()
     const { transactions, clearTransactions } = useStarknetTransactionManager()
     const isMobile = useIsMobile()
-    const sortdTransactions = computed(() => toRaw(transactions.value).reverse())
+    const sortdTransactions = computed(() => toRaw(transactions.value).sort((a, b) => b.createAt - a.createAt))
 
     return {
       chainId,

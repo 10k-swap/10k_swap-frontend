@@ -26,9 +26,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="scss" scoped>
-.a {
-  text-align: center;
-}
-</style>

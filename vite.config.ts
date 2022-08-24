@@ -5,6 +5,10 @@ import eslintPlugin from 'vite-plugin-eslint'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
+  build: {
+    target: 'es2015',
+  },
   server: {
     port: 3031,
     host: true,

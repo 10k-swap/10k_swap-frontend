@@ -29,6 +29,7 @@
   },
   "ignorePatterns": [
     "src/**/*.scss",
-    "src/**/*.png"
+    "src/**/*.png",
+    "node_modules/**/*"
   ]
 }

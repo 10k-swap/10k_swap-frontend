@@ -97,7 +97,10 @@ export function useTradeExactIn(
     }
     if (currencyAmountIn.value && currencyOut.value && allowedPairs.value[0].length > 0) {
       return (
-        Trade.bestTradeExactIn(allowedPairs.value[0], currencyAmountIn.value, currencyOut.value, { maxHops: 3, maxNumResults: 1 })[0] ?? undefined
+        Trade.bestTradeExactIn(allowedPairs.value[0], currencyAmountIn.value, currencyOut.value, {
+          maxHops: 3,
+          maxNumResults: 1,
+        })[0] ?? undefined
       )
     }
     return undefined
@@ -120,7 +123,10 @@ export function useTradeExactOut(
     }
     if (currencyIn.value && currencyAmountOut.value && allowedPairs.value[0].length > 0) {
       return (
-        Trade.bestTradeExactOut(allowedPairs.value[0], currencyIn.value, currencyAmountOut.value, { maxHops: 3, maxNumResults: 1 })[0] ?? undefined
+        Trade.bestTradeExactOut(allowedPairs.value[0], currencyIn.value, currencyAmountOut.value, {
+          maxHops: 3,
+          maxNumResults: 1,
+        })[0] ?? undefined
       )
     }
     return undefined

@@ -2,11 +2,11 @@
   <div class="pool-price-bar">
     <div class="column">
       <Text :size="'small'">{{ price?.toSignificant(6) ?? '-' }}</Text>
-      <Text :size="'small'" :color="'description-text'">{{ label1 }}</Text>
+      <Text :size="'small'" :color="'description-text'">{{ labels[0] }}</Text>
     </div>
     <div class="column">
       <Text :size="'small'">{{ price?.invert()?.toSignificant(6) ?? '-' }}</Text>
-      <Text :size="'small'" :color="'description-text'">{{ label2 }}</Text>
+      <Text :size="'small'" :color="'description-text'">{{ labels[1] }}</Text>
     </div>
     <div class="column">
       <Text :size="'small'"> {{ poolTokenPercentageLabel }}%</Text>
@@ -45,18 +45,18 @@ export default defineComponent({
     const { t } = useI18n()
     const { currencies, noLiquidity, price, poolTokenPercentage } = toRefs(props)
 
-    const label1 = computed(() => {
-      return `${currencies.value?.[Field.CURRENCY_B]?.symbol} per ${currencies.value?.[Field.CURRENCY_A]?.symbol}`
+    const labels = computed(() => {
+      return [
+        `${currencies.value?.[Field.CURRENCY_B]?.symbol} per ${currencies.value?.[Field.CURRENCY_A]?.symbol}`,
+        `${currencies.value?.[Field.CURRENCY_A]?.symbol} per ${currencies.value?.[Field.CURRENCY_B]?.symbol}`,
+      ]
     })
-    const label2 = computed(() => {
-      return `${currencies.value?.[Field.CURRENCY_A]?.symbol} per ${currencies.value?.[Field.CURRENCY_B]?.symbol}`
-    })
+
     const poolTokenPercentageLabel = usePoolTokenPercentageLabel(poolTokenPercentage, price, noLiquidity)
 
     return {
       Field,
-      label1,
-      label2,
+      labels,
       poolTokenPercentageLabel,
 
       t,

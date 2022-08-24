@@ -6,7 +6,10 @@ import { ConnectorNotFoundError } from '../../errors'
 
 export function useStarknet(): StarknetMethods & { state: ToRefs<StarknetState> } {
   const state = inject<ToRefs<StarknetState>>(StarknetStateSymbol)
-  const methods = inject<StarknetMethods>(StarknetMethodsSymbol) ?? { connect: () => Promise.reject(new ConnectorNotFoundError()), disconnect: noop }
+  const methods = inject<StarknetMethods>(StarknetMethodsSymbol) ?? {
+    connect: () => Promise.reject(new ConnectorNotFoundError()),
+    disconnect: noop,
+  }
 
   if (state) {
     return {
