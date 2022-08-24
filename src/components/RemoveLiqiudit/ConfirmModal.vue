@@ -91,7 +91,7 @@ export default defineComponent({
       type: Array as PropType<string[]>,
     },
     pair: {
-      type: Object as PropType<Pair>,
+      type: Object as PropType<Pair | null | undefined>,
     }
   },
   components: {

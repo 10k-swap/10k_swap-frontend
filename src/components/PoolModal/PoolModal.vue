@@ -12,18 +12,18 @@
       </ModalHeader>
     </template>
     <div class="l0k-swap-pair-modal">
-      <div v-show="currentTab === Actions.MINT">
+      <div v-if="currentTab === Actions.MINT">
         <AddLiqiudit :token0="tokens[0]" :token1="tokens[1]" />
       </div>
-      <div v-show="currentTab === Actions.BURN">
-        <RemoveLiqiudit :pair="removeLiqiuditPair" />
+      <div v-if="currentTab === Actions.BURN">
+        <RemoveLiqiudit :pair="removeLiqiuditPair ?? undefined" />
       </div>
     </div>
   </Modal>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, ComputedRef, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import ModalHeader from '../Modal/ModalHeader.vue'
@@ -34,6 +34,7 @@ import RemoveLiqiudit from '../RemoveLiqiudit/RemoveLiqiudit.vue'
 import { BackIcon, SettingIcon } from '../Svg'
 import { useModalStore, useSlippageToleranceSettingsStore, usePoolModalStore } from '../../state'
 import { Actions } from '../../state/poolModal'
+import { Pair } from '../../sdk'
 
 export default defineComponent({
   components: {
@@ -54,7 +55,7 @@ export default defineComponent({
 
     const addLiqiuditPair = computed(() => poolModalStore.addLiqiuditPair)
     const tokens = computed(() => [addLiqiuditPair.value?.token0, addLiqiuditPair.value?.token1])
-    const removeLiqiuditPair = computed(() => poolModalStore.removeLiqiuditPair)
+    const removeLiqiuditPair: ComputedRef<Pair | undefined> = computed(() => poolModalStore.removeLiqiuditPair as Pair)
 
     const showModal = computed({
       get: () => poolModalStore.show,

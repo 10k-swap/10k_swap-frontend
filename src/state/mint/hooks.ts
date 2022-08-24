@@ -123,7 +123,11 @@ export function useDerivedMintInfo(
     // first mint
     if (noLiquidity.value && tokenAmountA && tokenAmountB) {
       const pair = new Pair(new TokenAmount(tokenAmountA.token, '0'), new TokenAmount(tokenAmountB.token, '0'))
-      return pair.getLiquidityMinted(new TokenAmount(pair.liquidityToken, '0'), tokenAmountA, tokenAmountB)
+      try {
+        return pair.getLiquidityMinted(new TokenAmount(pair.liquidityToken, '0'), tokenAmountA, tokenAmountB)
+      } catch (error) {
+        return undefined
+      }
     }
     return undefined
   })
@@ -136,7 +140,7 @@ export function useDerivedMintInfo(
   })
 
   const error = ref<string | undefined>()
-  watch([account, pairState, currencies, parsedAmounts], () => {
+  watch([account, pairState, currencies, parsedAmounts, liquidityMinted], () => {
     error.value = undefined
 
     if (!account.value) {
@@ -163,6 +167,10 @@ export function useDerivedMintInfo(
 
     if (currencyBAmount && currencyBalances.value?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
       error.value = `Insufficient ${currencies.value[Field.CURRENCY_B]?.symbol} balance`
+    }
+
+    if (!liquidityMinted.value) {
+      error.value = error.value ?? 'Insufficient input amount'
     }
   })
 

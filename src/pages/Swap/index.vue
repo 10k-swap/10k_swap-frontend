@@ -26,13 +26,13 @@
         </div>
       </div>
       <div class="swap">
-        <Button :type="'primary'" :size="'large'" v-if="!account" @click="onConnect">
+        <Button :type="'primary'" :size="'large'" bold v-if="!account" @click="onConnect">
           {{ t('connect') }}
         </Button>
-        <Button :type="'primary'" :size="'large'" disabled v-else-if="noTrade && userHasSpecifiedInputOutput">
+        <Button :type="'primary'" :size="'large'" bold disabled v-else-if="noTrade && userHasSpecifiedInputOutput">
           {{ t('swap.insufficient_liquidity') }}
         </Button>
-        <Button :type="'primary'" :size="'large'" v-else @click="onSwapClick"
+        <Button :type="'primary'" :size="'large'" bold v-else @click="onSwapClick"
           :disabled="!isValid || loadingTrade || !v2Trade || (tradeToConfirm && !!swapCallbackError)">
           {{ !isValid ? swapInputError : t('swap.swap') }}
         </Button>

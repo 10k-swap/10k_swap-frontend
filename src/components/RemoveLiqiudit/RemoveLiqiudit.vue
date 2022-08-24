@@ -70,16 +70,16 @@
         </Text>
       </div>
     </div>
-    <Button class="approve" :type="'primary'" :size="'large'" v-if="!account" @click="onConnect">
+    <Button class="approve" :type="'primary'" :size="'large'" bold v-if="!account" @click="onConnect">
       {{ t('connect') }}
     </Button>
-    <Button class="approve" v-else :disabled="!!error" :size="'large'" :type="'primary'" @click="onApprove">
+    <Button class="approve" v-else :disabled="!!error" :size="'large'" bold :type="'primary'" @click="onApprove">
       {{ error ? error : t('remove_liqiudit.approve') }}
     </Button>
   </div>
   <ConfirmModal :show="showConfirm" :parsedAmounts="parsedAmounts" :prices="prices" :pair="pair"
     @dismiss="showConfirm = false" @burn="onBurn" />
-  <WaittingModal :show="executeState.loading" :desc="summary" @click="onReset" />
+  <WaittingModal :show="executeState.loading" :desc="summary" @dismiss="onReset" />
   <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
   <ScuccessModal :show="!!txHash" :tx="txHash" @dismiss="onReset" />
 </template>
@@ -99,7 +99,7 @@ import CurrencyInputPanel from '../CurrencyInputPanel/index.vue'
 import { useTokenBalances } from '../../hooks/Balances'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import useConnector from '../../hooks/useConnector'
-import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS } from '../../constants'
+import { ONE_BIPS, DEFAULT_DEADLINE_FROM_NOW } from '../../constants'
 import { ROUTER_ADDRESSES } from '../../constants/address'
 import { useStarknetExecute } from '../../starknet-vue/hooks/execute'
 import l0k_router_abi from '../../constants/abis/l0k_router_abi.json'
@@ -114,7 +114,9 @@ import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceS
 
 export default defineComponent({
   props: {
-    pair: Object as PropType<Pair>
+    pair: {
+      type: Object as PropType<Pair | null | undefined>
+    }
   },
   components: {
     Text,
@@ -177,7 +179,10 @@ export default defineComponent({
 
     // todo:wait check
     const prices = computed(() => {
-      return [`1 ${pair.value?.token0.symbol} = ${pair.value?.token0Price.toSignificant(6)} ${pair.value?.token1?.symbol}`, `1 ${pair.value?.token1.symbol} = ${pair.value?.token1Price.toSignificant(6)} ${pair.value?.token0?.symbol}`]
+      return [
+        `1 ${pair.value?.token0.symbol} = ${pair.value?.token0Price.toSignificant(6)} ${pair.value?.token1?.symbol}`,
+        `1 ${pair.value?.token1.symbol} = ${pair.value?.token1Price.toSignificant(6)} ${pair.value?.token0?.symbol}`
+      ]
     })
 
     const onReset = () => {
@@ -194,6 +199,7 @@ export default defineComponent({
     }
 
     const onBurn = async () => {
+      showConfirm.value = false
       executeReset()
       const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB, [Field.LIQUIDITY]: liquidityAmount } = parsedAmounts.value
       if (!parsedAmountA || !parsedAmountB || !liquidityAmount || !routerAddress.value || !account.value) {
@@ -215,7 +221,7 @@ export default defineComponent({
             BMin.low,
             BMin.high,
             account.value,
-            getDeadlineFromNow(INITIAL_ALLOWED_SLIPPAGE),
+            getDeadlineFromNow(DEFAULT_DEADLINE_FROM_NOW),
           ]
         ],
         metadata: {

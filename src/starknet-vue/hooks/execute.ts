@@ -81,7 +81,7 @@ export function useStarknetExecute<T extends unknown[]>(
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err)
         state.error = message
-        console.error(message)
+        console.log(message)
       } finally {
         state.loading = false
       }

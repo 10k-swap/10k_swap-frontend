@@ -1,53 +1,54 @@
 <template>
-  <Page class="l0k-swap-pool-wrapper" :title="t('pool.title')">
-    <template v-slot:head-right>
-      <Button class="my-pools" :size="'small'" :type="'secondary'" disabled>
-        {{ t('pool.my_pools') }}
-      </Button>
+  <div class="l0k-swap-pool-wrapper">
+    <div class="head">
+      <Text bold>
+        {{ t('pool.title') }}
+      </Text>
+      <div class="tabs">
+        <Button class="pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'pools'"
+          @click="currentNav = 'pools'">
+          {{ t('pool.pools') }}
+        </Button>
+        <Button class="my-pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'my-pools'"
+          @click="currentNav = 'my-pools'">
+          {{ t('pool.my_pools') }}
+        </Button>
+      </div>
       <Button :size="'small'" :type="'primary'" @click="onNewPosition">
         {{ isMobile ? '+' : t('pool.new_position') }}
       </Button>
-    </template>
-    <div class="pools">
-      <template v-if="indexs === null">
-        loading...
-      </template>
-      <template v-else-if="!indexs">
-        No Items
-      </template>
-      <template v-for="item in indexs" :key="item">
-        <PoolItem :index="item" />
-      </template>
     </div>
-  </Page>
+    <Pools v-if="currentNav === 'pools'" />
+    <MyPools v-else />
+  </div>
   <PoolModal />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Page from '../../components/Page/Page.vue'
 import Button from '../../components/Button/Button'
 import Text from '../../components/Text/Text.vue'
 import PoolModal from '../../components/PoolModal/PoolModal.vue'
-import PoolItem from './PoolItem.vue'
+import MyPools from './MyPools.vue'
+import Pools from './Pools.vue'
 import { usePoolModalStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
-import { useAllPairIndexs } from '../../data/useAllPairIndexs'
 
 export default defineComponent({
   components: {
-    Page,
     Text,
     Button,
     PoolModal,
-    PoolItem
+    Pools,
+    MyPools
   },
   setup() {
     const { t } = useI18n()
     const isMobile = useIsMobile()
     const poolModalStore = usePoolModalStore()
-    const indexs = useAllPairIndexs()
+
+    const currentNav = ref<'pools' | 'my-pools'>('pools')
 
     const onNewPosition = () => {
       poolModalStore.newPosition()
@@ -55,7 +56,7 @@ export default defineComponent({
 
     return {
       isMobile,
-      indexs,
+      currentNav,
 
       onNewPosition,
       t
@@ -65,11 +66,36 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.l0k-swap-pool-wrapper {
-  margin-top: 28px;
+@import '../../styles/index.scss';
 
-  .my-pools {
-    margin-right: 8px;
+.l0k-swap-pool-wrapper {
+  width: 640px;
+  margin: 28px auto 0 auto;
+  background: $color-white;
+  border-radius: 20px;
+  overflow: hidden;
+
+  @include mobile {
+    width: 351px;
   }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 20px;
+
+    .tabs {
+      button:disabled {
+        cursor: default;
+      }
+
+      .my-pools {
+        margin-left: 8px;
+      }
+    }
+  }
+
 }
 </style>

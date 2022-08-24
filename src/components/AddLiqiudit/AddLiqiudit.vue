@@ -13,15 +13,15 @@
       <Text class="liqiudity" :color="'description-text'" :size="'mini'">
         {{ t('add_liqiudit.liqiudity', { value: LPTotalSupply }) }}
       </Text>
-      <Text :color="'description-text'" :size="'mini'">
+      <Text :color="'description-text'" :size="'mini'" v-if="noLiquidity">
         {{ t('add_liqiudit.no_liqiudity_tips') }}
       </Text>
       <PoolPriceBar class="pool-price-bar" v-if="tokenA && tokenB" :currencies="currencies" :noLiquidity="noLiquidity"
         :poolTokenPercentage="poolTokenPercentage" :price="price" />
-      <Button class="deposit" :type="'primary'" :size="'large'" v-if="!account" @click="onConnect">
+      <Button class="deposit" :type="'primary'" :size="'large'" v-if="!account" bold @click="onConnect">
         {{ t('connect') }}
       </Button>
-      <Button class="deposit" v-else :disabled="!!error" :size="'large'" :type="'primary'" @click="onDeposit">
+      <Button class="deposit" v-else :disabled="!!error" :size="'large'" :type="'primary'" bold @click="onDeposit">
         {{ error ? error : t('add_liqiudit.deposit') }}
       </Button>
       <Text class="desc" :size="'mini'" :color="'description-text'">
@@ -31,13 +31,13 @@
   </div>
   <ConfirmModal :show="showConfirm" :price="price" :liquidity="liquidityMinted" :currencies="currencies"
     :parsedAmounts="parsedAmounts" :noLiquidity="noLiquidity" @dismiss="showConfirm = false" @mint="onMint" />
-  <WaittingModal :show="executeState.loading" :desc="summary" @click="onReset" />
-  <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
   <ScuccessModal :show="!!txHash" :tx="txHash" @dismiss="onReset" />
+  <WaittingModal :show="attemptingTxn" :desc="summary" @dismiss="onReset" />
+  <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
+import { computed, defineComponent, nextTick, PropType, ref, toRefs } from 'vue'
 import { Token } from '../../sdk'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { Field } from '../../state/mint/types'
@@ -53,7 +53,7 @@ import { AddIcon } from '../Svg'
 import { useI18n } from 'vue-i18n'
 import { useStarknetExecute } from '../../starknet-vue/hooks/execute'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
-import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { DEFAULT_DEADLINE_FROM_NOW } from '../../constants'
 import l0k_router_abi from '../../constants/abis/l0k_router_abi.json'
 import erc20 from '../../constants/abis/erc20.json'
 import { Abi } from 'starknet'
@@ -91,6 +91,7 @@ export default defineComponent({
     const tokenB = computed(() => selectdTokens.value[1] ? selectdTokens.value[1] : token1.value)
 
     const showConfirm = ref(false)
+    const attemptingTxn = ref(false)
     const txHash = ref<string>()
     const { onConnect } = useConnector()
 
@@ -158,11 +159,15 @@ export default defineComponent({
         onFieldBInput('')
       }
       showConfirm.value = false
+      attemptingTxn.value = false
       txHash.value = undefined
       executeReset()
     }
     const onMint = async () => {
       executeReset()
+      showConfirm.value = false
+      await nextTick()
+      attemptingTxn.value = true
       const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts.value
       if (!parsedAmountA || !parsedAmountB || !routerAddress.value || !account.value) {
         return
@@ -188,13 +193,14 @@ export default defineComponent({
             BMin.low,
             BMin.high,
             account.value,
-            getDeadlineFromNow(INITIAL_ALLOWED_SLIPPAGE),
+            getDeadlineFromNow(DEFAULT_DEADLINE_FROM_NOW),
           ]
         ],
         metadata: {
           message: summary.value
         }
       })
+      attemptingTxn.value = false
       if (response) {
         txHash.value = response.transaction_hash
       }
@@ -218,7 +224,7 @@ export default defineComponent({
       showConfirm,
       parsedAmounts,
       summary,
-      executeState,
+      attemptingTxn,
       txHash,
       showRejectedModal,
 

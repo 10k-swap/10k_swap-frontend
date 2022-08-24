@@ -77,7 +77,12 @@ export default {
   pool: {
     title: 'Pools Overview',
     my_pools: 'My pools',
+    pools: 'Pools',
     new_position: '+ New position',
+    name: 'Name',
+    APR: 'APR',
+    liquidit: 'Liquidit',
+    pool_share: 'Pool Share',
   },
   poolModal: {
     addLiqiudit: 'Add liqiudit',

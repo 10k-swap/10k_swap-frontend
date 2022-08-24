@@ -93,6 +93,9 @@ export const StarknetTransactionManagerProvider = defineComponent({
           metadata: oldTransaction.metadata,
         }
         state.transactions[index] = newTransaction
+        if (account.value) {
+          TransactionStorageManager.set(toRaw(state.transactions), account.value)
+        }
       } catch (err) {
         // TODO(fra): somehow should track the error
         console.error(err)

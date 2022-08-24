@@ -7,7 +7,7 @@ export default defineComponent({
   props: {
     alt: String,
     token: {
-      type: Object as PropType<Token>,
+      type: Object as PropType<Token | null | undefined>,
     },
     size: {
       type: Number,
