@@ -1,0 +1,34 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/vue3-essential",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "eslint-config-prettier"
+  ],
+  "overrides": [],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["vue", "prettier", "@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/ban-types": 0,
+    "vue/no-reserved-component-names": 0,
+    "vue/no-dupe-keys": 0,
+    "vue/multi-word-component-names": 0,
+    "vue/no-deprecated-router-link-tag-prop": 0
+  },
+  "ignorePatterns": [
+    "src/**/*.scss",
+    "src/**/*.png"
+  ]
+}

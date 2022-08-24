@@ -21,11 +21,11 @@ import Text from '../Text/Text.vue'
 
 export default defineComponent({
   props: {
-    title: String
+    title: String,
   },
   components: {
     ColseIcon,
-    Text
+    Text,
   },
   emits: ['dismiss'],
   setup(props, { slots, emit }) {
@@ -39,7 +39,7 @@ export default defineComponent({
       slots,
       title,
 
-      onClose
+      onClose,
     }
   },
 })

@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" :title="t('add_liqiudit.confirm_title')" />
+      <ModalHeader @dismiss="() => (showModal = false)" :title="t('add_liqiudit.confirm_title')" />
     </template>
     <div class="l0k-swap-confirm-mint-modal">
       <div class="liquidity">
@@ -11,8 +11,9 @@
         <DoubleLogo class="logos" :token0="currencies?.[Field.CURRENCY_A]" :token1="currencies?.[Field.CURRENCY_B]" />
       </div>
       <Text :color="'secondary-text'">
-        {{ t('add_liqiudit.pool_token', {
-            tokens: `${currencies?.[Field.CURRENCY_A]?.symbol}/${currencies?.[Field.CURRENCY_B]?.symbol}`
+        {{
+          t('add_liqiudit.pool_token', {
+            tokens: `${currencies?.[Field.CURRENCY_A]?.symbol}/${currencies?.[Field.CURRENCY_B]?.symbol}`,
           })
         }}
       </Text>
@@ -49,12 +50,14 @@
           <div class="value">
             <div class="rates">
               <Text :size="'small'" :color="'description-text'">
-                {{ `1 ${currencies?.[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(6)}
+                {{
+                  `1 ${currencies?.[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(6)}
                                 ${currencies?.[Field.CURRENCY_B]?.symbol}`
                 }}
               </Text>
               <Text :size="'small'" :color="'description-text'">
-                {{ `1 ${currencies?.[Field.CURRENCY_B]?.symbol} = ${price?.invert()?.toSignificant(6)}
+                {{
+                  `1 ${currencies?.[Field.CURRENCY_B]?.symbol} = ${price?.invert()?.toSignificant(6)}
                                 ${currencies?.[Field.CURRENCY_A]?.symbol}`
                 }}
               </Text>
@@ -97,7 +100,7 @@ export default defineComponent({
   props: {
     show: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     price: {
       type: Object as PropType<Price>,
@@ -112,7 +115,7 @@ export default defineComponent({
       type: Object as PropType<Percent>,
     },
     liquidity: Object as PropType<TokenAmount>,
-    noLiquidity: Boolean
+    noLiquidity: Boolean,
   },
   components: {
     Modal,
@@ -120,7 +123,7 @@ export default defineComponent({
     Text,
     Button,
     TokenLogo,
-    DoubleLogo
+    DoubleLogo,
   },
   emits: ['dismiss', 'mint'],
   setup(props, { emit }) {
@@ -136,7 +139,7 @@ export default defineComponent({
         if (!newValue) {
           emit('dismiss')
         }
-      }
+      },
     })
 
     const onConfirm = () => {
@@ -153,17 +156,16 @@ export default defineComponent({
       poolTokenPercentageLabel,
 
       t,
-      onConfirm
+      onConfirm,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import '../../styles/index.scss';
 
 .l0k-swap-confirm-mint-modal {
-
   .liquidity {
     display: flex;
     align-items: center;

@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" />
+      <ModalHeader @dismiss="() => (showModal = false)" />
     </template>
     <div class="l0k-swap-connecting-modal">
       <div class="content">
@@ -33,7 +33,7 @@ export default defineComponent({
     Modal,
     ModalHeader,
     LoadingIcon,
-    Text
+    Text,
   },
   setup() {
     const { t } = useI18n()
@@ -43,7 +43,7 @@ export default defineComponent({
       get: () => store.showConnectingModal,
       set(newValue) {
         store.toggleConnectingModal(newValue)
-      }
+      },
     })
 
     return {
@@ -51,7 +51,7 @@ export default defineComponent({
 
       t,
     }
-  }
+  },
 })
 </script>
 

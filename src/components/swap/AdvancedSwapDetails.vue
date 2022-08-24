@@ -6,8 +6,9 @@
       </Text>
       <Text class="value" :size="'mini'" :color="'description-text'">
         {{
-            isExactIn ? `${trade?.outputAmount.toSignificant()} ${trade?.outputAmount.token.symbol}` :
-              `${trade?.inputAmount.toSignificant()} ${trade?.inputAmount.token.symbol}`
+          isExactIn
+            ? `${trade?.outputAmount.toSignificant()} ${trade?.outputAmount.token.symbol}`
+            : `${trade?.inputAmount.toSignificant()} ${trade?.inputAmount.token.symbol}`
         }}
       </Text>
     </div>
@@ -17,21 +18,21 @@
       </Text>
       <Text class="value" :size="'mini'" :color="'description-text'">
         {{ trade ? (trade?.priceImpact.lessThan(ONE_BIPS) ? '<0.01' : `${trade?.priceImpact.toFixed(2)}`) : '-' }}%
-          </Text>
+      </Text>
     </div>
     <div class="cell">
       <Text class="label" :size="'mini'">
-        {{ isExactIn ? t('swap.minimun_received', { slippage: allowedSlippage / 100 }) :
-            t('swap.maximum_received', { slippage: allowedSlippage / 100 })
+        {{
+          isExactIn
+            ? t('swap.minimun_received', { slippage: allowedSlippage / 100 })
+            : t('swap.maximum_received', { slippage: allowedSlippage / 100 })
         }}
       </Text>
       <Text class="value" :size="'mini'" :color="'description-text'">
         {{
-            isExactIn
-              ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade?.outputAmount.currency.symbol}` ??
-              '-'
-              : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade?.inputAmount.currency.symbol}` ??
-              '-'
+          isExactIn
+            ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade?.outputAmount.currency.symbol}` ?? '-'
+            : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade?.inputAmount.currency.symbol}` ?? '-'
         }}
       </Text>
     </div>
@@ -52,7 +53,7 @@ export default defineComponent({
   props: {
     trade: {
       type: Object as PropType<Trade>,
-    }
+    },
   },
   components: { Text },
   setup(props) {
@@ -74,12 +75,11 @@ export default defineComponent({
       Field,
       ONE_BIPS,
 
-      t
-    };
-  }
+      t,
+    }
+  },
 })
 </script>
-
 
 <style lang="scss">
 .advanced-swap-details {

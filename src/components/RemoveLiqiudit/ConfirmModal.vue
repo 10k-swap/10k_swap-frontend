@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" :title="t('remove_liqiudit.confirm_title')" />
+      <ModalHeader @dismiss="() => (showModal = false)" :title="t('remove_liqiudit.confirm_title')" />
     </template>
     <div class="l0k-swap-confirm-burn-modal">
       <div class="output">
@@ -82,7 +82,7 @@ export default defineComponent({
   props: {
     show: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     parsedAmounts: {
       type: Object as PropType<{ [field in Field]?: TokenAmount }>,
@@ -92,7 +92,7 @@ export default defineComponent({
     },
     pair: {
       type: Object as PropType<Pair | null | undefined>,
-    }
+    },
   },
   components: {
     Modal,
@@ -101,7 +101,7 @@ export default defineComponent({
     Button,
     TokenLogo,
     DoubleLogo,
-    AddIcon
+    AddIcon,
   },
   emits: ['dismiss', 'burn'],
   setup(props, { emit }) {
@@ -110,14 +110,13 @@ export default defineComponent({
 
     const slippage = useUserLiqiuditSlippageTolerance()
 
-
     const showModal = computed({
       get: () => show.value,
       set(newValue) {
         if (!newValue) {
           emit('dismiss')
         }
-      }
+      },
     })
 
     const onConfirm = () => {
@@ -131,17 +130,16 @@ export default defineComponent({
       parsedAmounts,
 
       t,
-      onConfirm
+      onConfirm,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import '../../styles/index.scss';
 
 .l0k-swap-confirm-burn-modal {
-
   .output {
     display: flex;
     align-items: center;

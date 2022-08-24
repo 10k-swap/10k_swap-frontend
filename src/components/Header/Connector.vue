@@ -39,13 +39,15 @@ import useIsMobile from '../../hooks/useIsMobile'
 export default defineComponent({
   components: {
     Button,
-    StarknetIcon
+    StarknetIcon,
   },
   setup() {
     const store = useModalStore()
     const isMobile = useIsMobile()
 
-    const { state: { account, library } } = useStarknet()
+    const {
+      state: { account, library },
+    } = useStarknet()
     const { t } = useI18n()
     const { onConnect } = useConnector()
 
@@ -60,7 +62,7 @@ export default defineComponent({
 
       t,
       onConnect,
-      shortenAddress
+      shortenAddress,
     }
   },
 })

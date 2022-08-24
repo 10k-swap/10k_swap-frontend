@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" :title="t('account_modal.account')" />
+      <ModalHeader @dismiss="() => (showModal = false)" :title="t('account_modal.account')" />
     </template>
     <div class="l0k-swap-account-modal-card">
       <div class="l0k-swap-account-modal-card-top">
@@ -52,12 +52,15 @@ export default defineComponent({
     Text,
     CopyIcon,
     UserIcon,
-    RecentTransactions
+    RecentTransactions,
   },
   setup() {
     const { t } = useI18n()
     const store = useModalStore()
-    const { state: { account }, disconnect } = useStarknet()
+    const {
+      state: { account },
+      disconnect,
+    } = useStarknet()
     const wallet = useConnectorWallet()
     const isMobile = useIsMobile()
 
@@ -67,7 +70,7 @@ export default defineComponent({
       get: () => store.showAccountModal,
       set(newValue) {
         store.toggleAccountModal(newValue)
-      }
+      },
     })
 
     onMounted(() => {
@@ -75,7 +78,7 @@ export default defineComponent({
 
       clipboard.on('success', () => {
         copySuccess.value = true
-        setTimeout(() => copySuccess.value = false, 2000)
+        setTimeout(() => (copySuccess.value = false), 2000)
       })
     })
 
@@ -95,7 +98,7 @@ export default defineComponent({
       shortenAddress,
       onDisconnect,
     }
-  }
+  },
 })
 </script>
 

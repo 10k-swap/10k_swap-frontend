@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" />
+      <ModalHeader @dismiss="() => (showModal = false)" />
     </template>
     <div class="l0k-swap-transaction-waitting-modal">
       <WaittingIcon width="64px" />
@@ -30,18 +30,18 @@ export default defineComponent({
   props: {
     show: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     desc: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   components: {
     Modal,
     ModalHeader,
     Text,
-    WaittingIcon
+    WaittingIcon,
   },
   emits: ['dismiss'],
   setup(props, { emit }) {
@@ -54,7 +54,7 @@ export default defineComponent({
         if (!newValue) {
           emit('dismiss')
         }
-      }
+      },
     })
 
     return {
@@ -62,11 +62,11 @@ export default defineComponent({
 
       t,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import '../../styles/index.scss';
 
 .l0k-swap-transaction-waitting-modal {
@@ -77,7 +77,7 @@ export default defineComponent({
   .label {
     margin-top: 16px;
   }
-  .desc{
+  .desc {
     margin-top: 40px;
     margin-bottom: 5px;
   }

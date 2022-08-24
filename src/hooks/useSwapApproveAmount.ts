@@ -1,4 +1,3 @@
-import { bnToUint256 } from 'starknet/dist/utils/uint256'
 import { Ref, computed, ComputedRef } from 'vue'
 import JSBI from 'jsbi'
 import { Percent, Trade } from '../sdk'

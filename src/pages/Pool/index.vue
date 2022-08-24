@@ -5,12 +5,10 @@
         {{ t('pool.title') }}
       </Text>
       <div class="tabs">
-        <Button class="pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'pools'"
-          @click="currentNav = 'pools'">
+        <Button class="pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'pools'" @click="currentNav = 'pools'">
           {{ t('pool.pools') }}
         </Button>
-        <Button class="my-pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'my-pools'"
-          @click="currentNav = 'my-pools'">
+        <Button class="my-pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'my-pools'" @click="currentNav = 'my-pools'">
           {{ t('pool.my_pools') }}
         </Button>
       </div>
@@ -41,7 +39,7 @@ export default defineComponent({
     Button,
     PoolModal,
     Pools,
-    MyPools
+    MyPools,
   },
   setup() {
     const { t } = useI18n()
@@ -59,7 +57,7 @@ export default defineComponent({
       currentNav,
 
       onNewPosition,
-      t
+      t,
     }
   },
 })
@@ -96,6 +94,5 @@ export default defineComponent({
       }
     }
   }
-
 }
 </style>

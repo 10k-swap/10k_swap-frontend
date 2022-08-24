@@ -29,10 +29,7 @@ const INIT_STATE = {
   error: undefined,
 }
 
-export function useStarknetInvoke<T extends unknown[]>(
-  contract: ComputedRef<Contract | undefined>,
-  method: string
-): UseStarknetInvoke<T> {
+export function useStarknetInvoke<T extends unknown[]>(contract: ComputedRef<Contract | undefined>, method: string): UseStarknetInvoke<T> {
   const { addTransaction } = useStarknetTransactionManager()
   const state = reactive<State>(INIT_STATE)
 

@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" :title="t('swap.confirm_swap')" />
+      <ModalHeader @dismiss="() => (showModal = false)" :title="t('swap.confirm_swap')" />
     </template>
     <div class="l0k-swap-confirm-swap-modal">
       <div class="card">
@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="down">
-        <DownIcon :width="'10px'"  :color="'minor'"/>
+        <DownIcon :width="'10px'" :color="'minor'" />
       </div>
       <div class="card">
         <Text :size="'large'" bold>
@@ -53,11 +53,11 @@ export default defineComponent({
   props: {
     show: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     trade: {
       type: Object as PropType<Trade>,
-    }
+    },
   },
   components: {
     Modal,
@@ -67,7 +67,7 @@ export default defineComponent({
     TradePrice,
     AdvancedSwapDetails,
     TokenLogo,
-    DownIcon
+    DownIcon,
   },
   emits: ['dismiss', 'swap'],
   setup(props, { emit }) {
@@ -80,7 +80,7 @@ export default defineComponent({
         if (!newValue) {
           emit('dismiss')
         }
-      }
+      },
     })
 
     const onConfirm = () => {
@@ -92,13 +92,13 @@ export default defineComponent({
       trade,
 
       t,
-      onConfirm
+      onConfirm,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import '../../styles/index.scss';
 
 .l0k-swap-confirm-swap-modal {
@@ -110,7 +110,6 @@ export default defineComponent({
     padding: 0 20px;
     background: $color-bg-secondary;
     border-radius: 20px;
-
 
     .token {
       display: flex;

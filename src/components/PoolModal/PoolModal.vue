@@ -27,7 +27,6 @@ import { computed, ComputedRef, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import ModalHeader from '../Modal/ModalHeader.vue'
-import Text from '../Text/Text.vue'
 import Tabs from './Tabs.vue'
 import AddLiqiudit from '../AddLiqiudit/AddLiqiudit.vue'
 import RemoveLiqiudit from '../RemoveLiqiudit/RemoveLiqiudit.vue'
@@ -42,10 +41,9 @@ export default defineComponent({
     ModalHeader,
     BackIcon,
     SettingIcon,
-    Text,
     Tabs,
     AddLiqiudit,
-    RemoveLiqiudit
+    RemoveLiqiudit,
   },
   setup() {
     const { t } = useI18n()
@@ -61,7 +59,7 @@ export default defineComponent({
       get: () => poolModalStore.show,
       set(newValue) {
         poolModalStore.togglePoolModal(newValue)
-      }
+      },
     })
 
     const current = ref<Actions>()
@@ -73,7 +71,7 @@ export default defineComponent({
       if (action.value === Actions.BURN) {
         base.push({
           label: t('poolModal.withdraw'),
-          value: Actions.BURN
+          value: Actions.BURN,
         })
       }
       return base
@@ -99,7 +97,7 @@ export default defineComponent({
       onChange,
       t,
     }
-  }
+  },
 })
 </script>
 

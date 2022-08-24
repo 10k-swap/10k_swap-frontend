@@ -14,8 +14,8 @@ import Modals from '../../components/Modals/Modals.vue'
 export default defineComponent({
   components: {
     Header,
-    Modals
-  }
+    Modals,
+  },
 })
 </script>
 

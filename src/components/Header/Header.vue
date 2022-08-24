@@ -1,7 +1,7 @@
 <template>
   <div class="l0k-swap-app-header">
     <div class="app-logo">
-      <img src="./logo.png">
+      <img src="./logo.png" />
     </div>
     <Nav class="l0k-swap-app-header-nav" />
     <Connector class="l0k-swap-app-header-connector" />
@@ -16,7 +16,7 @@ import Connector from './Connector.vue'
 export default defineComponent({
   components: {
     Nav,
-    Connector
+    Connector,
   },
 })
 </script>

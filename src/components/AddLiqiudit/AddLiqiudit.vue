@@ -1,23 +1,37 @@
 <template>
   <div class="l0k-swap-add-liqiudit">
     <div class="l0k-swap-add-content">
-      <CurrencyInputPanel :value="formattedAmounts[Field.CURRENCY_A]" :token="currencies[Field.CURRENCY_A]"
-        :currencyBalance="currencyBalances[Field.CURRENCY_A]" @token-select="handleCurrencyASelect"
-        @input="onFieldAInput" />
+      <CurrencyInputPanel
+        :value="formattedAmounts[Field.CURRENCY_A]"
+        :token="currencies[Field.CURRENCY_A]"
+        :currencyBalance="currencyBalances[Field.CURRENCY_A]"
+        @token-select="handleCurrencyASelect"
+        @input="onFieldAInput"
+      />
       <div class="add-wrap">
         <AddIcon :color="'minor'" :width="'12px'" />
       </div>
-      <CurrencyInputPanel :value="formattedAmounts[Field.CURRENCY_B]" :token="currencies[Field.CURRENCY_B]"
-        :currencyBalance="currencyBalances[Field.CURRENCY_B]" @token-select="handleCurrencyBSelect"
-        @input="onFieldBInput" />
+      <CurrencyInputPanel
+        :value="formattedAmounts[Field.CURRENCY_B]"
+        :token="currencies[Field.CURRENCY_B]"
+        :currencyBalance="currencyBalances[Field.CURRENCY_B]"
+        @token-select="handleCurrencyBSelect"
+        @input="onFieldBInput"
+      />
       <Text class="liqiudity" :color="'description-text'" :size="'mini'">
         {{ t('add_liqiudit.liqiudity', { value: LPTotalSupply }) }}
       </Text>
       <Text :color="'description-text'" :size="'mini'" v-if="noLiquidity">
         {{ t('add_liqiudit.no_liqiudity_tips') }}
       </Text>
-      <PoolPriceBar class="pool-price-bar" v-if="tokenA && tokenB" :currencies="currencies" :noLiquidity="noLiquidity"
-        :poolTokenPercentage="poolTokenPercentage" :price="price" />
+      <PoolPriceBar
+        class="pool-price-bar"
+        v-if="tokenA && tokenB"
+        :currencies="currencies"
+        :noLiquidity="noLiquidity"
+        :poolTokenPercentage="poolTokenPercentage"
+        :price="price"
+      />
       <Button class="deposit" :type="'primary'" :size="'large'" v-if="!account" bold @click="onConnect">
         {{ t('connect') }}
       </Button>
@@ -29,8 +43,16 @@
       </Text>
     </div>
   </div>
-  <ConfirmModal :show="showConfirm" :price="price" :liquidity="liquidityMinted" :currencies="currencies"
-    :parsedAmounts="parsedAmounts" :noLiquidity="noLiquidity" @dismiss="showConfirm = false" @mint="onMint" />
+  <ConfirmModal
+    :show="showConfirm"
+    :price="price"
+    :liquidity="liquidityMinted"
+    :currencies="currencies"
+    :parsedAmounts="parsedAmounts"
+    :noLiquidity="noLiquidity"
+    @dismiss="showConfirm = false"
+    @mint="onMint"
+  />
   <ScuccessModal :show="!!txHash" :tx="txHash" @dismiss="onReset" />
   <WaittingModal :show="attemptingTxn" :desc="summary" @dismiss="onReset" />
   <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
@@ -73,31 +95,45 @@ export default defineComponent({
     ConfirmModal,
     WaittingModal,
     ScuccessModal,
-    RejectedModal
+    RejectedModal,
   },
   props: {
     token0: {
-      type: Object as PropType<Token>
+      type: Object as PropType<Token>,
     },
     token1: {
-      type: Object as PropType<Token>
-    }
+      type: Object as PropType<Token>,
+    },
   },
   setup(props) {
-    const { token0, token1, } = toRefs(props)
+    const { token0, token1 } = toRefs(props)
     const selectdTokens = ref<[Token | undefined, Token | undefined]>([undefined, undefined])
 
-    const tokenA = computed(() => selectdTokens.value[0] ? selectdTokens.value[0] : token0.value)
-    const tokenB = computed(() => selectdTokens.value[1] ? selectdTokens.value[1] : token1.value)
+    const tokenA = computed(() => (selectdTokens.value[0] ? selectdTokens.value[0] : token0.value))
+    const tokenB = computed(() => (selectdTokens.value[1] ? selectdTokens.value[1] : token1.value))
 
     const showConfirm = ref(false)
     const attemptingTxn = ref(false)
     const txHash = ref<string>()
     const { onConnect } = useConnector()
 
-    const { state: { chainId, account } } = useStarknet()
+    const {
+      state: { chainId, account },
+    } = useStarknet()
     const { t } = useI18n()
-    const { noLiquidity, dependentField, parsedAmounts, currencyBalances, currencies, totalSupply, poolTokenPercentage, price, error, pair, liquidityMinted } = useDerivedMintInfo(tokenA, tokenB)
+    const {
+      noLiquidity,
+      dependentField,
+      parsedAmounts,
+      currencyBalances,
+      currencies,
+      totalSupply,
+      poolTokenPercentage,
+      price,
+      error,
+      pair,
+      liquidityMinted,
+    } = useDerivedMintInfo(tokenA, tokenB)
     const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
     const mintState = useMintState()
     const allowedSlippage = useUserLiqiuditSlippageTolerance()
@@ -136,16 +172,18 @@ export default defineComponent({
 
     const summary = computed(() => {
       const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts.value
-      return `Supplying ${currencyAAmount?.toSignificant(3)} ${currencyAAmount?.token.symbol} & ${currencyBAmount?.toSignificant(3)} ${currencyBAmount?.token.symbol} for ${liquidityMinted.value?.toSignificant(3)} LP`
+      return `Supplying ${currencyAAmount?.toSignificant(3)} ${currencyAAmount?.token.symbol} & ${currencyBAmount?.toSignificant(3)} ${
+        currencyBAmount?.token.symbol
+      } for ${liquidityMinted.value?.toSignificant(3)} LP`
     })
     const handleCurrencyASelect = (token: Token) => {
-      if (selectdTokens.value.find(item => item?.address === token.address)) {
+      if (selectdTokens.value.find((item) => item?.address === token.address)) {
         return
       }
       selectdTokens.value[0] = token
     }
     const handleCurrencyBSelect = (token: Token) => {
-      if (selectdTokens.value.find(item => item?.address === token.address)) {
+      if (selectdTokens.value.find((item) => item?.address === token.address)) {
         return
       }
       selectdTokens.value[1] = token
@@ -194,11 +232,11 @@ export default defineComponent({
             BMin.high,
             account.value,
             getDeadlineFromNow(DEFAULT_DEADLINE_FROM_NOW),
-          ]
+          ],
         ],
         metadata: {
-          message: summary.value
-        }
+          message: summary.value,
+        },
       })
       attemptingTxn.value = false
       if (response) {
@@ -236,18 +274,16 @@ export default defineComponent({
       onDeposit,
       onMint,
       onReset,
-      onConnect
+      onConnect,
     }
-  }
+  },
 })
 </script>
-
 
 <style lang="scss">
 @import '../../styles/index.scss';
 
 .l0k-swap-add-liqiudit {
-
   .l0k-swap-add-content {
     .add-wrap {
       display: flex;

@@ -9,7 +9,7 @@ import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { createNamespace } from '../../utils/create'
 import { TextColor, TextSize } from './types'
 
-const normalColor = (color: TextColor) => color.indexOf('text') > 0 ? color : `g-${color}`
+const normalColor = (color: TextColor) => (color.indexOf('text') > 0 ? color : `g-${color}`)
 const [, bem] = createNamespace('text')
 
 export default defineComponent({
@@ -17,28 +17,28 @@ export default defineComponent({
     bold: Boolean,
     size: {
       type: String as PropType<TextSize>,
-      default: 'normal'
+      default: 'normal',
     },
     color: {
       type: String as PropType<TextColor>,
-      default: 'normal'
-    }
+      default: 'normal',
+    },
   },
   setup(props) {
     const { size, color, bold } = toRefs(props)
 
-    const classes = computed(() => (
-      [bem([
+    const classes = computed(() => [
+      bem([
         size.value,
         normalColor(color.value),
         {
-          bold: bold.value
-        }
-      ]),]
-    ))
+          bold: bold.value,
+        },
+      ]),
+    ])
 
     return {
-      classes
+      classes,
     }
   },
 })
@@ -49,15 +49,15 @@ export default defineComponent({
 
 $text-prefix: '#{$prefix}-text';
 $textColors: (
-  'g-white':$color-primary,
-  'g-primary':$color-white,
-  'g-red':$color-red,
+  'g-white': $color-primary,
+  'g-primary': $color-white,
+  'g-red': $color-red,
   secondary-text: $color-secondary-text,
-  description-text:$color-description-text,
-  transparent-text:$color-transparent-text,
-  g-normal: $color-primary-text
+  description-text: $color-description-text,
+  transparent-text: $color-transparent-text,
+  g-normal: $color-primary-text,
 );
-$textNames: 'g-red''g-primary''g-white''g-normal''secondary-text''description-text''transparent-text';
+$textNames: 'g-red' 'g-primary' 'g-white' 'g-normal' 'secondary-text' 'description-text' 'transparent-text';
 
 .#{$text-prefix} {
   font-weight: 400;

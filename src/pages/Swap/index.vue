@@ -4,15 +4,23 @@
       <SettingIcon class="setting" width="17px" @click="onSetting" />
     </template>
     <div class="l0k-swap-swap-content">
-      <CurrencyInputPanel :value="formattedAmounts[Field.INPUT]" :token="currencies[Field.INPUT]"
-        :currencyBalance="currencyBalances[Field.INPUT]" @token-select="onInputSelect"
-        @input="handleTypeInput" />
+      <CurrencyInputPanel
+        :value="formattedAmounts[Field.INPUT]"
+        :token="currencies[Field.INPUT]"
+        :currencyBalance="currencyBalances[Field.INPUT]"
+        @token-select="onInputSelect"
+        @input="handleTypeInput"
+      />
       <div class="switch-wrap">
         <SwitchIcon class="switch" @click="onSwitch" />
       </div>
-      <CurrencyInputPanel :value="formattedAmounts[Field.OUTPUT]" :token="currencies[Field.OUTPUT]"
-        :currencyBalance="currencyBalances[Field.OUTPUT]" @token-select="onOutputSelect"
-        @input="handleTypeOutput" />
+      <CurrencyInputPanel
+        :value="formattedAmounts[Field.OUTPUT]"
+        :token="currencies[Field.OUTPUT]"
+        :currencyBalance="currencyBalances[Field.OUTPUT]"
+        @token-select="onOutputSelect"
+        @input="handleTypeOutput"
+      />
       <div class="swap-info">
         <div class="loading" v-if="loadingTrade">
           <LoadingIcon class="icon" :color="'minor'" width="12px" />
@@ -32,8 +40,14 @@
         <Button :type="'primary'" :size="'large'" bold disabled v-else-if="noTrade && userHasSpecifiedInputOutput">
           {{ t('swap.insufficient_liquidity') }}
         </Button>
-        <Button :type="'primary'" :size="'large'" bold v-else @click="onSwapClick"
-          :disabled="!isValid || loadingTrade || !v2Trade || (tradeToConfirm && !!swapCallbackError)">
+        <Button
+          :type="'primary'"
+          :size="'large'"
+          bold
+          v-else
+          @click="onSwapClick"
+          :disabled="!isValid || loadingTrade || !v2Trade || (tradeToConfirm && !!swapCallbackError)"
+        >
           {{ !isValid ? swapInputError : t('swap.swap') }}
         </Button>
       </div>
@@ -85,7 +99,7 @@ export default defineComponent({
     ConfirmModal,
     WaittingModal,
     RejectedModal,
-    ScuccessModal
+    ScuccessModal,
   },
   setup() {
     const { t } = useI18n()
@@ -93,7 +107,9 @@ export default defineComponent({
     const { onConnect } = useConnector()
     const slippageToleranceSettingsStore = useSlippageToleranceSettingsStore()
     const userSwapSlippageTolerance = useUserSwapSlippageTolerance()
-    const { state: { account } } = useStarknet()
+    const {
+      state: { account },
+    } = useStarknet()
 
     // swap state
     const swapStore = useSwapStore()
@@ -101,7 +117,7 @@ export default defineComponent({
     const { onSwitchTokens, onCurrencySelection, onUserInput } = useSwapActionHandlers()
     const independentField = computed(() => swapStore.independentField)
     const isValid = computed(() => !swapInputError.value)
-    const dependentField = computed(() => independentField.value === Field.INPUT ? Field.OUTPUT : Field.INPUT)
+    const dependentField = computed(() => (independentField.value === Field.INPUT ? Field.OUTPUT : Field.INPUT))
 
     const parsedAmounts = computed(() => ({
       [Field.INPUT]: independentField.value === Field.INPUT ? parsedAmount.value : v2Trade.value?.inputAmount,
@@ -111,10 +127,12 @@ export default defineComponent({
       [independentField.value]: swapStore.typedValue,
       [dependentField.value]: parsedAmounts.value[dependentField.value]?.toSignificant(6) ?? '',
     }))
-    const userHasSpecifiedInputOutput = computed(() => Boolean(
-      currencies.value[Field.INPUT] && currencies.value[Field.OUTPUT] && parsedAmounts.value[independentField.value]?.greaterThan(JSBI.BigInt(0))
-    ))
-    const noRoute = computed(() => !(v2Trade.value?.route))
+    const userHasSpecifiedInputOutput = computed(() =>
+      Boolean(
+        currencies.value[Field.INPUT] && currencies.value[Field.OUTPUT] && parsedAmounts.value[independentField.value]?.greaterThan(JSBI.BigInt(0))
+      )
+    )
+    const noRoute = computed(() => !v2Trade.value?.route)
     const noTrade = computed(() => v2Trade.value === undefined)
     const loadingTrade = computed(() => v2Trade.value === null)
     const showRejectedModal = computed(() => !!swapState.swapErrorMessage && swapState.swapErrorMessage.includes('User abort'))
@@ -170,7 +188,8 @@ export default defineComponent({
       swapState.showConfirm = false
       swapState.attemptingTxn = true
 
-      swapCallbacks.value.callback()
+      swapCallbacks.value
+        .callback()
         .then((hash) => {
           swapState.attemptingTxn = false
           swapState.txHash = hash
@@ -181,7 +200,6 @@ export default defineComponent({
           swapState.swapErrorMessage = error.message
         })
     }
-
 
     const onReset = () => {
       if (swapState.txHash) {
@@ -223,7 +241,7 @@ export default defineComponent({
       onReset,
       handleTypeInput,
       handleTypeOutput,
-      handleSwap
+      handleSwap,
     }
   },
 })

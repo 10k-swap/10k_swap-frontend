@@ -7,7 +7,6 @@ import JSBI from 'jsbi'
 import { BigintIsh, Rounding, TEN } from '../../constants'
 import { Route } from '../route'
 import { Fraction } from './fraction'
-import { CurrencyAmount } from './currencyAmount'
 
 export class Price extends Fraction {
   public readonly baseCurrency: Token // input i.e. denominator
@@ -63,11 +62,11 @@ export class Price extends Fraction {
     return new TokenAmount(this.quoteCurrency, super.multiply(currencyAmount.raw).quotient)
   }
 
-  public toSignificant(significantDigits: number = 6, format?: object, rounding?: Rounding): string {
+  public toSignificant(significantDigits = 6, format?: object, rounding?: Rounding): string {
     return this.adjusted.toSignificant(significantDigits, format, rounding)
   }
 
-  public toFixed(decimalPlaces: number = 4, format?: object, rounding?: Rounding): string {
+  public toFixed(decimalPlaces = 4, format?: object, rounding?: Rounding): string {
     return this.adjusted.toFixed(decimalPlaces, format, rounding)
   }
 }

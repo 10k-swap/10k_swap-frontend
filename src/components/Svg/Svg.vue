@@ -10,7 +10,7 @@ import { createNamespace } from '../../utils/create'
 import { SvgColor, SvgProps } from './types'
 
 const [, bem] = createNamespace('svg')
-const normalColor = (color: SvgColor) => ['white', 'red', 'primary'].includes(color) ? `g-${color}` : color
+const normalColor = (color: SvgColor) => (['white', 'red', 'primary'].includes(color) ? `g-${color}` : color)
 
 export default defineComponent({
   props: {
@@ -23,16 +23,16 @@ export default defineComponent({
   },
   setup(props) {
     const { color, style, viewBox, width, fill } = toRefs(props)
-    const classes = computed(() => ([bem([normalColor(color.value)])]))
+    const classes = computed(() => [bem([normalColor(color.value)])])
 
     return {
       classes,
       style,
       viewBox,
       width,
-      fill
+      fill,
     }
-  }
+  },
 })
 </script>
 
@@ -43,12 +43,12 @@ $colors: (
   'normal': $color-primary-text,
   'secondary': $color-secondary-text,
   'minor': $color-description-text,
-  'transparent':$color-transparent-text,
-  'g-white':$color-white,
-  'g-primary':$color-primary,
-  'g-red':$color-red
+  'transparent': $color-transparent-text,
+  'g-white': $color-white,
+  'g-primary': $color-primary,
+  'g-red': $color-red,
 );
-$textNames: 'g-red''g-primary''g-white''secondary''minor''normal''transparent';
+$textNames: 'g-red' 'g-primary' 'g-white' 'secondary' 'minor' 'normal' 'transparent';
 
 .#{$svg-prefix} {
   width: 24px;

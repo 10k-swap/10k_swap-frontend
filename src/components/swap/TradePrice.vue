@@ -14,7 +14,7 @@ export default defineComponent({
   props: {
     price: {
       type: Object as PropType<Price>,
-    }
+    },
   },
   components: { Text },
   setup(props) {
@@ -35,9 +35,9 @@ export default defineComponent({
       label,
       show,
 
-      setShowInverted
-    };
-  }
+      setShowInverted,
+    }
+  },
 })
 </script>
 

@@ -15,4 +15,3 @@ export { default as WaittingIcon } from './Icons/Waitting'
 export { default as ErrorIcon } from './Icons/Error'
 export { default as BackIcon } from './Icons/Back'
 export { default as AddIcon } from './Icons/Add'
-

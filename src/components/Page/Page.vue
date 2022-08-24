@@ -20,18 +20,18 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   components: {
-    Text
+    Text,
   },
   setup(props, { slots }) {
     const { title } = toRefs(props)
 
     return {
       title,
-      slots
+      slots,
     }
   },
 })

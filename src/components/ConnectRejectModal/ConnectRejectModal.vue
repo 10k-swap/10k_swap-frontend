@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" />
+      <ModalHeader @dismiss="() => (showModal = false)" />
     </template>
     <div class="l0k-swap-connect-reject-modal">
       <Text class="title" bold :size="'md'" :color="'red'">
@@ -11,8 +11,7 @@
         <Text :size="'small'" :color="'secondary-text'">
           {{ t('connect_reject_modal.tips') }}
         </Text>
-        <Button class="retry" :type="'primary'" bold @click="onRetry
-        ">
+        <Button class="retry" :type="'primary'" bold @click="onRetry">
           {{ t('connect_reject_modal.retry') }}
         </Button>
       </div>
@@ -35,7 +34,7 @@ export default defineComponent({
     Modal,
     ModalHeader,
     Text,
-    Button
+    Button,
   },
   setup() {
     const { t } = useI18n()
@@ -45,7 +44,7 @@ export default defineComponent({
       get: () => store.showConnectRejectModal,
       set(newValue) {
         store.toggleConnectRejectModal(newValue)
-      }
+      },
     })
 
     const { onConnect } = useConnector()
@@ -59,9 +58,9 @@ export default defineComponent({
       showModal,
 
       t,
-      onRetry
+      onRetry,
     }
-  }
+  },
 })
 </script>
 

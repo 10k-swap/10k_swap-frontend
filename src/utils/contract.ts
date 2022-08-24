@@ -6,4 +6,3 @@ import { ROUTER_ADDRESSES } from '../constants/address'
 export function getRouterContract(chainId: StarknetChainId, library: ProviderInterface | AccountInterface) {
   return new Contract(l0k_router_abi as Abi, ROUTER_ADDRESSES[chainId], library)
 }
-

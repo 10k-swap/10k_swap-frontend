@@ -1,6 +1,10 @@
 <template>
-  <vue-final-modal v-model="showModal" classes="l0k-swap-modal-container" overlay-class="l0k-swap-modal-overlay"
-    content-class="l0k-swap-modal-content">
+  <vue-final-modal
+    v-model="showModal"
+    classes="l0k-swap-modal-container"
+    overlay-class="l0k-swap-modal-overlay"
+    content-class="l0k-swap-modal-content"
+  >
     <slot name="header" v-if="slots.header"></slot>
     <ModalHeader v-else :title="title" />
     <div class="l0k-swap-modal-wrap">
@@ -15,7 +19,7 @@ import ModalHeader from './ModalHeader.vue'
 
 export default defineComponent({
   components: {
-    ModalHeader
+    ModalHeader,
   },
   props: {
     title: {
@@ -23,8 +27,8 @@ export default defineComponent({
     },
     modelValue: {
       type: Boolean,
-      require: true
-    }
+      require: true,
+    },
   },
   emits: ['update:modelValue'],
   setup(props, context) {
@@ -34,19 +38,19 @@ export default defineComponent({
       get: () => modelValue.value,
       set(newValue) {
         context.emit('update:modelValue', newValue)
-      }
+      },
     })
 
     return {
       showModal,
       title,
-      slots: context.slots
+      slots: context.slots,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import '../../styles/index.scss';
 
 .l0k-swap-modal-container {
@@ -56,7 +60,7 @@ export default defineComponent({
 }
 
 .l0k-swap-modal-overlay {
-  background-color: $color-overlay  !important;
+  background-color: $color-overlay !important;
 }
 
 .l0k-swap-modal-content {

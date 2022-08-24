@@ -13,8 +13,7 @@
         </div>
       </div>
       <div class="l0k-swap-recent-transactions">
-        <div class="l0k-swap-recent-transaction" v-for="transaction in sortdTransactions"
-          :key="transaction.transactionHash">
+        <div class="l0k-swap-recent-transaction" v-for="transaction in sortdTransactions" :key="transaction.transactionHash">
           <div class="svgs">
             <ScuccessIcon v-if="transaction.scuccess" :color="'primary'" width="16px" />
             <LoadingIcon v-else-if="transaction.loading" :color="'minor'" width="16px" />
@@ -54,10 +53,12 @@ export default defineComponent({
     ScuccessIcon,
     FailIcon,
     LoadingIcon,
-    ShareIcon
+    ShareIcon,
   },
   setup() {
-    const { state: { chainId } } = useStarknet()
+    const {
+      state: { chainId },
+    } = useStarknet()
     const { t } = useI18n()
     const { transactions, clearTransactions } = useStarknetTransactionManager()
     const isMobile = useIsMobile()
@@ -70,7 +71,7 @@ export default defineComponent({
 
       t,
       getScanLink,
-      clearTransactions
+      clearTransactions,
     }
   },
 })

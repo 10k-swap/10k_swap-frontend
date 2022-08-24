@@ -12,8 +12,13 @@
     </div>
     <template #content>
       <div class="l0k-swap-select-token--tokens">
-        <div class="l0k-swap-select-token--token" :class="{ 'active': current && token.equals(current) }"
-          v-for="token in tokens" :key="token.address" @click="onSelect(token)">
+        <div
+          class="l0k-swap-select-token--token"
+          :class="{ active: current && token.equals(current) }"
+          v-for="token in tokens"
+          :key="token.address"
+          @click="onSelect(token)"
+        >
           <TokenLogo class="l0k-swap-select-token--token-logo" :token="token" />
           <Text class="text"> {{ token.symbol }} </Text>
         </div>
@@ -37,29 +42,31 @@ export default defineComponent({
   props: {
     token: {
       type: Object as PropType<Token | null>,
-    }
+    },
   },
   components: {
     Popper,
     TokenLogo,
     Text,
-    ArrowDownIcon
+    ArrowDownIcon,
   },
   emits: ['select'],
   setup(props, { emit }) {
     const { token } = toRefs(props)
-    const { state: { chainId } } = useStarknet()
+    const {
+      state: { chainId },
+    } = useStarknet()
     const { t } = useI18n()
 
     const show = ref(false)
 
-    const tokens = computed(() => chainId.value ? tokensList[chainId.value] : [])
+    const tokens = computed(() => (chainId.value ? tokensList[chainId.value] : []))
 
     const current = computed({
       get: () => token.value,
       set(newValue) {
         emit('select', newValue)
-      }
+      },
     })
 
     const onSelect = (selected: Token) => {
@@ -72,9 +79,9 @@ export default defineComponent({
       show,
 
       t,
-      onSelect
+      onSelect,
     }
-  }
+  },
 })
 </script>
 
@@ -98,7 +105,7 @@ export default defineComponent({
   }
 
   .select {
-    margin-left: 10px
+    margin-left: 10px;
   }
 
   .text {
@@ -110,7 +117,7 @@ export default defineComponent({
     right: 13px;
     top: 50%;
     transform: translateY(-50%);
-    transition: all .3s;
+    transition: all 0.3s;
 
     &.show {
       transform: translateY(-50%) rotate(0.5turn);

@@ -174,7 +174,7 @@ export class Pair {
     return new TokenAmount(this.liquidityToken, liquidity)
   }
 
-  public getLiquidityValue(token: Token, totalSupply: TokenAmount, liquidity: TokenAmount, feeOn: boolean = false, kLast?: BigintIsh): TokenAmount {
+  public getLiquidityValue(token: Token, totalSupply: TokenAmount, liquidity: TokenAmount, feeOn = false, kLast?: BigintIsh): TokenAmount {
     invariant(this.involvesToken(token), 'TOKEN')
     invariant(totalSupply.token.equals(this.liquidityToken), 'TOTAL_SUPPLY')
     invariant(liquidity.token.equals(this.liquidityToken), 'LIQUIDITY')

@@ -7,24 +7,24 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { Token } from '../../sdk';
+import { Token } from '../../sdk'
 import TokenLogo from '../TokenLogo/TokenLogo'
 
 export default defineComponent({
   props: {
     token0: {
-      type: Object as PropType<Token>
+      type: Object as PropType<Token>,
     },
     token1: {
-      type: Object as PropType<Token>
+      type: Object as PropType<Token>,
     },
     size: {
       type: Number,
       default: 24,
-    }
+    },
   },
   components: {
-    TokenLogo
+    TokenLogo,
   },
 })
 </script>

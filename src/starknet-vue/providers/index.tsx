@@ -18,10 +18,7 @@ export const StarknetProvider = defineComponent({
     const { defaultProvider, connectors } = toRefs(props)
 
     return () => (
-      <StarknetLibraryProvider
-        defaultProvider={defaultProvider.value}
-        connectors={connectors.value}
-      >
+      <StarknetLibraryProvider defaultProvider={defaultProvider.value} connectors={connectors.value}>
         <StarknetBlockProvider>
           <StarknetTransactionManagerProvider>{slots.default && slots.default()}</StarknetTransactionManagerProvider>
         </StarknetBlockProvider>

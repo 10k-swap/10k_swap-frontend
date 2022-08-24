@@ -1,12 +1,12 @@
-import { computed } from "vue"
-import { useSlippageToleranceSettingsStore } from "."
+import { computed } from 'vue'
+import { useSlippageToleranceSettingsStore } from '.'
 
-export function useUserSwapSlippageTolerance(){
+export function useUserSwapSlippageTolerance() {
   const store = useSlippageToleranceSettingsStore()
   return computed(() => store.$state.slippageTolerances.swap)
 }
 
-export function useUserLiqiuditSlippageTolerance(){
+export function useUserLiqiuditSlippageTolerance() {
   const store = useSlippageToleranceSettingsStore()
   return computed(() => store.$state.slippageTolerances.liqiudit)
 }

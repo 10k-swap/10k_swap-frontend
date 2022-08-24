@@ -1,21 +1,14 @@
 <template>
-  <div class="l0k-swap-faucet">
-    pool
-  </div>
+  <div class="l0k-swap-faucet">pool</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  components: {
-
-  },
-  setup() {
-
-  },
+  components: {},
+  setup() {},
 })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

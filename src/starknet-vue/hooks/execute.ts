@@ -1,4 +1,4 @@
-import { AddTransactionResponse, Overrides, Call, Abi, ProviderInterface } from 'starknet'
+import { AddTransactionResponse, Overrides, Call, Abi } from 'starknet'
 import { ComputedRef, reactive, toRaw } from 'vue'
 import { useStarknet } from '../providers/starknet'
 import { useStarknetTransactionManager } from '../providers/transaction/hooks'

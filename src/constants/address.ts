@@ -1,4 +1,4 @@
-import { StarknetChainId } from "starknet/constants"
+import { StarknetChainId } from 'starknet/constants'
 
 export const ROUTER_ADDRESSES: {
   [chainId in StarknetChainId]: string

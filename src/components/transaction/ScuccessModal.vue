@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" />
+      <ModalHeader @dismiss="() => (showModal = false)" />
     </template>
     <div class="l0k-swap-transaction-scuccess-modal">
       <ScuccessIcon width="64px" :color="'primary'" />
@@ -35,24 +35,26 @@ export default defineComponent({
   props: {
     show: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     tx: {
-      type: String
-    }
+      type: String,
+    },
   },
   components: {
     Modal,
     ModalHeader,
     Text,
     ScuccessIcon,
-    Button
+    Button,
   },
   emits: ['dismiss'],
   setup(props, { emit }) {
     const { show, tx } = toRefs(props)
     const { t } = useI18n()
-    const { state: { chainId } } = useStarknet()
+    const {
+      state: { chainId },
+    } = useStarknet()
 
     const scanLink = computed(() => {
       if (!tx.value || !chainId.value) {
@@ -67,7 +69,7 @@ export default defineComponent({
         if (!newValue) {
           emit('dismiss')
         }
-      }
+      },
     })
 
     return {
@@ -76,11 +78,11 @@ export default defineComponent({
 
       t,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import '../../styles/index.scss';
 
 .l0k-swap-transaction-scuccess-modal {

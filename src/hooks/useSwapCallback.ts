@@ -1,25 +1,16 @@
 import { Abi, AddTransactionResponse, Contract } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '../sdk'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
-import { BN, getRouterContract } from '../utils'
+import { getRouterContract } from '../utils'
 import { computed, ComputedRef, Ref, toRaw } from 'vue'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import erc20 from '../constants/abis/erc20.json'
 import l0k_router_abi from '../constants/abis/l0k_router_abi.json'
 import { isAccountInterface } from '../starknet-vue/utils'
-import { bnToUint256, isUint256 as hasUint256, Uint256 } from 'starknet/dist/utils/uint256'
+import { bnToUint256 } from 'starknet/dist/utils/uint256'
 import { useStarknetTransactionManager } from '../starknet-vue/providers/transaction'
 import useSwapSummary from './useSwapSummary'
 import useSwapApproveAmount from './useSwapApproveAmount'
-
-const isUint256 = (value: any): value is Uint256 => {
-  try {
-    return hasUint256(value)
-  } catch (error) {
-    console.log(error, value)
-    return false
-  }
-}
 
 enum SwapCallbackState {
   INVALID,
@@ -32,17 +23,17 @@ interface SwapCall {
   parameters: SwapParameters
 }
 
-interface SuccessfulCall {
-  call: SwapCall
-  gasEstimate: BN
-}
+// interface SuccessfulCall {
+//   call: SwapCall
+//   gasEstimate: BN
+// }
 
-interface FailedCall {
-  call: SwapCall
-  error: Error
-}
+// interface FailedCall {
+//   call: SwapCall
+//   error: Error
+// }
 
-type EstimatedSwapCall = SuccessfulCall | FailedCall
+// type EstimatedSwapCall = SuccessfulCall | FailedCall
 
 /**
  * Returns the swap calls that can be used to make the trade
@@ -146,6 +137,7 @@ export function useSwapCallback(
             [
               {
                 entrypoint: 'approve',
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 contractAddress: trade.value!.inputAmount.currency.address,
                 calldata: [contract.address, approveAmount.low, approveAmount.high],
               },
@@ -168,7 +160,7 @@ export function useSwapCallback(
 
             return response.transaction_hash
           })
-          .catch((error: any) => {
+          .catch((error: Error) => {
             // otherwise, the error was unexpected and we need to convey that
             console.error(`Swap failed`, error, methodName, args)
             throw new Error(`Swap failed: ${error.message}`)

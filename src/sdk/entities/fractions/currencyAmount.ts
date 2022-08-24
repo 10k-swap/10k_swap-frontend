@@ -37,19 +37,11 @@ export class CurrencyAmount extends Fraction {
     return new CurrencyAmount(this.currency, JSBI.subtract(this.raw, other.raw))
   }
 
-  public toSignificant(
-    significantDigits: number = 6,
-    format?: object,
-    rounding: Rounding = Rounding.ROUND_DOWN
-  ): string {
+  public toSignificant(significantDigits = 6, format?: object, rounding: Rounding = Rounding.ROUND_DOWN): string {
     return super.toSignificant(significantDigits, format, rounding)
   }
 
-  public toFixed(
-    decimalPlaces: number = this.currency.decimals,
-    format?: object,
-    rounding: Rounding = Rounding.ROUND_DOWN
-  ): string {
+  public toFixed(decimalPlaces: number = this.currency.decimals, format?: object, rounding: Rounding = Rounding.ROUND_DOWN): string {
     invariant(decimalPlaces <= this.currency.decimals, 'DECIMALS')
     return super.toFixed(decimalPlaces, format, rounding)
   }

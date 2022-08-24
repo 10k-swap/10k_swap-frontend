@@ -3,9 +3,14 @@
     <Text class="tips" :color="'description-text'" :size="'small'">
       {{ t('remove_liqiudit.tips') }}
     </Text>
-    <CurrencyInputPanel :selector="false" size="small" :token="pair?.liquidityToken"
-      :value="formattedAmounts[Field.LIQUIDITY]" :currencyBalance="userLiquidity"
-      @input="onUserInput(Field.LIQUIDITY, $event)">
+    <CurrencyInputPanel
+      :selector="false"
+      size="small"
+      :token="pair?.liquidityToken"
+      :value="formattedAmounts[Field.LIQUIDITY]"
+      :currencyBalance="userLiquidity"
+      @input="onUserInput(Field.LIQUIDITY, $event)"
+    >
       <template v-slot:token>
         <DoubleLogo :token0="pair?.token0" :token1="pair?.token1" />
         <Text class="symbol" bold> {{ pair?.token0.symbol + '-' + pair?.token1.symbol }} </Text>
@@ -14,13 +19,25 @@
     <div class="icon-wrap">
       <DownIcon :width="'10px'" :color="'minor'" />
     </div>
-    <CurrencyInputPanel size="small" :selector="false" :token="pair?.token0" :currencyBalance="token0Balance"
-      :value="formattedAmounts[Field.CURRENCY_A]" @input="onUserInput(Field.CURRENCY_A, $event)" />
+    <CurrencyInputPanel
+      size="small"
+      :selector="false"
+      :token="pair?.token0"
+      :currencyBalance="token0Balance"
+      :value="formattedAmounts[Field.CURRENCY_A]"
+      @input="onUserInput(Field.CURRENCY_A, $event)"
+    />
     <div class="icon-wrap">
       <AddIcon :width="'10px'" :color="'minor'" />
     </div>
-    <CurrencyInputPanel size="small" :selector="false" :token="pair?.token1" :currencyBalance="token1Balance"
-      :value="formattedAmounts[Field.CURRENCY_B]" @input="onUserInput(Field.CURRENCY_B, $event)" />
+    <CurrencyInputPanel
+      size="small"
+      :selector="false"
+      :token="pair?.token1"
+      :currencyBalance="token1Balance"
+      :value="formattedAmounts[Field.CURRENCY_B]"
+      @input="onUserInput(Field.CURRENCY_B, $event)"
+    />
     <div class="price-wrap">
       <Text :size="'mini'">{{ t('remove_liqiudit.price') }}</Text>
       <div class="price">
@@ -49,9 +66,9 @@
         <Text class="label" :size="'small'">
           {{ t('remove_liqiudit.pool_share') }}
         </Text>
-        <Text class="value" :size="'small'" :color="'description-text'">{{ (poolShare?.lessThan(ONE_BIPS) ? '<0.01' :
-            poolShare?.toFixed(2)) ?? '0'
-        }} % </Text>
+        <Text class="value" :size="'small'" :color="'description-text'"
+          >{{ (poolShare?.lessThan(ONE_BIPS) ? '<0.01' : poolShare?.toFixed(2)) ?? '0' }} %
+        </Text>
       </div>
       <div class="cell">
         <Text class="label" :size="'small'">
@@ -77,8 +94,7 @@
       {{ error ? error : t('remove_liqiudit.approve') }}
     </Button>
   </div>
-  <ConfirmModal :show="showConfirm" :parsedAmounts="parsedAmounts" :prices="prices" :pair="pair"
-    @dismiss="showConfirm = false" @burn="onBurn" />
+  <ConfirmModal :show="showConfirm" :parsedAmounts="parsedAmounts" :prices="prices" :pair="pair" @dismiss="showConfirm = false" @burn="onBurn" />
   <WaittingModal :show="executeState.loading" :desc="summary" @dismiss="onReset" />
   <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
   <ScuccessModal :show="!!txHash" :tx="txHash" @dismiss="onReset" />
@@ -115,8 +131,8 @@ import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceS
 export default defineComponent({
   props: {
     pair: {
-      type: Object as PropType<Pair | null | undefined>
-    }
+      type: Object as PropType<Pair | null | undefined>,
+    },
   },
   components: {
     Text,
@@ -128,12 +144,14 @@ export default defineComponent({
     ConfirmModal,
     WaittingModal,
     ScuccessModal,
-    RejectedModal
+    RejectedModal,
   },
   setup(props) {
     const { pair } = toRefs(props)
     const { t } = useI18n()
-    const { state: { account, chainId } } = useStarknet()
+    const {
+      state: { account, chainId },
+    } = useStarknet()
     const { onUserInput } = useBurnActionHandlers()
     const { onConnect } = useConnector()
     const { parsedAmounts, error, userLiquidity, poolShare, liquidityValueB, liquidityValueA } = useDerivedBurnInfo(pair)
@@ -164,8 +182,7 @@ export default defineComponent({
     const showRejectedModal = computed(() => !!executeState.error && executeState.error.includes('User abort'))
 
     const formattedAmounts = computed(() => ({
-      [Field.LIQUIDITY]:
-        independentField.value === Field.LIQUIDITY ? typedValue.value : parsedAmounts.value[Field.LIQUIDITY]?.toSignificant(6) ?? '',
+      [Field.LIQUIDITY]: independentField.value === Field.LIQUIDITY ? typedValue.value : parsedAmounts.value[Field.LIQUIDITY]?.toSignificant(6) ?? '',
       [Field.CURRENCY_A]:
         independentField.value === Field.CURRENCY_A ? typedValue.value : parsedAmounts.value[Field.CURRENCY_A]?.toSignificant(6) ?? '',
       [Field.CURRENCY_B]:
@@ -174,14 +191,16 @@ export default defineComponent({
 
     const summary = computed(() => {
       const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts.value
-      return `Removing ${currencyAAmount?.toSignificant(3)} ${currencyAAmount?.token.symbol} and ${currencyBAmount?.toSignificant(3)} ${currencyBAmount?.token.symbol} `
+      return `Removing ${currencyAAmount?.toSignificant(3)} ${currencyAAmount?.token.symbol} and ${currencyBAmount?.toSignificant(3)} ${
+        currencyBAmount?.token.symbol
+      } `
     })
 
     // todo:wait check
     const prices = computed(() => {
       return [
         `1 ${pair.value?.token0.symbol} = ${pair.value?.token0Price.toSignificant(6)} ${pair.value?.token1?.symbol}`,
-        `1 ${pair.value?.token1.symbol} = ${pair.value?.token1Price.toSignificant(6)} ${pair.value?.token0?.symbol}`
+        `1 ${pair.value?.token1.symbol} = ${pair.value?.token1Price.toSignificant(6)} ${pair.value?.token0?.symbol}`,
       ]
     })
 
@@ -215,18 +234,19 @@ export default defineComponent({
           [
             parsedAmountA.token.address,
             parsedAmountB.token.address,
-            LAmount.low, LAmount.high,
+            LAmount.low,
+            LAmount.high,
             AMin.low,
             AMin.high,
             BMin.low,
             BMin.high,
             account.value,
             getDeadlineFromNow(DEFAULT_DEADLINE_FROM_NOW),
-          ]
+          ],
         ],
         metadata: {
-          message: summary.value
-        }
+          message: summary.value,
+        },
       })
       if (response) {
         txHash.value = response.transaction_hash
@@ -259,12 +279,11 @@ export default defineComponent({
       onConnect,
       onApprove,
       onBurn,
-      onReset
+      onReset,
     }
   },
 })
 </script>
-
 
 <style lang="scss" scoped>
 @import '../../styles/index';

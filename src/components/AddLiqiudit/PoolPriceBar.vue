@@ -9,8 +9,7 @@
       <Text :size="'small'" :color="'description-text'">{{ label2 }}</Text>
     </div>
     <div class="column">
-      <Text :size="'small'">
-        {{ poolTokenPercentageLabel }}%</Text>
+      <Text :size="'small'"> {{ poolTokenPercentageLabel }}%</Text>
       <Text :size="'small'" :color="'description-text'">
         {{ t('add_liqiudit.share_of_pool') }}
       </Text>
@@ -37,10 +36,10 @@ export default defineComponent({
     },
     price: {
       type: Object as PropType<Price>,
-    }
+    },
   },
   components: {
-    Text
+    Text,
   },
   setup(props) {
     const { t } = useI18n()
@@ -60,7 +59,7 @@ export default defineComponent({
       label2,
       poolTokenPercentageLabel,
 
-      t
+      t,
     }
   },
 })

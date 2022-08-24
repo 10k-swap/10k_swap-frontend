@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" />
+      <ModalHeader @dismiss="() => (showModal = false)" />
     </template>
     <div class="l0k-swap-connector-not-found-modal">
       <Text class="title" bold :size="'md'">
@@ -11,7 +11,7 @@
         <Text :size="'small'" :color="'secondary-text'">
           <span v-html="t('connector_not_found_modal.tips')"></span>
         </Text>
-        <img class="img" src="./ArgentX.png">
+        <img class="img" src="./ArgentX.png" />
       </div>
     </div>
   </Modal>
@@ -29,7 +29,7 @@ export default defineComponent({
   components: {
     Modal,
     ModalHeader,
-    Text
+    Text,
   },
   setup() {
     const { t } = useI18n()
@@ -39,7 +39,7 @@ export default defineComponent({
       get: () => store.showConnectorNotFoundModal,
       set(newValue) {
         store.toggleConnectorNotFoundModal(newValue)
-      }
+      },
     })
 
     return {
@@ -47,7 +47,7 @@ export default defineComponent({
 
       t,
     }
-  }
+  },
 })
 </script>
 

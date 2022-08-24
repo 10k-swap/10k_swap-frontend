@@ -30,13 +30,13 @@ import Text from '../../components/Text/Text.vue'
 
 export default defineComponent({
   components: {
-    Text
+    Text,
   },
   setup() {
     const { t } = useI18n()
 
     return {
-      t
+      t,
     }
   },
 })

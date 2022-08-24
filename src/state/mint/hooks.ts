@@ -84,7 +84,7 @@ export function useDerivedMintInfo(
       }
       return undefined
     }
-    if (independentAmount) {
+    if (independentAmount.value) {
       const [tokenA, tokenB] = [currencyA.value, currencyB.value]
 
       if (tokenA && tokenB && independentAmount.value && pair.value) {

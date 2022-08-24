@@ -1,7 +1,13 @@
 <template>
   <div class="l0k-swap-app-nav-wrap">
-    <router-link class="l0k-swap-app-nav" :class="{ 'l0k-swap-app-nav-active': nav.path === route.path }"
-      v-for="nav in navs" :key="nav.path" :to="nav.path" tag="div">
+    <router-link
+      class="l0k-swap-app-nav"
+      :class="{ 'l0k-swap-app-nav-active': nav.path === route.path }"
+      v-for="nav in navs"
+      :key="nav.path"
+      :to="nav.path"
+      tag="div"
+    >
       {{ nav.name }}
     </router-link>
   </div>
@@ -18,7 +24,7 @@ export default defineComponent({
 
     return {
       navs,
-      route
+      route,
     }
   },
 })

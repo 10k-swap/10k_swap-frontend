@@ -20,7 +20,7 @@ export default defineComponent({
     ConnectingModal,
     ConnectorNotFoundModal,
     ConnectRejectModal,
-    SlippageToleranceSettingsModal
-  }
+    SlippageToleranceSettingsModal,
+  },
 })
 </script>

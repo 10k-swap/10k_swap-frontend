@@ -1,14 +1,24 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => showModal = false" />
+      <ModalHeader @dismiss="() => (showModal = false)" />
     </template>
     <div class="l0k-swap-transaction-rejected-modal">
       <ErrorIcon width="64px" :color="'red'" />
       <Text class="label" bold :color="'red'">
         {{ t('transaction.transaction_rejected') }}
       </Text>
-      <Button class="dismiss" @click="showModal = false" plain bold style="{width:140px}">
+      <Button
+        class="dismiss"
+        @click="showModal = false"
+        plain
+        bold
+        style="
+           {
+            width: 140px;
+          }
+        "
+      >
         {{ t('transaction.dismiss') }}
       </Button>
     </div>
@@ -28,15 +38,15 @@ export default defineComponent({
   props: {
     show: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   components: {
     Modal,
     ModalHeader,
     Text,
     ErrorIcon,
-    Button
+    Button,
   },
   emits: ['dismiss'],
   setup(props, { emit }) {
@@ -49,7 +59,7 @@ export default defineComponent({
         if (!newValue) {
           emit('dismiss')
         }
-      }
+      },
     })
 
     return {
@@ -57,11 +67,11 @@ export default defineComponent({
 
       t,
     }
-  }
+  },
 })
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import '../../styles/index.scss';
 
 .l0k-swap-transaction-rejected-modal {

@@ -1,13 +1,11 @@
 <template>
   <Modal v-model="showModal">
     <template v-slot:header>
-      <ModalHeader :title="t('slippage_tolerance_settings_modal.title')" @dismiss="() => showModal = false" />
+      <ModalHeader :title="t('slippage_tolerance_settings_modal.title')" @dismiss="() => (showModal = false)" />
     </template>
     <div class="l0k-swap-slippage-tolerance-settings-modal">
       <div class="l0k-swap-slippage-tolerance-settings-tips">
-        <Text :size="'small'">
-          {{ t('slippage_tolerance_settings_modal.slippage_tolerance') }}:
-        </Text>
+        <Text :size="'small'"> {{ t('slippage_tolerance_settings_modal.slippage_tolerance') }}: </Text>
         <Text :size="'small'" :color="'secondary-text'">
           {{ t('slippage_tolerance_settings_modal.slippage_tolerance_desc') }}
         </Text>
@@ -17,7 +15,7 @@
           {{ t('slippage_tolerance_settings_modal.auto') }}
         </Button>
         <div class="input-wrap">
-          <input class="input" type="text" v-model="typedValue">
+          <input class="input" type="text" v-model="typedValue" />
         </div>
       </div>
       <div class="l0k-swap-slippage-tolerance-settings-confirm">
@@ -44,7 +42,7 @@ export default defineComponent({
     Modal,
     ModalHeader,
     Text,
-    Button
+    Button,
   },
   setup() {
     const { t } = useI18n()
@@ -63,14 +61,14 @@ export default defineComponent({
     const typedValue = ref<number | string>('')
     const parsedTypedValue = computed(() => {
       const typed = typedValue.value
-      return Math.trunc((typeof typed === "string" ? parseFloat(typed) : typed) * 100)
+      return Math.trunc((typeof typed === 'string' ? parseFloat(typed) : typed) * 100)
     })
 
     const showModal = computed({
       get: () => modalStore.showSlippageToleranceSettingsModal,
       set(newValue) {
         modalStore.toggleSlippageToleranceSettingsModal(newValue)
-      }
+      },
     })
 
     const isDisabled = computed(() => {
@@ -83,7 +81,6 @@ export default defineComponent({
       }
       return false
     })
-
 
     const onAuto = () => {
       typedValue.value = INITIAL_ALLOWED_SLIPPAGE / 100
@@ -100,9 +97,9 @@ export default defineComponent({
 
       t,
       onAuto,
-      onConfirm
+      onConfirm,
     }
-  }
+  },
 })
 </script>
 
@@ -174,7 +171,6 @@ export default defineComponent({
       .input-wrap {
         width: 50%;
       }
-
     }
   }
 

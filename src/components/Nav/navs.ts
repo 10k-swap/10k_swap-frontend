@@ -4,7 +4,7 @@ export default [
   {
     path: '/',
     name: i18n.global.t('header.nav.swap'),
-  }, 
+  },
   {
     path: '/pool',
     name: i18n.global.t('header.nav.pool'),

@@ -1,12 +1,7 @@
 import { AccountInterface } from 'starknet'
 import { Connector } from './base'
 import { IStarknetWindowObject } from 'get-starknet'
-import {
-  ConnectorNotConnectedError,
-  ConnectorNotFoundError,
-  UserNotConnectedError,
-  UserRejectedRequestError,
-} from '../errors'
+import { ConnectorNotConnectedError, ConnectorNotFoundError, UserNotConnectedError, UserRejectedRequestError } from '../errors'
 
 export interface InjectedConnectorOptions {
   id: string

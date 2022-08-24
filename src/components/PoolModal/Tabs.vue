@@ -1,8 +1,14 @@
 <template>
   <div class="l0k-swap-pair-modal-tabs">
-    <Button class="l0k-swap-pair-modal-tab" :class="{ active: item.value === current }" v-for="item in tabs"
-      :key="item.value" :type="item.value === current ? 'primary' : 'text'" :size="'small'"
-      @click="onChange(item.value)">
+    <Button
+      class="l0k-swap-pair-modal-tab"
+      :class="{ active: item.value === current }"
+      v-for="item in tabs"
+      :key="item.value"
+      :type="item.value === current ? 'primary' : 'text'"
+      :size="'small'"
+      @click="onChange(item.value)"
+    >
       {{ item.label }}
     </Button>
   </div>
@@ -15,16 +21,16 @@ import Button from '../Button/Button'
 
 export default defineComponent({
   components: {
-    Button
+    Button,
   },
   emits: ['change'],
   props: {
     tabs: {
-      type: Array as PropType<{ label: string, value: Actions }[]>,
+      type: Array as PropType<{ label: string; value: Actions }[]>,
     },
     current: {
       type: Number as PropType<Actions>,
-    }
+    },
   },
   setup(_, { emit }) {
     const onChange = (tab: Actions) => {
@@ -32,12 +38,11 @@ export default defineComponent({
     }
 
     return {
-      onChange
+      onChange,
     }
-  }
+  },
 })
 </script>
-
 
 <style lang="scss">
 @import '../../styles/index.scss';

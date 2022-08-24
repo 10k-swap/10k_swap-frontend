@@ -1,7 +1,7 @@
 import { TradeType } from './constants'
 import invariant from 'tiny-invariant'
 import { bnToUint256, Uint256 } from 'starknet/dist/utils/uint256'
-import { CurrencyAmount, Percent, Trade } from './entities'
+import { Percent, Trade } from './entities'
 
 /**
  * Options for producing the arguments to send call to the router.
@@ -42,9 +42,9 @@ export interface SwapParameters {
   args: (any | string)[]
 }
 
-function toHex(currencyAmount: CurrencyAmount) {
-  return `0x${currencyAmount.raw.toString(16)}`
-}
+// function toHex(currencyAmount: CurrencyAmount) {
+//   return `0x${currencyAmount.raw.toString(16)}`
+// }
 
 /**
  * Represents the Uniswap V2 Router, and has static methods for helping execute trades.

@@ -5,7 +5,6 @@ import { useStarknetCalls } from '../starknet-vue/hooks/call'
 import { computed, ComputedRef, Ref, toRaw } from 'vue'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { Abi, Contract } from 'starknet'
-import { uint256ToBN } from 'starknet/dist/utils/uint256'
 
 export enum PairState {
   LOADING,

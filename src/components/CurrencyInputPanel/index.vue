@@ -1,7 +1,7 @@
 <template>
   <div class="l0k-swap-currency-input-panel" :class="classes">
     <div class="inputs">
-      <input type="number" v-model="typedValue" placeholder="0.0">
+      <input type="number" v-model="typedValue" placeholder="0.0" />
       <TokenSelector v-if="selector" class="token-select" :token="token ?? null" @select="onSelect" />
       <div class="token" v-else>
         <template v-if="slots.token">
@@ -15,8 +15,9 @@
     </div>
     <div class="balance">
       <Text :color="'description-text'" :size="'mini'">
-        {{ t('currency_input_panel.balance', {
-            balance: currencyBalance === null ? 'loading...' : currencyBalance?.toSignificant() ?? '-'
+        {{
+          t('currency_input_panel.balance', {
+            balance: currencyBalance === null ? 'loading...' : currencyBalance?.toSignificant() ?? '-',
           })
         }}
       </Text>
@@ -33,30 +34,29 @@ import Text from '../Text/Text.vue'
 
 export default defineComponent({
   props: {
-    token: { type: Object as PropType<Token | undefined | null>, },
+    token: { type: Object as PropType<Token | undefined | null> },
     value: {
-      type: [String, Number]
+      type: [String, Number],
     },
     selectorDisabled: Boolean,
     selector: {
       default: true,
-      type: Boolean
+      type: Boolean,
     },
     size: {
       default: 'normal',
-      type: String as PropType<'small' | 'normal'>
+      type: String as PropType<'small' | 'normal'>,
     },
-    currencyBalance: { type: Object as PropType<TokenAmount | undefined | null>, },
+    currencyBalance: { type: Object as PropType<TokenAmount | undefined | null> },
   },
   components: {
     TokenSelector,
     TokenLogo,
-    Text
+    Text,
   },
   emits: ['token-select', 'input'],
   setup(props, context) {
     const { value, currencyBalance, size } = toRefs(props)
-
 
     const { t } = useI18n()
 
@@ -64,7 +64,7 @@ export default defineComponent({
       get: () => value.value,
       set(newValue) {
         context.emit('input', newValue)
-      }
+      },
     })
 
     const onSelect = (token: Token) => {
@@ -78,9 +78,9 @@ export default defineComponent({
       slots: context.slots,
       typedValue,
       classes: computed(() => ({
-        'l0k-swap-currency-input-panel-small': size.value === 'small'
+        'l0k-swap-currency-input-panel-small': size.value === 'small',
       })),
-      currencyBalance
+      currencyBalance,
     }
   },
 })
@@ -103,7 +103,7 @@ export default defineComponent({
       -webkit-appearance: none;
     }
 
-    input[type="number"] {
+    input[type='number'] {
       -moz-appearance: textfield;
     }
 
