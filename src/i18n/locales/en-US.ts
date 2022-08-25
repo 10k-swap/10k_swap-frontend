@@ -90,6 +90,7 @@ export default {
     APR: 'APR',
     liquidit: 'Liquidit',
     pool_share: 'Pool Share',
+    get: 'Get %{token} LP',
   },
   poolModal: {
     addLiqiudit: 'Add liqiudit',

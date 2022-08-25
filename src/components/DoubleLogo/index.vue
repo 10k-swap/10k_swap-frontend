@@ -1,5 +1,5 @@
 <template>
-  <div class="double-logo">
+  <div class="double-logo" :class="{ coverage: coverage }" :style="{ height: size + 'px' }">
     <TokenLogo :token="token0" :size="size" />
     <TokenLogo :token="token1" :size="size" />
   </div>
@@ -22,6 +22,10 @@ export default defineComponent({
       type: Number,
       default: 24,
     },
+    coverage: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     TokenLogo,
@@ -34,6 +38,22 @@ export default defineComponent({
   img {
     &:first-child {
       margin-right: 4px;
+    }
+  }
+  &.coverage {
+    position: relative;
+    width: 32px;
+    img {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      &:first-child {
+        margin-right: 0;
+      }
+      &:last-child {
+        transform: translateY(-50%) translateX(12px);
+        z-index: 1;
+      }
     }
   }
 }

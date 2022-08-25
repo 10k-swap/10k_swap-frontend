@@ -5,7 +5,6 @@ import { DEFAULT_INTERVAL, StarknetTransactionMethodsSymbol, StarknetTransaction
 import { Transaction, TransactionSubmitted } from './model'
 import TransactionStorageManager from '../../utils/TransactionStorageManager'
 
-// todo: wait test
 function isLoading(status: Status | TransactionStatus) {
   return ['TRANSACTION_RECEIVED', 'RECEIVED', 'PENDING'].includes(status)
 }

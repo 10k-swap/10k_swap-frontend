@@ -52,12 +52,13 @@ $textColors: (
   'g-white': $color-primary,
   'g-primary': $color-white,
   'g-red': $color-red,
+  'g-blue': $color-blue,
   secondary-text: $color-secondary-text,
   description-text: $color-description-text,
   transparent-text: $color-transparent-text,
   g-normal: $color-primary-text,
 );
-$textNames: 'g-red' 'g-primary' 'g-white' 'g-normal' 'secondary-text' 'description-text' 'transparent-text';
+$textNames: 'g-red' 'g-blue' 'g-primary' 'g-white' 'g-normal' 'secondary-text' 'description-text' 'transparent-text';
 
 .#{$text-prefix} {
   font-weight: 400;

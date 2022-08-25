@@ -1,9 +1,9 @@
-import { validateAndParseAddress } from 'starknet/utils/address'
+import { validateAndParseAddress as getAddress } from 'starknet/utils/address'
 import { ADDRESS_ZORE } from '../constants'
 
 export function isAddress(address: any): string | false {
   try {
-    const parsed = validateAndParseAddress(address)
+    const parsed = getAddress(address)
     return parsed === ADDRESS_ZORE ? false : address
   } catch (error) {
     return false

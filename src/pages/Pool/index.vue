@@ -33,6 +33,7 @@ import Pools from './Pools.vue'
 import { usePoolModalStore, usePoolStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
+import { useAllPairs } from '../../state/pool/hooks'
 
 export default defineComponent({
   components: {
@@ -45,11 +46,12 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const {
-      state: { chainId },
+      state: { chainId, account },
     } = useStarknet()
     const isMobile = useIsMobile()
     const poolStore = usePoolStore()
     const poolModalStore = usePoolModalStore()
+    const pairs = useAllPairs()
 
     const currentNav = ref<'pools' | 'my-pools'>('pools')
 
@@ -65,6 +67,12 @@ export default defineComponent({
     watch([chainId], () => {
       if (chainId.value) {
         poolStore.getAllPairs(chainId.value)
+      }
+    })
+
+    watch([pairs, account, chainId], () => {
+      if (pairs.value.length && account.value && chainId.value) {
+        poolStore.getUserPairs(chainId.value, account.value)
       }
     })
 
