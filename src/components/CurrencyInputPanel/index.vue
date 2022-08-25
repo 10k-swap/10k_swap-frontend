@@ -2,7 +2,7 @@
   <div class="l0k-swap-currency-input-panel" :class="classes">
     <div class="inputs">
       <input type="number" v-model="typedValue" placeholder="0.0" />
-      <TokenSelector v-if="selector" class="token-select" :token="token ?? null" @select="onSelect" />
+      <TokenSelector v-if="selector" class="token-select" :token="token ?? null" :otherToken="otherToken ?? null" @select="onSelect" />
       <div class="token" v-else>
         <template v-if="slots.token">
           <slot name="token"></slot>
@@ -35,6 +35,7 @@ import Text from '../Text/Text.vue'
 export default defineComponent({
   props: {
     token: { type: Object as PropType<Token | undefined | null> },
+    otherToken: { type: Object as PropType<Token | undefined | null> },
     value: {
       type: [String, Number],
     },

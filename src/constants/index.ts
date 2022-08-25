@@ -16,7 +16,7 @@ export const MOBILE_SIZE = 768
 // default allowed slippage, in bips
 export const INITIAL_ALLOWED_SLIPPAGE = 20
 
-// 20 minutes, denominated in seconds
+// 60 minutes, denominated in seconds
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 60
 
 export const ONE_BIPS = new Percent(JSBI.BigInt(1), JSBI.BigInt(10000))
@@ -25,4 +25,9 @@ export const BIPS_BASE = JSBI.BigInt(10000)
 export const CHAIN_LABELS: { [chainId in StarknetChainId]: string } = {
   [StarknetChainId.MAINNET]: i18n.global.t('main_network'),
   [StarknetChainId.TESTNET]: i18n.global.t('goerli_test_network'),
+}
+
+export const SERVER_URLS: { [chainId in StarknetChainId]: string } = {
+  [StarknetChainId.MAINNET]: '',
+  [StarknetChainId.TESTNET]: 'http://ec2-18-182-76-58.ap-northeast-1.compute.amazonaws.com',
 }

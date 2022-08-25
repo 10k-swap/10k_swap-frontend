@@ -5,6 +5,7 @@
         :value="formattedAmounts[Field.CURRENCY_A]"
         :token="currencies[Field.CURRENCY_A]"
         :currencyBalance="currencyBalances[Field.CURRENCY_A]"
+        :otherToken="currencies[Field.CURRENCY_B]"
         @token-select="handleCurrencyASelect"
         @input="onFieldAInput"
       />
@@ -14,6 +15,7 @@
       <CurrencyInputPanel
         :value="formattedAmounts[Field.CURRENCY_B]"
         :token="currencies[Field.CURRENCY_B]"
+        :otherToken="currencies[Field.CURRENCY_A]"
         :currencyBalance="currencyBalances[Field.CURRENCY_B]"
         @token-select="handleCurrencyBSelect"
         @input="onFieldBInput"

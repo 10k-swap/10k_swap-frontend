@@ -23,15 +23,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '../../components/Button/Button'
 import Text from '../../components/Text/Text.vue'
 import PoolModal from '../../components/PoolModal/PoolModal.vue'
 import MyPools from './MyPools.vue'
 import Pools from './Pools.vue'
-import { usePoolModalStore } from '../../state'
+import { usePoolModalStore, usePoolStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
+import { useStarknet } from '../../starknet-vue/providers/starknet'
 
 export default defineComponent({
   components: {
@@ -43,7 +44,11 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n()
+    const {
+      state: { chainId },
+    } = useStarknet()
     const isMobile = useIsMobile()
+    const poolStore = usePoolStore()
     const poolModalStore = usePoolModalStore()
 
     const currentNav = ref<'pools' | 'my-pools'>('pools')
@@ -51,6 +56,17 @@ export default defineComponent({
     const onNewPosition = () => {
       poolModalStore.newPosition()
     }
+
+    onMounted(() => {
+      if (chainId.value) {
+        poolStore.getAllPairs(chainId.value)
+      }
+    })
+    watch([chainId], () => {
+      if (chainId.value) {
+        poolStore.getAllPairs(chainId.value)
+      }
+    })
 
     return {
       isMobile,

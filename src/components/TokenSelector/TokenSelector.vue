@@ -14,10 +14,10 @@
       <div class="l0k-swap-select-token--tokens">
         <div
           class="l0k-swap-select-token--token"
-          :class="{ active: current && token.equals(current) }"
+          :class="{ active: current && token.equals(current), disabled: !!(otherToken && token && otherToken.equals(token)) }"
           v-for="token in tokens"
           :key="token.address"
-          @click="onSelect(token)"
+          @click="onSelect(token, $event)"
         >
           <TokenLogo class="l0k-swap-select-token--token-logo" :token="token" />
           <Text class="text"> {{ token.symbol }} </Text>
@@ -43,6 +43,10 @@ export default defineComponent({
     token: {
       type: Object as PropType<Token | null>,
     },
+    otherToken: {
+      type: Object as PropType<Token | null>,
+    },
+    disabled: { type: Boolean, default: false },
   },
   components: {
     Popper,
@@ -52,7 +56,7 @@ export default defineComponent({
   },
   emits: ['select'],
   setup(props, { emit }) {
-    const { token } = toRefs(props)
+    const { token, otherToken } = toRefs(props)
     const {
       state: { chainId },
     } = useStarknet()
@@ -69,7 +73,11 @@ export default defineComponent({
       },
     })
 
-    const onSelect = (selected: Token) => {
+    const onSelect = (selected: Token, e: Event) => {
+      if ((otherToken.value && selected && otherToken.value.equals(selected)) || (current.value && selected.equals(current.value))) {
+        e.stopPropagation()
+        return
+      }
       current.value = selected
     }
 
@@ -145,9 +153,12 @@ export default defineComponent({
     &.active {
       background: $color-bg-secondary;
     }
-
-    &:hover:not(.active) {
-      background: rgba($color: $color-bg-secondary, $alpha: 0.7);
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    &:hover:not(.active):not(.disabled) {
+      background: rgba($color: $color-bg-secondary, $alpha: 0.5);
     }
 
     .text {

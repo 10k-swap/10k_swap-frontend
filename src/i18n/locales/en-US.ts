@@ -74,6 +74,13 @@ export default {
   token_select: {
     label: 'Select',
   },
+  faucet: {
+    title: 'Faucet',
+    connectTips1: 'We will provide free test coins,',
+    connectTips2: 'please connect wallet for more information.',
+    tips: 'Retweet to get 500 ABC, 500 ABB and 0.01 Goerli ETH within 30 mins.',
+    retweet: 'Retweet',
+  },
   pool: {
     title: 'Pools Overview',
     my_pools: 'My pools',
