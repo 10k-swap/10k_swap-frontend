@@ -39,7 +39,7 @@ export const useSwapStore = defineStore<'swap', SwapState, {}, SwapActions>('swa
       independentField: Field.INPUT,
       typedValue: '',
       [Field.INPUT]: {
-        currencyId: '0x002e6249b9e54016496a3e618a87537afeb6451105fb645de38b340d1faba527',
+        currencyId: '',
       },
       [Field.OUTPUT]: {
         currencyId: '',

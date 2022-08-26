@@ -17,7 +17,7 @@ export interface Pool {
   APR: number
 }
 
-interface UserPool {
+export interface UserPool {
   pair: Pair
   totalSupply: TokenAmount
   balance: TokenAmount
@@ -56,10 +56,10 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
       if (!this.pairs.length) {
         return
       }
-      const userPools = await Promise.all(
-        this.pairs.map(async (item) => {
-          const balance = await getBalances(account, item.pairAddress, chainId)
-          if (!balance) return undefined
+
+      const promises = this.pairs.map(async (item) => {
+        const balance = await getBalances(account, item.pairAddress, chainId)
+        if (balance) {
           const poolShare = new Percent(balance, item.totalSupply.raw.toString())
           return {
             pair: item.pair,
@@ -69,8 +69,11 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
             poolShare,
             poolShareView: (poolShare?.lessThan(ONE_BIPS) ? '<0.01' : poolShare.toFixed(2)) ?? '0',
           }
-        })
-      )
+        }
+        return undefined
+      })
+      const userPools = await Promise.all(promises)
+
       this.userPools = userPools.filter((item): item is UserPool => !!(item && item.balance.greaterThan(ZERO)))
     },
   },

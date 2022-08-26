@@ -91,6 +91,7 @@ export default {
     liquidit: 'Liquidit',
     pool_share: 'Pool Share',
     get: 'Get %{token} LP',
+    withdraw: 'Withdraw',
   },
   poolModal: {
     addLiqiudit: 'Add liqiudit',

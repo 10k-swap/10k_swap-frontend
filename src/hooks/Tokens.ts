@@ -30,9 +30,9 @@ export function useToken(tokenAddress: ComputedRef<string | undefined>): Compute
   const token: ComputedRef<Token | undefined> = computed(() => (address.value && chainId.value ? getCaches(chainId.value, address.value) : undefined))
 
   const contract = computed(() => (token.value ? undefined : tokenContract.value))
-  const tokenName = useStarknetCall(contract, 'name')
-  const symbol = useStarknetCall(contract, 'symbol')
-  const decimals = useStarknetCall(contract, 'decimals')
+  const tokenName = useStarknetCall(contract, 'name', [], { watch: false })
+  const symbol = useStarknetCall(contract, 'symbol', [], { watch: false })
+  const decimals = useStarknetCall(contract, 'decimals', [], { watch: false })
 
   return computed(() => {
     if (token.value) return token.value

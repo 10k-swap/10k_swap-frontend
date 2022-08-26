@@ -34,7 +34,7 @@ const caches: {
 export function useStarknetCall<T extends unknown[]>(
   contract: ComputedRef<Contract | undefined>,
   method: string,
-  args?: ComputedRef<T | undefined>,
+  args?: ComputedRef<T | undefined> | [],
   options?: UseStarknetCallOptions | undefined
 ): UseStarknetCall & { state: State } {
   const state = reactive<State>({
@@ -47,11 +47,11 @@ export function useStarknetCall<T extends unknown[]>(
   const { block } = useStarknetBlock()
 
   // default to true
-  const sholudWatch = options?.watch !== undefined ? options.watch : false
+  const sholudWatch = options?.watch !== undefined ? options.watch : true
 
   const callContract = async () => {
     if (contract.value && method) {
-      const arg = args && args.value ? args.value : []
+      const arg = Array.isArray(args) ? args : args && args.value ? args.value : []
 
       const key = toCallKey(contract.value.address, method, block.value?.block_hash, argsToHash(arg))
       const current = caches[key]
@@ -94,7 +94,7 @@ export function useStarknetCall<T extends unknown[]>(
     refresh()
   })
 
-  const arg = computed(() => (args?.value ? args.value : undefined))
+  const arg = computed(() => (Array.isArray(args) ? args : args?.value ? args.value : undefined))
   watch([contract, arg], () => {
     refresh()
   })
@@ -135,7 +135,7 @@ export function useStarknetCalls<T extends unknown[]>(
   const { block } = useStarknetBlock()
 
   // default to false
-  const sholudWatch = options?.watch !== undefined ? options.watch : false
+  const sholudWatch = options?.watch !== undefined ? options.watch : true
 
   const callContract = async () => {
     if (contracts.value && methods.value) {

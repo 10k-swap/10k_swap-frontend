@@ -58,6 +58,9 @@ export default defineComponent({
     const showModal = computed({
       get: () => poolModalStore.show,
       set(newValue) {
+        if (!newValue) {
+          current.value = undefined
+        }
         poolModalStore.togglePoolModal(newValue)
       },
     })
