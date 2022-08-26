@@ -50,16 +50,10 @@
           <div class="value">
             <div class="rates">
               <Text :size="'small'" :color="'description-text'">
-                {{
-                  `1 ${currencies?.[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(6)}
-                                ${currencies?.[Field.CURRENCY_B]?.symbol}`
-                }}
+                {{ `1 ${currencies?.[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(6)} ${currencies?.[Field.CURRENCY_B]?.symbol}` }}
               </Text>
               <Text :size="'small'" :color="'description-text'">
-                {{
-                  `1 ${currencies?.[Field.CURRENCY_B]?.symbol} = ${price?.invert()?.toSignificant(6)}
-                                ${currencies?.[Field.CURRENCY_A]?.symbol}`
-                }}
+                {{ `1 ${currencies?.[Field.CURRENCY_B]?.symbol} = ${price?.invert()?.toSignificant(6)}${currencies?.[Field.CURRENCY_A]?.symbol}` }}
               </Text>
             </div>
           </div>

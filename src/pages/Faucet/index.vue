@@ -9,13 +9,15 @@
     </div>
     <div class="buttons">
       <Button v-if="!account" :type="'primary'" :size="'large'" @click="onConnect" bold>{{ t('connect') }}</Button>
-      <Button v-else :type="'primary'" :size="'large'">{{ t('faucet.retweet') }}</Button>
+      <a v-else class="retweet" :href="href" target="_blank" rel="noopener noreferrer">
+        <Button :type="'primary'" :size="'large'">{{ t('faucet.retweet') }}</Button></a
+      >
     </div>
   </Page>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import Text from '../../components/Text/Text.vue'
@@ -36,8 +38,17 @@ export default defineComponent({
     } = useStarknet()
     const { onConnect } = useConnector()
 
+    const href = computed(() => {
+      const tweetUser = `%40${'10kswapv2'}%2C`
+      const text = `I'm+claiming+testnet+tokens+for+${tweetUser}+an+EVM-compatible+ZK+Rollup!%0A%0AMy+Address:+${
+        account.value
+      }%0A%0ALearn+more:+&url=${''}`
+      return `https://twitter.com/intent/tweet?text=${text}`
+    })
+
     return {
       account,
+      href,
 
       t,
       onConnect,
@@ -63,6 +74,11 @@ export default defineComponent({
     width: 100%;
     box-sizing: border-box;
     padding: 0 20px 30px;
+    .retweet {
+      display: block;
+      width: 100%;
+      height: fit-content;
+    }
   }
 }
 </style>
