@@ -92,6 +92,9 @@ export default {
     pool_share: 'Pool Share',
     get: 'Get %{token} LP',
     withdraw: 'Withdraw',
+    tips: 'Connect wallet to check your pools',
+    tips2: 'Your liquidity positions will appear here',
+    deposit: 'Deposit',
   },
   poolModal: {
     addLiqiudit: 'Add liqiudit',
