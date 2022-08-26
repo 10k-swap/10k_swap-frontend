@@ -40,9 +40,7 @@ export default defineComponent({
 
     const href = computed(() => {
       const tweetUser = `%40${'10kswapv2'}%2C`
-      const text = `I'm+claiming+testnet+tokens+for+${tweetUser}+an+EVM-compatible+ZK+Rollup!%0A%0AMy+Address:+${
-        account.value
-      }%0A%0ALearn+more:+&url=${''}`
+      const text = `I'm+claiming+testnet+tokens+for+${tweetUser}+%0A%0AMy+Address:+${account.value}%0A%0ALearn+more:+&url=${''}`
       return `https://twitter.com/intent/tweet?text=${text}`
     })
 
