@@ -8,7 +8,7 @@
       <Text :size="'small'" v-else> {{ t('faucet.tips') }} </Text>
     </div>
     <div class="buttons">
-      <Button v-if="!account" :type="'primary'" :size="'large'" @click="onConnect">{{ t('connect') }}</Button>
+      <Button v-if="!account" :type="'primary'" :size="'large'" @click="onConnect" bold>{{ t('connect') }}</Button>
       <Button v-else :type="'primary'" :size="'large'">{{ t('faucet.retweet') }}</Button>
     </div>
   </Page>

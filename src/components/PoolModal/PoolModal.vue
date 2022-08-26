@@ -70,10 +70,10 @@ export default defineComponent({
     const currentTab = computed<Actions>(() => current.value ?? action.value)
 
     const tabs = computed(() => {
-      const base: { label: string; value: Actions }[] = [{ label: t('poolModal.addLiqiudit'), value: Actions.MINT }]
+      const base: { label: string; value: Actions }[] = [{ label: t('pool_modal.add_liqiudit'), value: Actions.MINT }]
       if (action.value === Actions.BURN) {
         base.push({
-          label: t('poolModal.withdraw'),
+          label: t('pool_modal.withdraw'),
           value: Actions.BURN,
         })
       }

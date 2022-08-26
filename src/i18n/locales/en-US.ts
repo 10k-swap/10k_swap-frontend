@@ -96,8 +96,8 @@ export default {
     tips2: 'Your liquidity positions will appear here',
     deposit: 'Deposit',
   },
-  poolModal: {
-    addLiqiudit: 'Add liqiudit',
+  pool_modal: {
+    add_liqiudit: 'Add liqiudit',
     withdraw: 'Withdraw',
   },
   add_liqiudit: {

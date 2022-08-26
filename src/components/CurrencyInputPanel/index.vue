@@ -34,12 +34,13 @@ import Text from '../Text/Text.vue'
 
 export default defineComponent({
   props: {
+    selectorDisabled: Boolean,
     token: { type: Object as PropType<Token | undefined | null> },
     otherToken: { type: Object as PropType<Token | undefined | null> },
+    currencyBalance: { type: Object as PropType<TokenAmount | undefined | null> },
     value: {
       type: [String, Number],
     },
-    selectorDisabled: Boolean,
     selector: {
       default: true,
       type: Boolean,
@@ -48,7 +49,6 @@ export default defineComponent({
       default: 'normal',
       type: String as PropType<'small' | 'normal'>,
     },
-    currencyBalance: { type: Object as PropType<TokenAmount | undefined | null> },
   },
   components: {
     TokenSelector,
