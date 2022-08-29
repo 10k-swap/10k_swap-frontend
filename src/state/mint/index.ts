@@ -1,14 +1,18 @@
 import { defineStore } from 'pinia'
+import { Token } from '../../sdk'
 import { Field } from './types'
 
 interface MintState {
   independentField: Field
   typedValue: string | number
   otherTypedValue: string | number // for the case when there's no liquidity
+  tokenA: Token | undefined
+  tokenB: Token | undefined
 }
 
 interface MintActions {
   resetMintState: () => void
+  selectToken: ({ tokenA, tokenB }: { tokenA?: Token; tokenB?: Token }) => void
   typeInput: (payload: { noLiquidity: boolean; field: Field; typedValue: string | number }) => void
 }
 
@@ -18,9 +22,15 @@ export const useMintStore = defineStore<'mint', MintState, {}, MintActions>('min
       independentField: Field.CURRENCY_A,
       typedValue: '',
       otherTypedValue: '',
+      tokenA: undefined,
+      tokenB: undefined,
     }
   },
   actions: {
+    selectToken({ tokenA, tokenB }) {
+      this.tokenA = tokenA ? tokenA : this.tokenA
+      this.tokenB = tokenB ? tokenB : this.tokenB
+    },
     resetMintState() {
       this.independentField = Field.CURRENCY_A
       this.typedValue = ''

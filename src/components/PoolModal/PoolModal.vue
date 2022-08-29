@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="showModal">
+  <Modal v-model="showModal" :top="isMobile ? '30%' : '140px'">
     <template v-slot:header>
       <ModalHeader>
         <template v-slot:left>
@@ -13,7 +13,7 @@
     </template>
     <div class="l0k-swap-pair-modal">
       <div v-if="currentTab === Actions.MINT">
-        <AddLiqiudit :token0="tokens[0]" :token1="tokens[1]" />
+        <AddLiqiudit />
       </div>
       <div v-if="currentTab === Actions.BURN">
         <RemoveLiqiudit :pair="removeLiqiuditPair ?? undefined" />
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, ref } from 'vue'
+import { computed, ComputedRef, defineComponent, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import ModalHeader from '../Modal/ModalHeader.vue'
@@ -31,9 +31,10 @@ import Tabs from './Tabs.vue'
 import AddLiqiudit from '../AddLiqiudit/AddLiqiudit.vue'
 import RemoveLiqiudit from '../RemoveLiqiudit/RemoveLiqiudit.vue'
 import { BackIcon, SettingIcon } from '../Svg'
-import { useModalStore, useSlippageToleranceSettingsStore, usePoolModalStore } from '../../state'
+import { useModalStore, useSlippageToleranceSettingsStore, usePoolModalStore, useMintStore } from '../../state'
 import { Actions } from '../../state/poolModal'
 import { Pair } from '../../sdk'
+import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
   components: {
@@ -48,12 +49,22 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const modalStore = useModalStore()
+    const isMobile = useIsMobile()
     const poolModalStore = usePoolModalStore()
+    const mintStore = useMintStore()
     const slippageToleranceSettingsStore = useSlippageToleranceSettingsStore()
 
     const addLiqiuditPair = computed(() => poolModalStore.addLiqiuditPair)
-    const tokens = computed(() => [addLiqiuditPair.value?.token0, addLiqiuditPair.value?.token1])
     const removeLiqiuditPair: ComputedRef<Pair | undefined> = computed(() => poolModalStore.removeLiqiuditPair as Pair)
+
+    watch([addLiqiuditPair], () => {
+      if (addLiqiuditPair.value) {
+        mintStore.selectToken({
+          tokenA: addLiqiuditPair.value?.token0,
+          tokenB: addLiqiuditPair.value?.token1,
+        })
+      }
+    })
 
     const showModal = computed({
       get: () => poolModalStore.show,
@@ -93,7 +104,7 @@ export default defineComponent({
       tabs,
       currentTab,
       removeLiqiuditPair,
-      tokens,
+      isMobile,
       Actions,
 
       onSetting,

@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { Token } from '../../sdk'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { Field } from '../../state/mint/types'
@@ -86,6 +86,7 @@ import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
 import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { ROUTER_ADDRESSES } from '../../constants/address'
 import useConnector from '../../hooks/useConnector'
+import { useMintStore } from '../../state'
 
 export default defineComponent({
   components: {
@@ -99,20 +100,12 @@ export default defineComponent({
     ScuccessModal,
     RejectedModal,
   },
-  props: {
-    token0: {
-      type: Object as PropType<Token>,
-    },
-    token1: {
-      type: Object as PropType<Token>,
-    },
-  },
-  setup(props) {
-    const { token0, token1 } = toRefs(props)
-    const selectdTokens = ref<[Token | undefined, Token | undefined]>([undefined, undefined])
+  setup() {
+    const mintStore = useMintStore()
+    const mintState = useMintState()
 
-    const tokenA = computed(() => (selectdTokens.value[0] ? selectdTokens.value[0] : token0.value))
-    const tokenB = computed(() => (selectdTokens.value[1] ? selectdTokens.value[1] : token1.value))
+    const tokenA = computed(() => mintState.value.tokenA)
+    const tokenB = computed(() => mintState.value.tokenB)
 
     const showConfirm = ref(false)
     const attemptingTxn = ref(false)
@@ -137,7 +130,6 @@ export default defineComponent({
       liquidityMinted,
     } = useDerivedMintInfo(tokenA, tokenB)
     const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
-    const mintState = useMintState()
     const allowedSlippage = useUserLiqiuditSlippageTolerance()
 
     const routerAddress = computed(() => chainId.value && ROUTER_ADDRESSES[chainId.value])
@@ -179,16 +171,10 @@ export default defineComponent({
       } for ${liquidityMinted.value?.toSignificant(3)} LP`
     })
     const handleCurrencyASelect = (token: Token) => {
-      if (selectdTokens.value.find((item) => item?.address === token.address)) {
-        return
-      }
-      selectdTokens.value[0] = token
+      mintStore.selectToken({ tokenA: token })
     }
     const handleCurrencyBSelect = (token: Token) => {
-      if (selectdTokens.value.find((item) => item?.address === token.address)) {
-        return
-      }
-      selectdTokens.value[1] = token
+      mintStore.selectToken({ tokenB: token })
     }
     const onDeposit = () => {
       showConfirm.value = true

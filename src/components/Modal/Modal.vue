@@ -4,6 +4,7 @@
     classes="l0k-swap-modal-container"
     overlay-class="l0k-swap-modal-overlay"
     content-class="l0k-swap-modal-content"
+    :content-style="{ marginTop: isNumber(top) ? `${top}px` : top }"
   >
     <slot name="header" v-if="slots.header"></slot>
     <ModalHeader v-else :title="title" />
@@ -14,6 +15,7 @@
 </template>
 
 <script lang="ts">
+import { isNumber } from 'lodash'
 import { computed, defineComponent, toRefs } from 'vue'
 import ModalHeader from './ModalHeader.vue'
 
@@ -28,6 +30,10 @@ export default defineComponent({
     modelValue: {
       type: Boolean,
       require: true,
+    },
+    top: {
+      type: [Number, String],
+      default: 200,
     },
   },
   emits: ['update:modelValue'],
@@ -45,6 +51,8 @@ export default defineComponent({
       showModal,
       title,
       slots: context.slots,
+
+      isNumber,
     }
   },
 })
@@ -56,7 +64,7 @@ export default defineComponent({
 .l0k-swap-modal-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .l0k-swap-modal-overlay {
@@ -65,11 +73,12 @@ export default defineComponent({
 
 .l0k-swap-modal-content {
   width: 480px;
+  max-height: 90vh;
+  height: fit-content;
   background: $color-white;
   border-radius: 20px;
   overflow-y: scroll;
   @include no-scrollbar;
-  max-height: 90vh;
 
   @include mobile {
     width: 335px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="l0k-swap-app-body">
+  <div class="l0k-swap-app-body" :class="{ root: isRoot }">
     <Header />
     <slot></slot>
   </div>
@@ -7,7 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
+import { useRoute } from 'vue-router'
 import Header from '../../components/Header/Header.vue'
 import Modals from '../../components/Modals/Modals.vue'
 
@@ -15,6 +16,15 @@ export default defineComponent({
   components: {
     Header,
     Modals,
+  },
+  setup() {
+    const route = useRoute()
+
+    const isRoot = computed(() => route.path === '/')
+
+    return {
+      isRoot,
+    }
   },
 })
 </script>
@@ -25,9 +35,12 @@ export default defineComponent({
 .l0k-swap-app-body {
   height: 100vh;
   width: 100vw;
-  @include bg-prefix('./bg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  @include bg-prefix('./bg2');
   overflow: hidden;
+  &.root {
+    @include bg-prefix('./bg');
+  }
 }
 </style>

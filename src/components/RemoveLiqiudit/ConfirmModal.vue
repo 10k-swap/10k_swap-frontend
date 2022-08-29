@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="showModal">
+  <Modal v-model="showModal" :top="160">
     <template v-slot:header>
       <ModalHeader @dismiss="() => (showModal = false)" :title="t('remove_liqiudit.confirm_title')" />
     </template>
