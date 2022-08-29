@@ -4,10 +4,12 @@
       <Text class="tips" v-if="!account" :color="'description-text'">
         {{ t('pool.tips') }}
       </Text>
-      <Text class="tips" v-else :color="'description-text'">
-        {{ t('pool.tips2') }}
-      </Text>
-      <Button class="deposit" v-if="!userPairs.length" plain bold @click="onDeposit"> {{ t('pool.deposit') }}</Button>
+      <template v-else>
+        <Text class="tips" :color="'description-text'">
+          {{ t('pool.tips2') }}
+        </Text>
+        <Button class="deposit" plain bold @click="onDeposit"> {{ t('pool.deposit') }}</Button>
+      </template>
     </div>
     <template v-else>
       <div class="my-pools-head">

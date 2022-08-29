@@ -74,7 +74,7 @@ export default defineComponent({
     })
 
     const onSelect = (selected: Token, e: Event) => {
-      if ((otherToken.value && selected && otherToken.value.equals(selected)) || (current.value && selected.equals(current.value))) {
+      if (otherToken.value && selected && otherToken.value.equals(selected)) {
         e.stopPropagation()
         return
       }

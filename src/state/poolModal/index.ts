@@ -33,12 +33,12 @@ export const usePoolModalStore = defineStore<'poolModal', PoolModalStoreState, {
   actions: {
     togglePoolModal(show: boolean) {
       this.show = show
-      if (!show) {
-        this._resetState()
-      }
+      // if (!show) {
+      //   this._resetState()
+      // }
     },
     newPosition() {
-      this._resetState()
+      // this._resetState()
       this.show = true
     },
     addLiqiudit(pair) {
