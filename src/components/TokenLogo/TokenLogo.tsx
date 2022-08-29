@@ -2,6 +2,7 @@ import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { Token } from '../../sdk'
 
 const BADS: { [url: string]: true } = {}
+const DEFAULT_LOGO = `./images/coins/default.png`
 
 export default defineComponent({
   props: {
@@ -22,13 +23,11 @@ export default defineComponent({
 
     const src = computed(() => {
       if (hasError.value || !token.value) {
-        return `./images/coins/default.png`
+        return DEFAULT_LOGO
       }
+
       const url = `./images/coins/${token.value.address}.png`
-      if (BADS[url]) {
-        return `./images/coins/default.png`
-      }
-      return url
+      return BADS[url] ? DEFAULT_LOGO : url
     })
 
     watch(token, () => (hasError.value = false))
