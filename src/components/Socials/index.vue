@@ -16,7 +16,7 @@ import TwitterIcon from './twitter.png'
 
 const socials = [
   { link: '#', icon: TwitterIcon },
-  { link: '#', icon: GithubIcon },
+  { link: 'https://github.com/10k-swap', icon: GithubIcon },
   { link: '#', icon: MediumIcon },
   { link: '#', icon: DiscordIcon },
   { link: '#', icon: DocIcon },
