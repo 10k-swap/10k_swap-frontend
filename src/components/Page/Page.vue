@@ -42,7 +42,8 @@ export default defineComponent({
 
 .l0k-swap-page {
   width: 480px;
-  margin: 0 auto;
+  margin-right: auto;
+  margin-left: auto;
   background: $color-white;
   border-radius: 20px;
 

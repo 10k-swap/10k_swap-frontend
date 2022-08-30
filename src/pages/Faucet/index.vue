@@ -39,8 +39,10 @@ export default defineComponent({
     const { onConnect } = useConnector()
 
     const href = computed(() => {
-      const tweetUser = `%40${'10kswapv2'}%2C`
-      const text = `I'm+claiming+testnet+tokens+for+${tweetUser}+%0A%0AMy+Address:+${account.value}%0A%0ALearn+more:+&url=${''}`
+      const tweetUser = `%40${'YunhongYu'}`
+      const text = `I'm+claiming+testnet+tokens+for+${tweetUser}%2C+a+decentralized+exchange+built+on Starknet!+%0A%0AMy+Address:+${
+        account.value
+      }%0A%0ALearn+more:+&url=${'https://goerli.10kswap.com/'}`
       return `https://twitter.com/intent/tweet?text=${text}`
     })
 

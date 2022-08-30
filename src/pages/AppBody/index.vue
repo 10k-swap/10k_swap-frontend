@@ -2,6 +2,7 @@
   <div class="l0k-swap-app-body" :class="{ root: isRoot }">
     <Header />
     <slot></slot>
+    <div class="socials"><Socials /></div>
   </div>
   <Modals />
 </template>
@@ -11,11 +12,13 @@ import { computed, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
 import Header from '../../components/Header/Header.vue'
 import Modals from '../../components/Modals/Modals.vue'
+import Socials from '../../components/Socials/index.vue'
 
 export default defineComponent({
   components: {
     Header,
     Modals,
+    Socials,
   },
   setup() {
     const route = useRoute()
@@ -33,6 +36,7 @@ export default defineComponent({
 @import '../../styles/index.scss';
 
 .l0k-swap-app-body {
+  position: relative;
   height: 100vh;
   width: 100vw;
   background-repeat: no-repeat;
@@ -41,6 +45,12 @@ export default defineComponent({
   overflow: hidden;
   &.root {
     @include bg-prefix('./bg');
+  }
+  .socials {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 80px;
   }
 }
 </style>

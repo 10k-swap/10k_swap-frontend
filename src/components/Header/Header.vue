@@ -1,7 +1,8 @@
 <template>
   <div class="l0k-swap-app-header">
     <div class="app-logo">
-      <img src="./logo.png" />
+      <img class="logo" src="./logo.png" />
+      <img class="alpha" src="./alpha.png" />
     </div>
     <Nav class="l0k-swap-app-header-nav" />
     <Connector class="l0k-swap-app-header-connector" />
@@ -34,9 +35,16 @@ export default defineComponent({
   .app-logo {
     flex: 1;
 
-    img {
+    .logo {
+      display: inline-block;
       width: 105px;
       height: 40px;
+    }
+    .alpha {
+      display: inline-block;
+      width: 45px;
+      height: 16px;
+      margin-left: 6px;
     }
   }
 
@@ -52,26 +60,26 @@ export default defineComponent({
 
   @include mobile {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     height: 120px;
     padding: 0 12px;
 
     .app-logo {
-      grid-column: 1/3;
+      grid-column: 1/4;
       grid-row: 1/1;
     }
 
     .l0k-swap-app-header-nav {
       display: flex;
       justify-content: center;
-      grid-column: 1/6;
+      grid-column: 1/7;
       grid-row: 2/2;
     }
 
     .l0k-swap-app-header-connector {
       display: flex;
       justify-content: flex-end;
-      grid-column: 3/6;
+      grid-column: 4/7;
       grid-row: 1/1;
     }
   }
