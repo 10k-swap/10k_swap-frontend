@@ -58,11 +58,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/index.scss';
 .l0k-swap-faucet {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 28px;
+  @include mobile {
+    margin-top: 5px;
+  }
+
   .tips {
     padding: 80px 46px;
     text-align: center;

@@ -99,6 +99,7 @@ export default defineComponent({
 
   @include mobile {
     width: 351px;
+    margin-top: 5px;
   }
 
   .head {
