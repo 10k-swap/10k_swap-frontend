@@ -2,7 +2,17 @@ import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
 import { Token } from '../../sdk'
 
 const BADS: { [url: string]: true } = {}
-const DEFAULT_LOGO = `./images/coins/default.png`
+
+function stringToColor(str: string) {
+  const hash = Array.from({ length: str.length }).reduce<number>((hash, _, i) => str.charCodeAt(i) + (hash << 5) - hash, 0)
+  const color = Math.floor(Math.abs(((Math.sin(hash) * 10000) % 1) * 16777216)).toString(16)
+
+  return Array(6 - color.length + 1).join('0') + color
+}
+function getDefaultUrl(token: Token | undefined) {
+  const symbol = token?.symbol ?? 'token'
+  return `https://eu.ui-avatars.com/api/?name=${symbol}&background=${stringToColor(symbol)}&color=fff&length=3&rounded=true&size=24`
+}
 
 export default defineComponent({
   props: {
@@ -23,11 +33,11 @@ export default defineComponent({
 
     const src = computed(() => {
       if (hasError.value || !token.value) {
-        return DEFAULT_LOGO
+        return getDefaultUrl(token.value ?? undefined)
       }
 
       const url = `./images/coins/${token.value.address}.png`
-      return BADS[url] ? DEFAULT_LOGO : url
+      return BADS[url] ? getDefaultUrl(token.value) : url
     })
 
     watch(token, () => (hasError.value = false))

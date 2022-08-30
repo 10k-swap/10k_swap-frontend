@@ -11,7 +11,14 @@
         <Text :size="'small'" :color="'secondary-text'">
           <span v-html="t('connector_not_found_modal.tips')"></span>
         </Text>
-        <img class="img" src="./ArgentX.png" />
+        <a
+          class="link"
+          href="https://chrome.google.com/webstore/detail/argent-x/dlcobpjiigpikoobohmabehhmhfoodbb"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img class="img" src="./ArgentX.png" />
+        </a>
       </div>
     </div>
   </Modal>
@@ -68,14 +75,14 @@ export default defineComponent({
     margin-top: 10px;
     border-radius: 20px;
     background: $color-bg-secondary;
-
-    .img {
-      display: block;
-      width: 220px;
-      height: 58px;
-      margin: 0 auto;
-      margin-top: 12px;
-      cursor: pointer;
+    .link {
+      .img {
+        display: block;
+        width: 220px;
+        height: 58px;
+        margin: 0 auto;
+        margin-top: 12px;
+      }
     }
   }
 }

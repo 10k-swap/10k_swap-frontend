@@ -8,17 +8,7 @@
       <Text class="label" bold :color="'red'">
         {{ t('transaction.transaction_rejected') }}
       </Text>
-      <Button
-        class="dismiss"
-        @click="showModal = false"
-        plain
-        bold
-        style="
-           {
-            width: 140px;
-          }
-        "
-      >
+      <Button class="dismiss" @click="showModal = false" plain bold>
         {{ t('transaction.dismiss') }}
       </Button>
     </div>

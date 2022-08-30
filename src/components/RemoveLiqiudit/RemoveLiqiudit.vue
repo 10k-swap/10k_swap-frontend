@@ -196,7 +196,6 @@ export default defineComponent({
       } `
     })
 
-    // todo:wait check
     const prices = computed(() => {
       return [
         `1 ${pair.value?.token0.symbol} = ${pair.value?.token0Price.toSignificant(6)} ${pair.value?.token1?.symbol}`,

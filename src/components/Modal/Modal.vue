@@ -64,7 +64,7 @@ export default defineComponent({
 .l0k-swap-modal-container {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
+  overflow-y: auto;
 }
 
 .l0k-swap-modal-overlay {
@@ -73,10 +73,10 @@ export default defineComponent({
 
 .l0k-swap-modal-content {
   width: 480px;
-  max-height: 90vh;
   height: fit-content;
   background: $color-white;
   border-radius: 20px;
+  margin-bottom: 50px;
   overflow-y: scroll;
   @include no-scrollbar;
 

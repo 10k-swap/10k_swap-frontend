@@ -43,7 +43,7 @@ export const StarknetTransactionManagerProvider = defineComponent({
   setup(props, { slots }) {
     const { interval } = toRefs(props)
     const {
-      state: { library, account },
+      state: { library, account, chainId },
     } = useStarknet()
 
     const state = reactive<{ transactions: Transaction[] }>({ transactions: [] })
@@ -52,20 +52,20 @@ export const StarknetTransactionManagerProvider = defineComponent({
       state.transactions = state.transactions.concat([
         { loading: true, scuccess: false, fail: false, ...transaction, createAt: new Date().getTime() },
       ])
-      if (account.value) {
-        TransactionStorageManager.set(toRaw(state.transactions), account.value)
+      if (account.value && chainId.value) {
+        TransactionStorageManager.set(toRaw(state.transactions), account.value, chainId.value)
       }
     }
     const removeTransaction = (transactionHash: string) => {
       state.transactions = state.transactions.filter((tx) => tx.transactionHash !== transactionHash)
-      if (account.value) {
-        TransactionStorageManager.set(toRaw(state.transactions), account.value)
+      if (account.value && chainId.value) {
+        TransactionStorageManager.set(toRaw(state.transactions), account.value, chainId.value)
       }
     }
     const clearTransactions = () => {
       state.transactions = []
-      if (account.value) {
-        TransactionStorageManager.set([], account.value)
+      if (account.value && chainId.value) {
+        TransactionStorageManager.set([], account.value, chainId.value)
       }
     }
     const refreshTransaction = async (transactionHash: string) => {
@@ -95,8 +95,8 @@ export const StarknetTransactionManagerProvider = defineComponent({
           metadata: oldTransaction.metadata,
         }
         state.transactions[index] = newTransaction
-        if (account.value) {
-          TransactionStorageManager.set(toRaw(state.transactions), account.value)
+        if (account.value && chainId.value) {
+          TransactionStorageManager.set(toRaw(state.transactions), account.value, chainId.value)
         }
       } catch (err) {
         // TODO(fra): somehow should track the error
@@ -133,8 +133,8 @@ export const StarknetTransactionManagerProvider = defineComponent({
 
     watch([state.transactions, library, interval], () => refreshAllTransactions())
 
-    watch([account], () => {
-      state.transactions = TransactionStorageManager.at(account.value)
+    watch([account, chainId], () => {
+      state.transactions = TransactionStorageManager.at(account.value, chainId.value)
     })
 
     return slots.default
