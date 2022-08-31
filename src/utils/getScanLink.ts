@@ -1,4 +1,4 @@
-import { StarknetChainId } from '../constants'
+// import { StarknetChainId } from '../constants'
 
 const SCAN_PREFIXES: { [chainId in StarknetChainId]: string } = {
   [StarknetChainId.MAINNET]: 'https://voyager.online',

@@ -39,6 +39,7 @@ export default defineComponent({
   position: relative;
   height: 100vh;
   width: 100vw;
+  min-width: 375px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   @include bg-prefix('./bg2');
