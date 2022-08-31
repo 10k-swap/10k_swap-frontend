@@ -55,7 +55,7 @@ export const StarknetBlockProvider = defineComponent({
       // Fetch block immediately
       fetchBlock()
 
-      intervalId = setInterval(() => {
+      intervalId = window.setInterval(() => {
         fetchBlock()
       }, interval.value ?? DEFAULT_INTERVAL)
     }

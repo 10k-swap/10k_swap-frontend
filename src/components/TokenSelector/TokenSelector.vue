@@ -22,6 +22,7 @@
           <TokenLogo class="l0k-swap-select-token--token-logo" :token="token" />
           <Text class="text"> {{ token.symbol }} </Text>
         </div>
+        <Text class="no-items" v-if="!tokens.length"> No Items </Text>
       </div>
     </template>
   </Popper>
@@ -143,6 +144,12 @@ export default defineComponent({
   padding: 12px 8px;
   @include no-scrollbar;
 
+  .no-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+  }
   .l0k-swap-select-token--token {
     display: flex;
     align-items: center;

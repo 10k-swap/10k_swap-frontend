@@ -125,7 +125,7 @@ export const StarknetTransactionManagerProvider = defineComponent({
 
     onMounted(() => {
       refreshAllTransactions()
-      intervalId = setInterval(() => {
+      intervalId = window.setInterval(() => {
         refreshAllTransactions()
       }, interval.value ?? DEFAULT_INTERVAL)
     })

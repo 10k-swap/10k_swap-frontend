@@ -1,7 +1,6 @@
 import { number } from 'starknet'
 import * as buffer from 'buffer'
-
-export type BN = ReturnType<typeof number.toBN>
+import { BN } from '../types'
 
 export function BN2String(value: BN | undefined) {
   if (!value) {

@@ -1,8 +1,8 @@
 import { Contract, Result } from 'starknet'
 import * as objectHash from 'object-hash'
 import { computed, ComputedRef, onMounted, reactive, watch } from 'vue'
-import { BN } from '../../utils'
 import { useStarknetBlock } from '../providers/block'
+import { BN } from '../../types'
 
 interface State {
   data?: Result | undefined
