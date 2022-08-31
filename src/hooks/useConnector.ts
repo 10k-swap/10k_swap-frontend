@@ -1,8 +1,17 @@
 import { computed, nextTick, ref, toRaw, watch } from 'vue'
+import { Connector } from '../starknet-vue/connectors'
 import { ConnectorNotFoundError, UserRejectedRequestError } from '../starknet-vue/errors'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { useModalStore } from '../state'
 import useArgentXRejectCallback from './useArgentXRejectCallback'
+
+function getConnector(connectors: Connector<unknown>[]) {
+  const argentX = connectors.find((item) => item.id() === 'argent-x')
+  if (argentX) {
+    return argentX
+  }
+  return connectors[0]
+}
 
 export default function useConnector() {
   const connectError = ref<Error>()
@@ -51,7 +60,7 @@ export default function useConnector() {
     }
 
     try {
-      const connector = toRaw(connectors.value[0])
+      const connector = getConnector(toRaw(connectors.value))
       const ready = await connector.ready()
 
       if (!ready) {
