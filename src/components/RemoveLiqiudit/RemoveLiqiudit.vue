@@ -127,6 +127,7 @@ import ScuccessModal from '../transaction/ScuccessModal.vue'
 import RejectedModal from '../transaction/RejectedModal.vue'
 import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
 import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
+import { toBN } from 'starknet/utils/number'
 
 export default defineComponent({
   props: {
@@ -224,8 +225,8 @@ export default defineComponent({
         return
       }
       const LAmount = bnToUint256(liquidityAmount.raw.toString())
-      const AMin = bnToUint256(calculateSlippageAmount(parsedAmountA, allowedSlippage.value)[0])
-      const BMin = bnToUint256(calculateSlippageAmount(parsedAmountB, allowedSlippage.value)[0])
+      const AMin = bnToUint256(toBN(calculateSlippageAmount(parsedAmountA, allowedSlippage.value)[0].toString()))
+      const BMin = bnToUint256(toBN(calculateSlippageAmount(parsedAmountB, allowedSlippage.value)[0].toString()))
 
       const response = await executeInvoke({
         args: [

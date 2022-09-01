@@ -87,6 +87,7 @@ import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceS
 import { ROUTER_ADDRESSES } from '../../constants/address'
 import useConnector from '../../hooks/useConnector'
 import { useMintStore } from '../../state'
+import { toBN } from 'starknet/utils/number'
 
 export default defineComponent({
   components: {
@@ -199,8 +200,8 @@ export default defineComponent({
       }
       const AAmount = bnToUint256(parsedAmountA.raw.toString())
       const BAmount = bnToUint256(parsedAmountB.raw.toString())
-      const AMin = bnToUint256(calculateSlippageAmount(parsedAmountA, noLiquidity.value ? 0 : allowedSlippage.value)[0])
-      const BMin = bnToUint256(calculateSlippageAmount(parsedAmountB, noLiquidity.value ? 0 : allowedSlippage.value)[0])
+      const AMin = bnToUint256(toBN(calculateSlippageAmount(parsedAmountA, noLiquidity.value ? 0 : allowedSlippage.value)[0].toString()))
+      const BMin = bnToUint256(toBN(calculateSlippageAmount(parsedAmountB, noLiquidity.value ? 0 : allowedSlippage.value)[0].toString()))
 
       const response = await executeInvoke({
         args: [

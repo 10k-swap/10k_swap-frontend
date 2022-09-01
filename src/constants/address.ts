@@ -4,12 +4,12 @@ export const ROUTER_ADDRESSES: {
   [chainId in StarknetChainId]: string
 } = {
   [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: '0x01a5200387983d5acb1c4a8f9be94219fb3bbb9438bb50eb70d9f5398656c78e',
+  [StarknetChainId.TESTNET]: '0x00975910cd99bc56bd289eaaa5cee6cd557f0ddafdb2ce6ebea15b158eb2c664',
 }
 
 export const FACTORY_ADDRESSES: {
   [chainId in StarknetChainId]: string
 } = {
   [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: '0x07e0879afbf63ec943e58cba0d9e81385f2183f1f9aa44e32f08e877c31fdb98',
+  [StarknetChainId.TESTNET]: '0x06c31f39524388c982045988de3788530605ed08b10389def2e7b1dd09d19308',
 }

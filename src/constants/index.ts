@@ -9,7 +9,7 @@ export const CSS_PREFIX = 'l0k-swap'
 
 export const ADDRESS_ZORE = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
-export const PAIR_CONTRACT_CLASS_HASH = '0x78062101eb540ba039dc779bbf908e98b64efb4439bc9abd731e1156abd12cd'
+export const PAIR_CONTRACT_CLASS_HASH = '0x231adde42526bad434ca2eb983efdd64472638702f87f97e6e3c084f264e06f'
 
 export const MOBILE_SIZE = 768
 
@@ -29,5 +29,5 @@ export const CHAIN_LABELS: { [chainId in StarknetChainId]: string } = {
 
 export const SERVER_URLS: { [chainId in StarknetChainId]: string } = {
   [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: 'http://ec2-18-182-76-58.ap-northeast-1.compute.amazonaws.com',
+  [StarknetChainId.TESTNET]: 'http://goerli-api.10kswap.com',
 }
