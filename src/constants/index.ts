@@ -29,5 +29,5 @@ export const CHAIN_LABELS: { [chainId in StarknetChainId]: string } = {
 
 export const SERVER_URLS: { [chainId in StarknetChainId]: string } = {
   [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: 'http://goerli-api.10kswap.com',
+  [StarknetChainId.TESTNET]: 'https://goerli-api.10kswap.com',
 }
