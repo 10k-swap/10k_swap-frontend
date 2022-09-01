@@ -47,6 +47,10 @@ export default defineComponent({
   &.root {
     @include bg-prefix('./bg');
   }
+  @media screen and (min-width: $mobile-size) and (max-width: 1400px) {
+    background-size: 1400px 100%;
+    background-position: center;
+  }
   .socials {
     position: absolute;
     left: 50%;
