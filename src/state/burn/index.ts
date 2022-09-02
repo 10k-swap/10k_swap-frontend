@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { scientificNotationToString } from '../../utils/scientificNotationToString'
 import { Field } from './types'
 
 export interface BurnState {
@@ -20,7 +21,7 @@ export const useBurnStore = defineStore<'burn', BurnState, {}, BurnActions>('bur
   actions: {
     typeInput({ field, typedValue }) {
       this.independentField = field
-      this.typedValue = typedValue
+      this.typedValue = scientificNotationToString(typedValue.toString())
     },
   },
 })

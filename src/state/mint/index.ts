@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { Token } from '../../sdk'
+import { scientificNotationToString } from '../../utils/scientificNotationToString'
 import { Field } from './types'
 
 interface MintState {
@@ -37,6 +38,8 @@ export const useMintStore = defineStore<'mint', MintState, {}, MintActions>('min
       this.otherTypedValue = ''
     },
     typeInput({ noLiquidity, field, typedValue }) {
+      typedValue = scientificNotationToString(typedValue.toString())
+
       if (noLiquidity) {
         // they're typing into the field they've last typed in
         if (field === this.independentField) {

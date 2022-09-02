@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { scientificNotationToString } from '../../utils/scientificNotationToString'
 import { Field } from './types'
 
 export interface SwapState {
@@ -79,7 +80,7 @@ export const useSwapStore = defineStore<'swap', SwapState, {}, SwapActions>('swa
       this[Field.OUTPUT] = { currencyId: input }
     },
     typeInput(field: Field, typedValue: string | number) {
-      this.typedValue = typedValue
+      this.typedValue = scientificNotationToString(typedValue.toString())
       this.independentField = field
     },
   },

@@ -1,14 +1,17 @@
 import { parseUnits } from '@ethersproject/units'
 import JSBI from 'jsbi'
 import { Token, TokenAmount } from '../sdk'
+import { scientificNotationToString } from './scientificNotationToString'
 
 // try to parse a user entered amount for a given token
 export function tryParseAmount(value?: string | number, currency?: Token): TokenAmount | undefined {
   if (!value || !currency) {
     return undefined
   }
-  value = value.toString().indexOf('e') > 0 ? JSBI.BigInt(value).toString() : value
 
+  value = scientificNotationToString(value.toString())
+
+  console.log(value)
   try {
     const typedValueParsed = parseUnits(value.toString(), currency.decimals).toString()
     if (typedValueParsed !== '0') {

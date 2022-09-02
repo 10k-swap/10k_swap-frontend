@@ -3,6 +3,7 @@ import { GetBlockResponse } from 'starknet'
 import { useStarknet } from '../starknet'
 import { DEFAULT_INTERVAL, StarknetBlockStateSymbol } from './const'
 import { BlockState, INIT_BLOCK_STATE } from './model'
+import useIsWindowVisible from '../../../hooks/useIsWindowVisible'
 
 let intervalId: number
 
@@ -15,6 +16,8 @@ export const StarknetBlockProvider = defineComponent({
 
     const state = reactive<BlockState>(INIT_BLOCK_STATE)
 
+    const isWindowVisible = useIsWindowVisible()
+
     // 使用 `toRefs()` 确保其在消费者组件中广泛可用
     // 而 `readonly()` 预防了用户修改全局状态
     provide(StarknetBlockStateSymbol, toRefs(readonly(state)))
@@ -24,7 +27,7 @@ export const StarknetBlockProvider = defineComponent({
     } = useStarknet()
 
     const fetchBlock = () => {
-      if (library && !state.loading) {
+      if (library && !state.loading && isWindowVisible.value) {
         // Set to loading on first load
         state.loading = true
         library.value
@@ -61,7 +64,7 @@ export const StarknetBlockProvider = defineComponent({
     }
 
     onMounted(onFetch)
-    watch([library, interval], onFetch)
+    watch([library, interval, isWindowVisible], onFetch)
 
     onBeforeUnmount(() => clearInterval(intervalId))
 
