@@ -3,7 +3,12 @@ import { SERVER_URLS, StarknetChainId } from '../constants'
 import { IResponse } from './types'
 import { ERR_OK } from './'
 import { Pair, Token, TokenAmount } from '../sdk'
-import getTokenFromTokens from '../utils/getTokenFromTokens'
+import tokens from '../constants/tokens'
+import { isEqualsAddress } from '../utils'
+
+function getToken(chainId: StarknetChainId, address: string) {
+  return tokens[chainId].find((item) => isEqualsAddress(address, item.address))
+}
 
 export interface AllPairItem {
   token0: {
@@ -32,12 +37,12 @@ export async function getAllPairs(chainId: StarknetChainId) {
     if (res.data.errCode === ERR_OK) {
       return res.data.data
         .filter((item) => {
-          return !!(getTokenFromTokens(chainId, item.token0.address) && getTokenFromTokens(chainId, item.token1.address))
+          return !!(getToken(chainId, item.token0.address) && getToken(chainId, item.token1.address))
         })
         .map((item) => {
           const { reserve0, reserve1, totalSupply } = item
-          const token0 = getTokenFromTokens(chainId, item.token0.address) as Token
-          const token1 = getTokenFromTokens(chainId, item.token1.address) as Token
+          const token0 = getToken(chainId, item.token0.address) as Token
+          const token1 = getToken(chainId, item.token1.address) as Token
           const pair = new Pair(new TokenAmount(token0, reserve0), new TokenAmount(token1, reserve1))
 
           return {

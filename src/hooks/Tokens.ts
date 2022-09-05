@@ -1,18 +1,16 @@
-import { toBN } from 'starknet/utils/number'
 import { computed, ComputedRef, toRaw } from 'vue'
 import { StarknetChainId } from '../constants'
 import tokens from '../constants/tokens'
 import { Token } from '../sdk'
 import { useStarknetCall } from '../starknet-vue/hooks/call'
 import { useStarknet } from '../starknet-vue/providers/starknet'
-import { BN2String } from '../utils'
+import { BN2String, isEqualsAddress } from '../utils'
 import { useTokenContract } from './Contract'
 
 const tokenCaches = tokens
 
 function getCaches(chainId: StarknetChainId, address: string) {
-  const a = toBN(address)
-  return tokenCaches[chainId].find((item) => a.eq(toBN(item.address)))
+  return tokenCaches[chainId].find((item) => isEqualsAddress(address, item.address))
 }
 
 // null if loading

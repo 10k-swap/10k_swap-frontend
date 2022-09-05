@@ -1,5 +1,6 @@
 import { TokenAmount } from '../sdk'
 import JSBI from 'jsbi'
+import { toBN } from 'starknet/utils/number'
 
 export function noop() {}
 
@@ -25,4 +26,8 @@ export function calculateSlippageAmount(value: TokenAmount, slippage: number): [
 
 export function getDeadlineFromNow(ttl: number) {
   return `${(Math.floor(new Date().getTime() / 1000) + ttl).toString()}`
+}
+
+export function isEqualsAddress(addressA: string, addressB: string): boolean {
+  return toBN(addressA).eq(toBN(addressB))
 }
