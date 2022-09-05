@@ -1,8 +1,10 @@
-import { computed, ComputedRef, Ref } from 'vue'
+import { computed, Ref } from 'vue'
 import { Trade } from '../sdk'
+import { useUserSwapSlippageTolerance } from '../state/slippageToleranceSettings/hooks'
 import useSwapApproveAmount from './useSwapApproveAmount'
 
-export default function useSwapSummary(trade: Ref<Trade | null | undefined>, allowedSlippage: ComputedRef<number> | number) {
+export default function useSwapSummary(trade: Ref<Trade | null | undefined>) {
+  const allowedSlippage = useUserSwapSlippageTolerance()
   const swapApproveAmount = useSwapApproveAmount(trade, allowedSlippage)
 
   return computed(() => {

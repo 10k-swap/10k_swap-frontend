@@ -9,6 +9,9 @@ export default function useIsMobile() {
   const throttledWidth = useThrottle(width, 200)
 
   const setIsMobile = () => {
+    if (width.value < MOBILE_SIZE === isMobile.value) {
+      return
+    }
     isMobile.value = width.value < MOBILE_SIZE ? true : false
   }
 

@@ -150,7 +150,7 @@ export default defineComponent({
       txHash: undefined,
     })
 
-    const summary = useSwapSummary(tradeToConfirm, userSwapSlippageTolerance)
+    const summary = useSwapSummary(tradeToConfirm)
     const swapCallbacks = useSwapCallback(tradeToConfirm, userSwapSlippageTolerance)
     const swapCallbackError = computed(() => swapCallbacks.value.error)
 

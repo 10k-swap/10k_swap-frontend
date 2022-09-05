@@ -11,7 +11,6 @@ export function tryParseAmount(value?: string | number, currency?: Token): Token
 
   value = scientificNotationToString(value.toString())
 
-  console.log(value)
   try {
     const typedValueParsed = parseUnits(value.toString(), currency.decimals).toString()
     if (typedValueParsed !== '0') {

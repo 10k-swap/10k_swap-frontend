@@ -1,3 +1,3 @@
-export const StarknetStateSymbol = 'StarknetState'
+export const StarknetStateSymbol = Symbol('StarknetState')
 
-export const StarknetMethodsSymbol = 'StarknetMethods'
+export const StarknetMethodsSymbol = Symbol('StarknetMethods')

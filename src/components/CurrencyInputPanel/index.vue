@@ -1,7 +1,7 @@
 <template>
   <div class="l0k-swap-currency-input-panel" :class="classes">
     <div class="inputs">
-      <input type="number" v-model="typedValue" placeholder="0.0" @mousewheel.prevent />
+      <input type="number" v-model="typedValue" placeholder="0.0" title="" @mousewheel.prevent />
       <TokenSelector v-if="selector" class="token-select" :token="token ?? null" :otherToken="otherToken ?? null" @select="onSelect" />
       <div class="token" v-else>
         <template v-if="slots.token">

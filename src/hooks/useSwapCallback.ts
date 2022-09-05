@@ -106,7 +106,7 @@ export function useSwapCallback(
 
   const { addTransaction } = useStarknetTransactionManager()
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, deadline)
-  const summary = useSwapSummary(trade, allowedSlippage)
+  const summary = useSwapSummary(trade)
   const swapApproveAmount = useSwapApproveAmount(trade, allowedSlippage)
 
   return computed(() => {

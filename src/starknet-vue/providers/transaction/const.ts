@@ -1,5 +1,5 @@
-export const StarknetTransactionStateSymbol = 'StarknetTransactionState'
+export const StarknetTransactionStateSymbol = Symbol('StarknetTransactionState')
 
-export const StarknetTransactionMethodsSymbol = 'StarknetTransactionMethods'
+export const StarknetTransactionMethodsSymbol = Symbol('StarknetTransactionMethods')
 
 export const DEFAULT_INTERVAL = 5000
