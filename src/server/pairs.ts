@@ -35,7 +35,9 @@ export async function getAllPairs(chainId: StarknetChainId) {
   try {
     const res = await axios.get<IResponse<AllPairItem[]>>(`${SERVER_URLS[chainId]}/pool/pairs`)
     if (res.data.errCode === ERR_OK) {
-      return res.data.data
+      const data = res.data.data
+
+      return data
         .filter((item) => {
           return !!(getToken(chainId, item.token0.address) && getToken(chainId, item.token1.address))
         })
@@ -54,6 +56,7 @@ export async function getAllPairs(chainId: StarknetChainId) {
           }
         })
     }
+
     throw new Error('fetch pairs fail')
   } catch (error: any) {
     throw new Error(error)
