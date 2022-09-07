@@ -112,8 +112,6 @@ export const StarknetTransactionManagerProvider = defineComponent({
       }
     }
 
-    // 使用 `toRefs()` 确保其在消费者组件中广泛可用
-    // 而 `readonly()` 预防了用户修改全局状态
     provide(StarknetTransactionStateSymbol, toRefs(readonly(state)))
     provide(StarknetTransactionMethodsSymbol, {
       addTransaction,

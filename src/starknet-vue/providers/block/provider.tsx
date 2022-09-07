@@ -18,8 +18,6 @@ export const StarknetBlockProvider = defineComponent({
 
     const isWindowVisible = useIsWindowVisible()
 
-    // 使用 `toRefs()` 确保其在消费者组件中广泛可用
-    // 而 `readonly()` 预防了用户修改全局状态
     provide(StarknetBlockStateSymbol, toRefs(readonly(state)))
 
     const {
