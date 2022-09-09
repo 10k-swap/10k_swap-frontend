@@ -62,7 +62,7 @@ export const StarknetBlockProvider = defineComponent({
     }
 
     onMounted(onFetch)
-    watch([library, interval, isWindowVisible], onFetch)
+    watch([library, interval, isWindowVisible], fetchBlock)
 
     onBeforeUnmount(() => clearInterval(intervalId))
 
