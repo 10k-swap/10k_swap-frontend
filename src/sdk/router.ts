@@ -43,10 +43,6 @@ export interface SwapParameters {
   args: (BigNumberish | string)[]
 }
 
-// function toHex(currencyAmount: CurrencyAmount) {
-//   return `0x${currencyAmount.raw.toString(16)}`
-// }
-
 /**
  * Represents the Uniswap V2 Router, and has static methods for helping execute trades.
  */

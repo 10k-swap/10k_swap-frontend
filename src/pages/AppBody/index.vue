@@ -40,6 +40,7 @@ export default defineComponent({
   height: 100vh;
   width: 100vw;
   min-width: 375px;
+  min-height: 700px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   @include bg-prefix('./bg2');
