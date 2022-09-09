@@ -18,8 +18,8 @@ export class Price extends Fraction {
     for (const [i, pair] of route.pairs.entries()) {
       prices.push(
         route.path[i].equals(pair.token0)
-          ? new Price(pair.reserve0.currency, pair.reserve1.currency, pair.reserve0.raw, pair.reserve1.raw)
-          : new Price(pair.reserve1.currency, pair.reserve0.currency, pair.reserve1.raw, pair.reserve0.raw)
+          ? new Price(pair.reserve0.token, pair.reserve1.token, pair.reserve0.raw, pair.reserve1.raw)
+          : new Price(pair.reserve1.token, pair.reserve0.token, pair.reserve1.raw, pair.reserve0.raw)
       )
     }
     return prices.slice(1).reduce((accumulator, currentValue) => accumulator.multiply(currentValue), prices[0])
@@ -57,7 +57,7 @@ export class Price extends Fraction {
 
   // performs floor division on overflow
   public quote(currencyAmount: TokenAmount): TokenAmount {
-    invariant(currencyEquals(currencyAmount.currency, this.baseCurrency), 'TOKEN')
+    invariant(currencyEquals(currencyAmount.token, this.baseCurrency), 'TOKEN')
 
     return new TokenAmount(this.quoteCurrency, super.multiply(currencyAmount.raw).quotient)
   }

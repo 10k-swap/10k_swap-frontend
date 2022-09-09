@@ -139,7 +139,7 @@ export function useDerivedSwapInfo() {
     }
 
     if (balanceIn.value && amountIn.value && balanceIn.value.lessThan(amountIn.value)) {
-      inputError.value = `Insufficient ${amountIn.value.currency.symbol} balance`
+      inputError.value = `Insufficient ${amountIn.value.token.symbol} balance`
     }
   })
 

@@ -33,8 +33,8 @@ interface InputOutput {
 // in increasing order. i.e. the best trades have the most outputs for the least inputs and are sorted first
 export function inputOutputComparator(a: InputOutput, b: InputOutput): number {
   // must have same input and output token for comparison
-  invariant(currencyEquals(a.inputAmount.currency, b.inputAmount.currency), 'INPUT_CURRENCY')
-  invariant(currencyEquals(a.outputAmount.currency, b.outputAmount.currency), 'OUTPUT_CURRENCY')
+  invariant(currencyEquals(a.inputAmount.token, b.inputAmount.token), 'INPUT_CURRENCY')
+  invariant(currencyEquals(a.outputAmount.token, b.outputAmount.token), 'OUTPUT_CURRENCY')
   if (a.outputAmount.equalTo(b.outputAmount)) {
     if (a.inputAmount.equalTo(b.inputAmount)) {
       return 0
@@ -136,7 +136,7 @@ export class Trade {
     const amounts: TokenAmount[] = new Array(route.path.length)
     const nextPairs: Pair[] = new Array(route.pairs.length)
     if (tradeType === TradeType.EXACT_INPUT) {
-      invariant(currencyEquals(amount.currency, route.input), 'INPUT')
+      invariant(currencyEquals(amount.token, route.input), 'INPUT')
       amounts[0] = amount
       for (let i = 0; i < route.path.length - 1; i++) {
         const pair = route.pairs[i]
@@ -145,7 +145,7 @@ export class Trade {
         nextPairs[i] = nextPair
       }
     } else {
-      invariant(currencyEquals(amount.currency, route.output), 'OUTPUT')
+      invariant(currencyEquals(amount.token, route.output), 'OUTPUT')
       amounts[amounts.length - 1] = amount
       for (let i = route.path.length - 1; i > 0; i--) {
         const pair = route.pairs[i - 1]
@@ -159,7 +159,7 @@ export class Trade {
     this.tradeType = tradeType
     this.inputAmount = tradeType === TradeType.EXACT_INPUT ? amount : amounts[0]
     this.outputAmount = tradeType === TradeType.EXACT_OUTPUT ? amount : amounts[amounts.length - 1]
-    this.executionPrice = new Price(this.inputAmount.currency, this.outputAmount.currency, this.inputAmount.raw, this.outputAmount.raw)
+    this.executionPrice = new Price(this.inputAmount.token, this.outputAmount.token, this.inputAmount.raw, this.outputAmount.raw)
     this.nextMidPrice = Price.fromRoute(new Route(nextPairs, route.input))
     this.priceImpact = computePriceImpact(route.midPrice, this.inputAmount, this.outputAmount)
   }
@@ -198,8 +198,8 @@ export class Trade {
    * Note this does not consider aggregation, as routes are linear. It's possible a better route exists by splitting
    * the amount in among multiple routes.
    * @param pairs the pairs to consider in finding the best trade
-   * @param currencyAmountIn exact amount of input currency to spend
-   * @param currencyOut the desired currency out
+   * @param currencyAmountIn exact amount of input token to spend
+   * @param currencyOut the desired token out
    * @param maxNumResults maximum number of results to return
    * @param maxHops maximum number of hops a returned trade can make, e.g. 1 hop goes through a single pair
    * @param currentPairs used in recursion; the current list of pairs
@@ -245,7 +245,7 @@ export class Trade {
       if (amountOut.token.equals(tokenOut)) {
         sortedInsert(
           bestTrades,
-          new Trade(new Route([...currentPairs, pair], originalAmountIn.currency, currencyOut), originalAmountIn, TradeType.EXACT_INPUT),
+          new Trade(new Route([...currentPairs, pair], originalAmountIn.token, currencyOut), originalAmountIn, TradeType.EXACT_INPUT),
           maxNumResults,
           tradeComparator
         )
@@ -278,8 +278,8 @@ export class Trade {
    * note this does not consider aggregation, as routes are linear. it's possible a better route exists by splitting
    * the amount in among multiple routes.
    * @param pairs the pairs to consider in finding the best trade
-   * @param currencyIn the currency to spend
-   * @param currencyAmountOut the exact amount of currency out
+   * @param currencyIn the token to spend
+   * @param currencyAmountOut the exact amount of token out
    * @param maxNumResults maximum number of results to return
    * @param maxHops maximum number of hops a returned trade can make, e.g. 1 hop goes through a single pair
    * @param currentPairs used in recursion; the current list of pairs
@@ -325,7 +325,7 @@ export class Trade {
       if (amountIn.token.equals(tokenIn)) {
         sortedInsert(
           bestTrades,
-          new Trade(new Route([pair, ...currentPairs], currencyIn, originalAmountOut.currency), originalAmountOut, TradeType.EXACT_OUTPUT),
+          new Trade(new Route([pair, ...currentPairs], currencyIn, originalAmountOut.token), originalAmountOut, TradeType.EXACT_OUTPUT),
           maxNumResults,
           tradeComparator
         )

@@ -2,6 +2,7 @@ import { TradeType } from './constants'
 import invariant from 'tiny-invariant'
 import { bnToUint256, Uint256 } from 'starknet/dist/utils/uint256'
 import { Percent, Trade } from './entities'
+import { BigNumberish } from 'starknet/utils/number'
 
 /**
  * Options for producing the arguments to send call to the router.
@@ -39,7 +40,7 @@ export interface SwapParameters {
   /**
    * The arguments to pass to the method, all hex encoded.
    */
-  args: (any | string)[]
+  args: (BigNumberish | string)[]
 }
 
 // function toHex(currencyAmount: CurrencyAmount) {
@@ -70,7 +71,7 @@ export abstract class Router {
     const useFeeOnTransfer = Boolean(options.feeOnTransfer)
 
     let methodName: string
-    let args: (Uint256 | string)[]
+    let args: (BigNumberish | string)[]
     switch (trade.tradeType) {
       case TradeType.EXACT_INPUT:
         methodName = useFeeOnTransfer ? 'swapExactTokensForTokensSupportingFeeOnTransferTokens' : 'swapExactTokensForTokens'

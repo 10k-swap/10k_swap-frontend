@@ -11,8 +11,8 @@ export default function useSwapSummary(trade: Ref<Trade | null | undefined>) {
     if (!trade.value) {
       return undefined
     }
-    const inputSymbol = trade.value.inputAmount.currency.symbol
-    const outputSymbol = trade.value.outputAmount.currency.symbol
+    const inputSymbol = trade.value.inputAmount.token.symbol
+    const outputSymbol = trade.value.outputAmount.token.symbol
     const inputAmount = trade.value.inputAmount.toSignificant(3)
     const outputAmount = trade.value.outputAmount.toSignificant(3)
     const approveAmount = swapApproveAmount.value?.toSignificant(3)

@@ -31,8 +31,8 @@
       <Text class="value" :size="'mini'" :color="'description-text'">
         {{
           isExactIn
-            ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade?.outputAmount.currency.symbol}` ?? '-'
-            : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade?.inputAmount.currency.symbol}` ?? '-'
+            ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade?.outputAmount.token.symbol}` ?? '-'
+            : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade?.inputAmount.token.symbol}` ?? '-'
         }}
       </Text>
     </div>

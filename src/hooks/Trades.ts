@@ -88,7 +88,7 @@ export function useTradeExactIn(
   currencyAmountIn: ComputedRef<TokenAmount | undefined>,
   currencyOut: ComputedRef<Token | null | undefined>
 ): ComputedRef<Trade | undefined | null> {
-  const currencyIn = computed(() => currencyAmountIn.value?.currency)
+  const currencyIn = computed(() => currencyAmountIn.value?.token)
   const allowedPairs = useAllCommonPairs(currencyIn, currencyOut)
 
   return computed(() => {

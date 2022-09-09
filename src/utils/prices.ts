@@ -1,4 +1,4 @@
-import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '../sdk'
+import { Fraction, JSBI, Percent, TokenAmount, Trade } from '../sdk'
 import { Field } from '../state/swap/types'
 
 // converts a basis points value to a sdk percent
@@ -13,7 +13,7 @@ const INPUT_FRACTION_AFTER_FEE = ONE_HUNDRED_PERCENT.subtract(BASE_FEE)
 // computes price breakdown for the trade
 export function computeTradePriceBreakdown(trade?: Trade): {
   priceImpactWithoutFee?: Percent
-  realizedLPFee?: CurrencyAmount
+  realizedLPFee?: TokenAmount
 } {
   // for each hop in our trade, take away the x*y=k price impact from 0.2% fees
   // e.g. for 3 tokens/2 hops: 1 - ((1 - .02) * (1-.02))
@@ -39,7 +39,7 @@ export function computeTradePriceBreakdown(trade?: Trade): {
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
-export function computeSlippageAdjustedAmounts(trade: Trade | undefined, allowedSlippage: number): { [field in Field]?: CurrencyAmount } {
+export function computeSlippageAdjustedAmounts(trade: Trade | undefined, allowedSlippage: number): { [field in Field]?: TokenAmount } {
   const pct = basisPointsToPercent(allowedSlippage)
   return {
     [Field.INPUT]: trade?.maximumAmountIn(pct),
@@ -52,6 +52,6 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean): string 
     return ''
   }
   return inverted
-    ? `${trade.executionPrice.invert().toSignificant(6)} ${trade.inputAmount.currency.symbol} / ${trade.outputAmount.currency.symbol}`
-    : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.currency.symbol} / ${trade.inputAmount.currency.symbol}`
+    ? `${trade.executionPrice.invert().toSignificant(6)} ${trade.inputAmount.token.symbol} / ${trade.outputAmount.token.symbol}`
+    : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.token.symbol} / ${trade.inputAmount.token.symbol}`
 }

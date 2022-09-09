@@ -138,7 +138,7 @@ export function useSwapCallback(
               {
                 entrypoint: 'approve',
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                contractAddress: trade.value!.inputAmount.currency.address,
+                contractAddress: trade.value!.inputAmount.token.address,
                 calldata: [contract.address, approveAmount.low, approveAmount.high],
               },
               {

@@ -107,7 +107,7 @@ export function useDerivedMintInfo(
     if (noLiquidity.value) {
       const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts.value
       if (currencyAAmount && currencyBAmount) {
-        return new Price(currencyAAmount.currency, currencyBAmount.currency, currencyAAmount.raw, currencyBAmount.raw)
+        return new Price(currencyAAmount.token, currencyBAmount.token, currencyAAmount.raw, currencyBAmount.raw)
       }
       return undefined
     }
