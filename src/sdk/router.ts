@@ -72,13 +72,31 @@ export abstract class Router {
       case TradeType.EXACT_INPUT:
         methodName = useFeeOnTransfer ? 'swapExactTokensForTokensSupportingFeeOnTransferTokens' : 'swapExactTokensForTokens'
         // (uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)
-        args = [amountIn.low, amountIn.high, amountOut.low, amountOut.high, path.length + '', ...path, to, deadline]
+        args = [
+          amountIn.low.toString(),
+          amountIn.high.toString(),
+          amountOut.low.toString(),
+          amountOut.high.toString(),
+          path.length + '',
+          ...path,
+          to,
+          deadline,
+        ]
         break
       case TradeType.EXACT_OUTPUT:
         invariant(!useFeeOnTransfer, 'EXACT_OUT_FOT')
         methodName = 'swapTokensForExactTokens'
         // (uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
-        args = [amountOut.low, amountOut.high, amountIn.low, amountIn.high, path.length + '', ...path, to, deadline]
+        args = [
+          amountOut.low.toString(),
+          amountOut.high.toString(),
+          amountIn.low.toString(),
+          amountIn.high.toString(),
+          path.length + '',
+          ...path,
+          to,
+          deadline,
+        ]
         break
     }
     return {

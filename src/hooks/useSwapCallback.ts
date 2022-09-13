@@ -126,7 +126,7 @@ export function useSwapCallback(
           contract,
           parameters: { methodName, args },
         } = swapCalls.value[0]
-
+        console.log('args', args)
         if (!swapApproveAmount.value) {
           throw new Error('No Approve Amount')
         }
