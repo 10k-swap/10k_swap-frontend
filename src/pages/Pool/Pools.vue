@@ -25,6 +25,9 @@
           {{ t('pool.get', { token: `${pair.token0.symbol}-${pair.token1.symbol}` }) }}
         </Text>
       </div>
+      <div class="loading" v-if="loading">
+        <LoadingIcon />
+      </div>
     </div>
   </div>
 </template>
@@ -34,6 +37,7 @@ import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
 import DoubleLogo from '../../components/DoubleLogo/index.vue'
+import { LoadingIcon } from '../../components/Svg'
 import { useAllPairs, useIsLoadingAllPairs } from '../../state/pool/hooks'
 import useIsMobile from '../../hooks/useIsMobile'
 import { usePoolModalStore } from '../../state'
@@ -42,6 +46,7 @@ export default defineComponent({
   components: {
     Text,
     DoubleLogo,
+    LoadingIcon,
   },
   setup() {
     const { t } = useI18n()
@@ -110,6 +115,12 @@ export default defineComponent({
         padding-left: 10px;
         cursor: pointer;
       }
+    }
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
     }
   }
   @include mobile {
