@@ -42,7 +42,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Trade, TradeType } from '../../sdk'
+import { Trade, TradeType } from 'l0k_swap-sdk'
 import { ONE_BIPS } from '../../constants/index'
 import { useUserSwapSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { Field } from '../../state/swap/types'

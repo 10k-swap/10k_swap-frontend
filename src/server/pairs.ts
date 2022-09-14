@@ -2,7 +2,7 @@ import axios from './axios'
 import { SERVER_URLS, StarknetChainId } from '../constants'
 import { IResponse } from './types'
 import { ERR_OK } from './'
-import { Pair, Token, TokenAmount } from '../sdk'
+import { Pair, Token, TokenAmount } from 'l0k_swap-sdk'
 import tokens from '../constants/tokens'
 import { isEqualsAddress } from '../utils'
 

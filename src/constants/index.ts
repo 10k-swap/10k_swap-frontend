@@ -1,7 +1,6 @@
 import { StarknetChainId } from 'starknet/constants'
-import JSBI from 'jsbi'
 import i18n from '../i18n'
-import { Percent } from '../sdk'
+import { Percent, JSBI } from 'l0k_swap-sdk'
 
 export { StarknetChainId } from 'starknet/constants'
 

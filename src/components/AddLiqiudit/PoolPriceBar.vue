@@ -21,7 +21,7 @@
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import usePoolTokenPercentageLabel from '../../hooks/usePoolTokenPercentageLabel'
-import { Percent, Price, Token } from '../../sdk'
+import { Percent, Price, Token } from 'l0k_swap-sdk'
 import { Field } from '../../state/mint/types'
 import Text from '../Text/Text.vue'
 

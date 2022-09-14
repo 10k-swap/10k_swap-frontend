@@ -2,7 +2,7 @@
 import { uint256ToBN } from 'starknet/dist/utils/uint256'
 import { computed, ComputedRef } from 'vue'
 import { useTokenContract } from '../hooks/Contract'
-import { Token, TokenAmount } from '../sdk'
+import { Token, TokenAmount } from 'l0k_swap-sdk'
 import { useStarknetCall } from '../starknet-vue/hooks/call'
 
 // or contract total supply cannot be fetched

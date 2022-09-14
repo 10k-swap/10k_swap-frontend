@@ -33,7 +33,7 @@ import RemoveLiqiudit from '../RemoveLiqiudit/RemoveLiqiudit.vue'
 import { BackIcon, SettingIcon } from '../Svg'
 import { useModalStore, useSlippageToleranceSettingsStore, usePoolModalStore, useMintStore } from '../../state'
 import { Actions } from '../../state/poolModal'
-import { Pair } from '../../sdk'
+import { Pair } from 'l0k_swap-sdk'
 import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({

@@ -7,7 +7,7 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
-import { Price } from '../../sdk'
+import { Price } from 'l0k_swap-sdk'
 import Text from '../Text/Text.vue'
 
 export default defineComponent({

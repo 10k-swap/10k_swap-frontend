@@ -27,7 +27,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Token, TokenAmount } from '../../sdk'
+import { Token, TokenAmount } from 'l0k_swap-sdk'
 import TokenSelector from '../TokenSelector/TokenSelector.vue'
 import TokenLogo from '../TokenLogo/TokenLogo'
 import Text from '../Text/Text.vue'

@@ -35,7 +35,7 @@ import TokenLogo from '../TokenLogo/TokenLogo'
 import tokensList from '../../constants/tokens'
 import Text from '../Text/Text.vue'
 import { ArrowDownIcon } from '../Svg'
-import { Token } from '../../sdk'
+import { Token } from 'l0k_swap-sdk'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useI18n } from 'vue-i18n'
 

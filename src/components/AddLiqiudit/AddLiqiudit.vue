@@ -62,7 +62,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { Token } from '../../sdk'
+import { Token } from 'l0k_swap-sdk'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { Field } from '../../state/mint/types'
 import CurrencyInputPanel from '../CurrencyInputPanel/index.vue'

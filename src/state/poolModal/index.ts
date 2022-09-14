@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Pair } from '../../sdk'
+import { Pair } from 'l0k_swap-sdk'
 
 export enum Actions {
   BURN,

@@ -47,7 +47,7 @@ import AdvancedSwapDetails from './AdvancedSwapDetails.vue'
 import { DownIcon } from '../Svg/index'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
-import { Trade } from '../../sdk'
+import { Trade } from 'l0k_swap-sdk'
 
 export default defineComponent({
   props: {

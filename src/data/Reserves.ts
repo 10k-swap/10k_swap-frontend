@@ -1,4 +1,4 @@
-import { TokenAmount, Pair, Token } from '../sdk/index'
+import { TokenAmount, Pair, Token } from 'l0k_swap-sdk'
 import I10kSwapPairABI from '../constants/abis/l0k_pair_abi.json'
 
 import { useStarknetCalls } from '../starknet-vue/hooks/call'

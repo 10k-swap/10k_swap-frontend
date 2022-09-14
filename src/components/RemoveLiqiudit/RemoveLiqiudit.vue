@@ -103,7 +103,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Pair } from '../../sdk'
+import { Pair } from 'l0k_swap-sdk'
 import { useBurnState, useDerivedBurnInfo, useBurnActionHandlers } from '../../state/burn/hooks'
 import { Field } from '../../state/burn/types'
 import Text from '../Text/Text.vue'

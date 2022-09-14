@@ -1,5 +1,5 @@
 import { Abi, AddTransactionResponse, Contract } from 'starknet'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '../sdk'
+import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'l0k_swap-sdk'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { getRouterContract } from '../utils'
 import { computed, ComputedRef, Ref, toRaw } from 'vue'

@@ -1,4 +1,4 @@
-import { TokenAmount, Pair, Token, Trade } from '../sdk'
+import { TokenAmount, Pair, Token, Trade } from 'l0k_swap-sdk'
 import { flatMap } from 'lodash'
 
 import { PairState, usePairs } from '../data/Reserves'

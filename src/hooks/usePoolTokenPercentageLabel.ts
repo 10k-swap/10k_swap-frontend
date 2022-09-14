@@ -1,6 +1,6 @@
 import { computed, Ref } from 'vue'
 import { ONE_BIPS } from '../constants'
-import { Percent, Price } from '../sdk'
+import { Percent, Price } from 'l0k_swap-sdk'
 
 export default function usePoolTokenPercentageLabel(
   poolTokenPercentage: Ref<Percent | undefined>,

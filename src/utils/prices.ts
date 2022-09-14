@@ -1,4 +1,4 @@
-import { Fraction, JSBI, Percent, TokenAmount, Trade } from '../sdk'
+import { Fraction, JSBI, Percent, TokenAmount, Trade } from 'l0k_swap-sdk'
 import { Field } from '../state/swap/types'
 
 // converts a basis points value to a sdk percent

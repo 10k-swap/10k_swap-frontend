@@ -1,7 +1,7 @@
 import { computed, ComputedRef, toRaw } from 'vue'
 import { StarknetChainId } from '../constants'
 import tokens from '../constants/tokens'
-import { Token } from '../sdk'
+import { Token } from 'l0k_swap-sdk'
 import { useStarknetCall } from '../starknet-vue/hooks/call'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { BN2String, isEqualsAddress } from '../utils'

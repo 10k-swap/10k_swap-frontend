@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Token } from '../../sdk'
+import { Token } from 'l0k_swap-sdk'
 import { scientificNotationToString } from '../../utils/scientificNotationToString'
 import { Field } from './types'
 

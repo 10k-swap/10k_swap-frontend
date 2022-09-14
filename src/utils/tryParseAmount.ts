@@ -1,6 +1,5 @@
 import { parseUnits } from '@ethersproject/units'
-import JSBI from 'jsbi'
-import { Token, TokenAmount } from '../sdk'
+import { Token, TokenAmount, JSBI } from 'l0k_swap-sdk'
 import { scientificNotationToString } from './scientificNotationToString'
 
 // try to parse a user entered amount for a given token

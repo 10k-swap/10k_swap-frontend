@@ -1,6 +1,5 @@
 import { Ref, computed, ComputedRef } from 'vue'
-import JSBI from 'jsbi'
-import { Percent, Trade } from '../sdk'
+import { Percent, Trade, JSBI } from 'l0k_swap-sdk'
 import { BIPS_BASE } from '../constants'
 
 export default function useSwapApproveAmount(trade: Ref<Trade | null | undefined>, allowedSlippage: ComputedRef<number> | number) {

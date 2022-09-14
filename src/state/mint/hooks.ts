@@ -1,4 +1,4 @@
-import { Token, JSBI, Pair, Percent, Price, TokenAmount } from '../../sdk'
+import { Token, JSBI, Pair, Percent, Price, TokenAmount, ZERO } from 'l0k_swap-sdk'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { computed, ComputedRef, ref, Ref, watch } from 'vue'
@@ -7,7 +7,6 @@ import { useMintStore } from '../index'
 import { tryParseAmount } from '../../utils/tryParseAmount'
 import { Field } from './types'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
-import { ZERO } from '../../sdk/constants'
 import { useTokenBalances } from '../../hooks/Balances'
 import { useDebounce } from '@vueuse/core'
 

@@ -1,5 +1,5 @@
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue'
-import { Token } from '../../sdk'
+import { Token } from 'l0k_swap-sdk'
 
 const BADS: { [url: string]: true } = {}
 

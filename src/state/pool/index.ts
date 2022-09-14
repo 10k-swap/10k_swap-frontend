@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
 import { ONE_BIPS, StarknetChainId } from '../../constants'
 import getBalances from '../../data/getBalances'
-import { Pair, Percent, Token, TokenAmount } from '../../sdk'
-import { ZERO } from '../../sdk/constants'
+import { Pair, Percent, Token, TokenAmount, ZERO } from 'l0k_swap-sdk'
 import { getAllPairs } from '../../server/pairs'
 
 export interface Pool {

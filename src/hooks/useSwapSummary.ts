@@ -1,5 +1,5 @@
 import { computed, Ref } from 'vue'
-import { Trade } from '../sdk'
+import { Trade } from 'l0k_swap-sdk'
 import { useUserSwapSlippageTolerance } from '../state/slippageToleranceSettings/hooks'
 import useSwapApproveAmount from './useSwapApproveAmount'
 

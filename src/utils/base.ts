@@ -1,5 +1,4 @@
-import { TokenAmount } from '../sdk'
-import JSBI from 'jsbi'
+import { TokenAmount, JSBI } from 'l0k_swap-sdk'
 import { toBN } from 'starknet/utils/number'
 
 export function noop() {}

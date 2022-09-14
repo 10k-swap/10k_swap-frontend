@@ -1,6 +1,5 @@
 import { computed, ComputedRef, Ref, toRaw } from 'vue'
-import JSBI from 'jsbi'
-import { Token, TokenAmount } from '../sdk'
+import { Token, TokenAmount, JSBI } from 'l0k_swap-sdk'
 import { useStarknetCalls } from '../starknet-vue/hooks/call'
 import { isAddress } from '../utils'
 import erc20 from '../constants/abis/erc20.json'

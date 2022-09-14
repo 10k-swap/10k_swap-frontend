@@ -1,5 +1,5 @@
 import { StarknetChainId } from 'starknet/constants'
-import { Token } from '../sdk'
+import { Token } from 'l0k_swap-sdk'
 
 // a list of tokens by chain
 type ChainTokenList = {
