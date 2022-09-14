@@ -5,16 +5,18 @@ const SCAN_PREFIXES: { [chainId in StarknetChainId]: string } = {
   [StarknetChainId.TESTNET]: 'https://goerli.voyager.online',
 }
 
-export function getScanLink(chainId: StarknetChainId, data: string, type: 'transaction' | 'address'): string {
+export function getScanLink(chainId: StarknetChainId, data: string, type: 'transaction' | 'contract'): string {
   const prefix = SCAN_PREFIXES[chainId]
 
   switch (type) {
     case 'transaction': {
       return `${prefix}/tx/${data}`
     }
-    case 'address':
-    default: {
+    case 'contract': {
       return `${prefix}/contract/${data}`
+    }
+    default: {
+      return `${prefix}`
     }
   }
 }
