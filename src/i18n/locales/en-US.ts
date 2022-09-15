@@ -3,6 +3,8 @@ export default {
   goerli_test_network: 'Goerli',
   loading: 'loading...',
   connect: 'Connect Wallet',
+  warning:
+    'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit minus, animi similique delectus, reprehenderit, repudiandae obcaecati qui laudantium vitae ex sint! Quia non earum, et iusto rerum numquam autem delectus!',
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',

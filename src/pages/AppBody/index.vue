@@ -1,4 +1,5 @@
 <template>
+  <Placard />
   <div class="l0k-swap-app-body" :class="{ root: isRoot }">
     <Header />
     <slot></slot>
@@ -13,12 +14,14 @@ import { useRoute } from 'vue-router'
 import Header from '../../components/Header/Header.vue'
 import Modals from '../../components/Modals/Modals.vue'
 import Socials from '../../components/Socials/index.vue'
+import Placard from '../../components/Placard/index.vue'
 
 export default defineComponent({
   components: {
     Header,
     Modals,
     Socials,
+    Placard,
   },
   setup() {
     const route = useRoute()
@@ -43,8 +46,8 @@ export default defineComponent({
   min-height: 700px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  @include bg-prefix('./bg2');
   overflow: hidden;
+  @include bg-prefix('./bg2');
   &.root {
     @include bg-prefix('./bg');
   }

@@ -1,9 +1,11 @@
 @import './reset.scss';
 @import './variable.scss';
+@import './mixin';
 
 body {
   font-family: 'Helvetica';
   color: $color-primary-text;
   font-size: $font-size-normal;
   background-color: rgb(28, 74, 104);
+  @include no-scrollbar;
 }
