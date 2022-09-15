@@ -47,7 +47,6 @@ export default defineComponent({
     otherToken: {
       type: Object as PropType<Token | null>,
     },
-    disabled: { type: Boolean, default: false },
   },
   components: {
     Popper,
