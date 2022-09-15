@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRaw } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../Text/Text.vue'
 import { ClearIcon, ScuccessIcon, LoadingIcon, FailIcon, ShareIcon } from '../Svg'
@@ -45,6 +45,7 @@ import { useStarknetTransactionManager } from '../../starknet-vue/providers/tran
 import { getScanLink } from '../../utils/getScanLink'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import useIsMobile from '../../hooks/useIsMobile'
+import { cloneDeep } from 'lodash'
 
 export default defineComponent({
   components: {
@@ -60,9 +61,12 @@ export default defineComponent({
       state: { chainId },
     } = useStarknet()
     const { t } = useI18n()
-    const { transactions, clearTransactions } = useStarknetTransactionManager()
+    const { state, clearTransactions } = useStarknetTransactionManager()
     const isMobile = useIsMobile()
-    const sortdTransactions = computed(() => toRaw(transactions.value).sort((a, b) => b.createAt - a.createAt))
+    const sortdTransactions = computed(() => {
+      const data = cloneDeep(state.transactions.value)
+      return data.sort((a, b) => b.createAt - a.createAt)
+    })
 
     return {
       chainId,

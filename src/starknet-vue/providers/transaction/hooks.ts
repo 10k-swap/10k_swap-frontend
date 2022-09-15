@@ -1,10 +1,14 @@
-import { inject, ref, Ref, toRaw, ToRefs } from 'vue'
+import { inject, toRefs, ToRefs } from 'vue'
 import { Transaction, StarknetTransactionManager } from './model'
 import { StarknetTransactionStateSymbol, StarknetTransactionMethodsSymbol } from './const'
 import { noop } from '../../utils'
 
-export function useStarknetTransactionManager(): StarknetTransactionManager & { transactions: Ref<Transaction[]> } {
-  const transactions = inject<ToRefs<{ transactions: Transaction[] }>>(StarknetTransactionStateSymbol)
+export function useStarknetTransactionManager(): StarknetTransactionManager & {
+  state: ToRefs<{
+    transactions: Transaction[]
+  }>
+} {
+  const state = inject<ToRefs<{ transactions: Transaction[] }>>(StarknetTransactionStateSymbol)
   const methods = inject<StarknetTransactionManager>(StarknetTransactionMethodsSymbol) ?? {
     addTransaction: noop,
     removeTransaction: noop,
@@ -12,15 +16,8 @@ export function useStarknetTransactionManager(): StarknetTransactionManager & { 
     clearTransactions: noop,
   }
 
-  if (transactions) {
-    return {
-      transactions: toRaw(transactions.transactions),
-      ...methods,
-    }
-  }
-
   return {
-    transactions: ref([]),
+    state: state ? state : toRefs({ transactions: [] }),
     ...methods,
   }
 }
