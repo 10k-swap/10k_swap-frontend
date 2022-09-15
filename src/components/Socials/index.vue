@@ -15,7 +15,7 @@ import MediumIcon from './medium.png'
 import TwitterIcon from './twitter.png'
 
 const socials = [
-  { link: '#', icon: TwitterIcon },
+  { link: 'https://twitter.com/10KSwap', icon: TwitterIcon },
   { link: 'https://github.com/10k-swap', icon: GithubIcon },
   { link: '#', icon: MediumIcon },
   { link: '#', icon: DiscordIcon },
