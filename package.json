@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "eslint src/** && tsc --noEmit",
+    "lint": "eslint src/** & tsc --noEmit",
     "lint:fix": "eslint src/** --fix --ext .ts,.vue,.tsx",
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,less,md}\""
   },

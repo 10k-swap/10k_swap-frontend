@@ -1,12 +1,12 @@
 import axios from './axios'
-import { SERVER_URLS, StarknetChainId } from '../constants'
+import { SERVER_URLS } from '../constants'
 import { IResponse } from './types'
 import { ERR_OK } from './'
-import { Pair, Token, TokenAmount } from 'l0k_swap-sdk'
+import { Pair, Token, TokenAmount, ChainId } from 'l0k_swap-sdk'
 import tokens from '../constants/tokens'
 import { isEqualsAddress } from '../utils'
 
-function getToken(chainId: StarknetChainId, address: string) {
+function getToken(chainId: ChainId, address: string) {
   return tokens[chainId].find((item) => isEqualsAddress(address, item.address))
 }
 
@@ -31,7 +31,7 @@ export interface AllPairItem {
   APR: number
 }
 
-export async function getAllPairs(chainId: StarknetChainId) {
+export async function getAllPairs(chainId: ChainId) {
   try {
     const res = await axios.get<IResponse<AllPairItem[]>>(`${SERVER_URLS[chainId]}/pool/pairs`)
     if (res.data.errCode === ERR_OK) {

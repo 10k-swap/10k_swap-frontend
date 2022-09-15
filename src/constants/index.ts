@@ -1,8 +1,5 @@
-import { StarknetChainId } from 'starknet/constants'
 import i18n from '../i18n'
-import { Percent, JSBI } from 'l0k_swap-sdk'
-
-export { StarknetChainId } from 'starknet/constants'
+import { Percent, JSBI, ChainId } from 'l0k_swap-sdk'
 
 export const CSS_PREFIX = 'l0k-swap'
 
@@ -21,12 +18,12 @@ export const DEFAULT_DEADLINE_FROM_NOW = 60 * 60
 export const ONE_BIPS = new Percent(JSBI.BigInt(1), JSBI.BigInt(10000))
 export const BIPS_BASE = JSBI.BigInt(10000)
 
-export const CHAIN_LABELS: { [chainId in StarknetChainId]: string } = {
-  [StarknetChainId.MAINNET]: i18n.global.t('main_network'),
-  [StarknetChainId.TESTNET]: i18n.global.t('goerli_test_network'),
+export const CHAIN_LABELS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: i18n.global.t('main_network'),
+  [ChainId.TESTNET]: i18n.global.t('goerli_test_network'),
 }
 
-export const SERVER_URLS: { [chainId in StarknetChainId]: string } = {
-  [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: 'https://goerli-api.10kswap.com',
+export const SERVER_URLS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: '',
+  [ChainId.TESTNET]: 'https://goerli-api.10kswap.com',
 }

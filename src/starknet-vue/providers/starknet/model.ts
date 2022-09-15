@@ -1,12 +1,12 @@
+import { ChainId } from 'l0k_swap-sdk'
 import { defaultProvider, ProviderInterface, AccountInterface } from 'starknet'
 import { Connector } from '../../connectors'
-import { StarknetChainId } from 'starknet/constants'
 
 export interface StarknetState {
   account: string | undefined
   library: ProviderInterface | AccountInterface
   connectors: Connector[]
-  chainId: StarknetChainId | undefined
+  chainId: ChainId | undefined
   error: Error | undefined
 }
 

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { ONE_BIPS, StarknetChainId } from '../../constants'
+import { ONE_BIPS } from '../../constants'
 import getBalances from '../../data/getBalances'
-import { Pair, Percent, Token, TokenAmount, ZERO } from 'l0k_swap-sdk'
+import { Pair, Percent, Token, TokenAmount, ZERO, ChainId } from 'l0k_swap-sdk'
 import { getAllPairs } from '../../server/pairs'
 
 export interface Pool {
@@ -32,8 +32,8 @@ interface PoolState {
 }
 
 interface PoolActions {
-  getAllPairs: (chainId: StarknetChainId) => void
-  getUserPairs: (chainId: StarknetChainId, account: string) => void
+  getAllPairs: (chainId: ChainId) => void
+  getUserPairs: (chainId: ChainId, account: string) => void
 }
 
 export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('pool', {

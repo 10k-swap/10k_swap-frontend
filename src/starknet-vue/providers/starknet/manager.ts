@@ -1,10 +1,10 @@
 import { onMounted, reactive, Ref, ref } from 'vue'
 import { defaultProvider, Provider, AccountInterface, ProviderInterface } from 'starknet'
-import { StarknetChainId } from 'starknet/constants'
 import { StarknetMethods, StarknetState } from './model'
 import { Connector, InjectedConnector } from '../../connectors'
 import { ConnectorNotFoundError, UserRejectedRequestError, ConnectorNotConnectedError } from '../../errors'
 import ConnectorStorageManager from '../../utils/ConnectorStorageManager'
+import { ChainId } from 'l0k_swap-sdk'
 
 export function useStarknetManager(
   userDefaultProvider: Ref<ProviderInterface | undefined>,
@@ -14,7 +14,7 @@ export function useStarknetManager(
     library: ProviderInterface | AccountInterface | Provider
     connectors: Connector[]
     account: string | undefined
-    chainId: StarknetChainId | undefined
+    chainId: ChainId | undefined
     error: Error | undefined
   }>({
     library: userDefaultProvider.value ? userDefaultProvider.value : defaultProvider,
