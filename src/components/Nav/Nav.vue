@@ -14,16 +14,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { ChainId } from 'l0k_swap-sdk'
+import { computed, defineComponent } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStarknet } from '../../starknet-vue/providers/starknet'
 import navs from './navs'
 
 export default defineComponent({
   setup() {
     const route = useRoute()
 
+    const {
+      state: { chainId },
+    } = useStarknet()
+
+    const currentNavs = computed(() => navs[chainId.value ?? ChainId.MAINNET])
+
     return {
-      navs,
+      navs: currentNavs,
       route,
     }
   },

@@ -1,29 +1,36 @@
 <template>
   <div class="l0k-swap-pool-wrapper">
-    <div class="head">
-      <Text bold>
-        {{ t('pool.title') }}
+    <template v-if="isMainnet">
+      <Text class="coming-soon" bold>
+        {{ t('comingSoon') }}
       </Text>
-      <div class="tabs">
-        <Button class="pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'pools'" @click="currentNav = 'pools'">
-          {{ t('pool.pools') }}
-        </Button>
-        <Button class="my-pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'my-pools'" @click="currentNav = 'my-pools'">
-          {{ t('pool.my_pools') }}
+    </template>
+    <template v-else>
+      <div class="head">
+        <Text bold>
+          {{ t('pool.title') }}
+        </Text>
+        <div class="tabs">
+          <Button class="pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'pools'" @click="currentNav = 'pools'">
+            {{ t('pool.pools') }}
+          </Button>
+          <Button class="my-pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'my-pools'" @click="currentNav = 'my-pools'">
+            {{ t('pool.my_pools') }}
+          </Button>
+        </div>
+        <Button :size="'small'" :type="'primary'" @click="onNewPosition">
+          {{ isMobile ? '+' : t('pool.new_position') }}
         </Button>
       </div>
-      <Button :size="'small'" :type="'primary'" @click="onNewPosition">
-        {{ isMobile ? '+' : t('pool.new_position') }}
-      </Button>
-    </div>
-    <Pools v-if="currentNav === 'pools'" />
-    <MyPools v-else />
+      <Pools v-if="currentNav === 'pools'" />
+      <MyPools v-else />
+    </template>
   </div>
   <PoolModal />
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from '../../components/Button/Button'
 import Text from '../../components/Text/Text.vue'
@@ -34,6 +41,7 @@ import { usePoolModalStore, usePoolStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useAllPairs } from '../../state/pool/hooks'
+import { ChainId } from 'l0k_swap-sdk'
 
 export default defineComponent({
   components: {
@@ -54,6 +62,8 @@ export default defineComponent({
     const pairs = useAllPairs()
 
     const currentNav = ref<'pools' | 'my-pools'>('pools')
+
+    const isMainnet = computed(() => ChainId.MAINNET === chainId.value)
 
     const onNewPosition = () => {
       poolModalStore.newPosition()
@@ -78,6 +88,7 @@ export default defineComponent({
 
     return {
       isMobile,
+      isMainnet,
       currentNav,
 
       onNewPosition,
@@ -96,6 +107,13 @@ export default defineComponent({
   background: $color-white;
   border-radius: 20px;
   overflow: hidden;
+
+  .coming-soon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+  }
 
   @include mobile {
     width: 351px;
