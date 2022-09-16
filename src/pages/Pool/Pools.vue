@@ -25,7 +25,7 @@
           {{ t('pool.get', { token: `${pair.token0.symbol}-${pair.token1.symbol}` }) }}
         </Text>
       </div>
-      <div class="loading" v-if="loading">
+      <div class="loading" v-if="loading && !pairs.length">
         <LoadingIcon />
       </div>
     </div>
