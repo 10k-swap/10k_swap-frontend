@@ -1,7 +1,7 @@
-import { AccountInterface, ProviderInterface } from 'starknet'
+import { AccountInterface } from 'starknet'
 
 export const noop = (): null => null
 
-export const isAccountInterface = (library: AccountInterface | ProviderInterface): library is AccountInterface => {
-  return !!(library as AccountInterface)?.execute
+export const isAccountInterface = (library: unknown): library is AccountInterface => {
+  return !!(typeof library === 'object' && library !== null && (library as any).execute)
 }
