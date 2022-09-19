@@ -1,6 +1,6 @@
 <template>
   <div class="l0k-swap-pool-wrapper">
-    <template v-if="isMainnet">
+    <template v-if="!isShowPool">
       <Text class="coming-soon" bold>
         {{ t('comingSoon') }}
       </Text>
@@ -41,7 +41,8 @@ import { usePoolModalStore, usePoolStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useAllPairs } from '../../state/pool/hooks'
-import { ChainId } from 'l0k_swap-sdk'
+import { poolWhitelist } from '../../constants/whitelist'
+import { ChainId, isEqualAddress } from 'l0k_swap-sdk'
 
 export default defineComponent({
   components: {
@@ -63,7 +64,12 @@ export default defineComponent({
 
     const currentNav = ref<'pools' | 'my-pools'>('pools')
 
-    const isMainnet = computed(() => ChainId.MAINNET === chainId.value)
+    const isShowPool = computed(() => {
+      if (poolWhitelist.find((address) => account.value && isEqualAddress(address, account.value))) {
+        return true
+      }
+      return ChainId.MAINNET !== chainId.value
+    })
 
     const onNewPosition = () => {
       poolModalStore.newPosition()
@@ -88,7 +94,7 @@ export default defineComponent({
 
     return {
       isMobile,
-      isMainnet,
+      isShowPool,
       currentNav,
 
       onNewPosition,

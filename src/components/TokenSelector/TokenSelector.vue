@@ -18,6 +18,7 @@
           v-for="token in tokens"
           :key="token.address"
           @click="onSelect(token, $event)"
+          :title="token.name"
         >
           <TokenLogo class="l0k-swap-select-token--token-logo" :token="token" />
           <Text class="text"> {{ token.symbol }} </Text>

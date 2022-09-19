@@ -1,0 +1,1 @@
+export const poolWhitelist = ['0x029e407b9A95F8990EccD2BaEB9645dDd165Ee547aE6aEbB1c9C0220C77Ef065']

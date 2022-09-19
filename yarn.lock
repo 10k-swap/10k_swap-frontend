@@ -1837,7 +1837,7 @@ json5@^2.2.1:
 
 "l0k_swap-sdk@https://github.com/10k-swap/10k_swap-sdk.git#main":
   version "0.9.0"
-  resolved "https://github.com/10k-swap/10k_swap-sdk.git#29655b7803859c61eb72e48058dbb3e59facb335"
+  resolved "https://github.com/10k-swap/10k_swap-sdk.git#9ed097b73ea812eb4c84943ba2c8a018140ed4ce"
   dependencies:
     big.js "^6.2.1"
     decimal.js-light "^2.5.1"

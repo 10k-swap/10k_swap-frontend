@@ -5,8 +5,6 @@ export const CSS_PREFIX = 'l0k-swap'
 
 export const ADDRESS_ZORE = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
-export const PAIR_CONTRACT_CLASS_HASH = '0x231adde42526bad434ca2eb983efdd64472638702f87f97e6e3c084f264e06f'
-
 export const MOBILE_SIZE = 768
 
 // default allowed slippage, in bips
@@ -24,6 +22,6 @@ export const CHAIN_LABELS: { [chainId in ChainId]: string } = {
 }
 
 export const SERVER_URLS: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: '',
+  [ChainId.MAINNET]: 'https://api.10kswap.com',
   [ChainId.TESTNET]: 'https://goerli-api.10kswap.com',
 }
