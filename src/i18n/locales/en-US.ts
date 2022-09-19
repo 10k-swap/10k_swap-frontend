@@ -4,7 +4,7 @@ export default {
   loading: 'loading...',
   connect: 'Connect Wallet',
   comingSoon: 'Coming Soon',
-  warning: `Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit minus, animi similique delectus, reprehenderit, repudiandae obcaecati qui laudantium vitae ex sint! Quia non earum, et iusto rerum numquam autem delectus!`,
+  warning: `This is an ALPHA version. As such, delays may occur, and catastrophic bugs may lurk.`,
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',
