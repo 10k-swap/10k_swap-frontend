@@ -99,7 +99,7 @@ export default {
     deposit: 'Deposit',
   },
   pool_modal: {
-    add_liqiudit: 'Add liqiudit',
+    add_liqiudit: 'Add Liqiudit',
     withdraw: 'Withdraw',
   },
   add_liqiudit: {

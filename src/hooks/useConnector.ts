@@ -32,6 +32,11 @@ export default function useConnector() {
     if (!newErr) {
       return
     }
+
+    if (showConnectingModal.value) {
+      store.toggleConnectingModal(false)
+    }
+
     if (newErr instanceof ConnectorNotFoundError) {
       store.toggleConnectorNotFoundModal(true)
     }

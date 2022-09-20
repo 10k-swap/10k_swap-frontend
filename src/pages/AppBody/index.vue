@@ -1,6 +1,6 @@
 <template>
-  <Placard />
   <div class="l0k-swap-app-body" :class="{ root: isRoot }">
+    <Placard />
     <Header />
     <slot></slot>
     <div class="socials"><Socials /></div>
