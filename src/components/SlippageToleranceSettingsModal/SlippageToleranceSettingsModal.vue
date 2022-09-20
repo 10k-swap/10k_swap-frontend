@@ -15,7 +15,7 @@
           {{ t('slippage_tolerance_settings_modal.auto') }}
         </Button>
         <div class="input-wrap">
-          <input class="input" type="text" v-model="typedValue" :placeholder="placeholder" />
+          <input class="input" type="text" v-model="typedValue" />
         </div>
       </div>
       <div class="l0k-swap-slippage-tolerance-settings-confirm">
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import ModalHeader from '../Modal/ModalHeader.vue'
@@ -48,33 +48,22 @@ export default defineComponent({
     const { t } = useI18n()
     const modalStore = useModalStore()
     const slippageToleranceSettingsStore = useSlippageToleranceSettingsStore()
-
     const currentSet = computed(() => slippageToleranceSettingsStore.currentSet)
     const slippageTolerances = computed(() => slippageToleranceSettingsStore.slippageTolerances)
 
     const typedValue = ref<number | string>('')
+
     const parsedTypedValue = computed(() => {
       const typed = typedValue.value
       return Math.trunc((typeof typed === 'string' ? parseFloat(typed) : typed) * 100)
     })
 
-    const placeholder = computed(() => {
-      if (!currentSet.value) {
-        return ''
-      }
-      return (slippageTolerances.value[currentSet.value] / 100).toString()
-    })
-
     const showModal = computed({
       get: () => modalStore.showSlippageToleranceSettingsModal,
       set(newValue) {
-        if (!newValue) {
-          typedValue.value = ''
-        }
         modalStore.toggleSlippageToleranceSettingsModal(newValue)
       },
     })
-
     const isDisabled = computed(() => {
       const value = parsedTypedValue.value
       if (Number.isNaN(value)) {
@@ -84,6 +73,13 @@ export default defineComponent({
         return true
       }
       return false
+    })
+
+    watch([currentSet, slippageTolerances], () => {
+      if (!currentSet.value) {
+        return
+      }
+      typedValue.value = slippageTolerances.value[currentSet.value] / 100
     })
 
     const onAuto = () => {
@@ -98,8 +94,6 @@ export default defineComponent({
       showModal,
       typedValue,
       isDisabled,
-      placeholder,
-
       t,
       onAuto,
       onConfirm,
