@@ -5,16 +5,20 @@ import { useStarknet } from '../starknet-vue/providers/starknet'
 import { useModalStore } from '../state'
 import useArgentXRejectCallback from './useArgentXRejectCallback'
 
-function getConnector(connectors: Connector<unknown>[]) {
+function getConnector(connectors: Connector<unknown>[], isRetry: boolean) {
+  if (connectors.length === 1) {
+    return connectors[0]
+  }
   const argentX = connectors.find((item) => item.id() === 'argent-x')
-  if (argentX) {
+  if (argentX && !isRetry) {
     return argentX
   }
-  return connectors[0]
+  return isRetry ? connectors.filter((item) => item.id() !== 'argent-x')[0] : connectors[0]
 }
 
 export default function useConnector() {
   const connectError = ref<Error>()
+
   const store = useModalStore()
 
   const {
@@ -51,7 +55,7 @@ export default function useConnector() {
     })
   })
 
-  const onConnect = async () => {
+  const onConnect = async (isRetry = false) => {
     connectError.value = undefined
 
     if (!connectors.value.length) {
@@ -60,7 +64,7 @@ export default function useConnector() {
     }
 
     try {
-      const connector = getConnector(toRaw(connectors.value))
+      const connector = getConnector(toRaw(connectors.value), isRetry)
       const ready = await connector.ready()
 
       if (!ready) {

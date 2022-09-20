@@ -51,7 +51,7 @@ export default defineComponent({
 
     const onRetry = () => {
       showModal.value = false
-      onConnect()
+      onConnect(true)
     }
 
     return {

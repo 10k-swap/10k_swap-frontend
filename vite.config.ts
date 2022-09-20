@@ -10,7 +10,7 @@ export default defineConfig({
     target: 'es2015',
   },
   server: {
-    port: 3031,
+    port: 3035,
     host: true,
   },
   plugins: [
