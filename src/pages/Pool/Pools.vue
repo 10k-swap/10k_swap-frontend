@@ -20,7 +20,7 @@
           </Text>
         </div>
         <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text>
-        <Text class="liquidit" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> ${{ pair.totalSupply.toSignificant() }} </Text>
+        <Text class="liquidit" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.totalSupply.toSignificant() }} </Text>
         <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
           {{ t('pool.get', { token: `${pair.token0.symbol}-${pair.token1.symbol}` }) }}
         </Text>
