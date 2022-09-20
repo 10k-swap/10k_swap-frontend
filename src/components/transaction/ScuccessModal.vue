@@ -96,8 +96,8 @@ export default defineComponent({
   }
 
   .link {
-    text-decoration: none;
     margin-bottom: 20px;
+    text-decoration-color: $color-secondary-text;
   }
 
   .close {

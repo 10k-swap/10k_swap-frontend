@@ -1,7 +1,5 @@
 <template>
-  <div :class="classes" v-show="show">
-    {{ placard?.content }}
-  </div>
+  <div :class="classes" v-show="show" v-html="placard?.content"></div>
 </template>
 
 <script lang="ts">
@@ -35,7 +33,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../../styles/index.scss';
 $placard-prefix: '#{$prefix}-placard';
 
@@ -47,6 +45,10 @@ $placard-prefix: '#{$prefix}-placard';
   @include mobile {
     padding: 12px;
     text-align: left;
+  }
+  a {
+    color: $color-white;
+    font-weight: 600;
   }
   &--warning {
     background: $color-black;

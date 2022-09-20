@@ -1,10 +1,10 @@
 export default {
-  main_network: 'Main',
+  main_network: 'Mainnet',
   goerli_test_network: 'Görli',
   loading: 'loading...',
   connect: 'Connect Wallet',
   comingSoon: 'Coming Soon',
-  warning: `This is an ALPHA version. As such, delays may occur, and catastrophic bugs may lurk.`,
+  warning: `This is an ALPHA version, please use small transactions. You can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions.`,
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',
