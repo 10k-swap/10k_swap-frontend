@@ -2,7 +2,7 @@ import { onBeforeUnmount, onMounted } from 'vue'
 
 export default function useArgentXRejectCallback(callback: () => void) {
   const event = (res: MessageEvent<any>) => {
-    if (res.data.type === 'REJECT_ACTION') {
+    if (res.data.type !== 'REJECT_ACTION') {
       return
     }
     callback && callback()
