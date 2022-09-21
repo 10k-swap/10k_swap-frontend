@@ -2,8 +2,6 @@
 
 This project contains the main features of the 10kswap application.
 
-# Quick Start
-
 ## Quick Start
 
 install dependencies using **yarn**
