@@ -1,8 +1,5 @@
 <template>
   <Modal v-model="showModal">
-    <template v-slot:header>
-      <ModalHeader @dismiss="() => (showModal = false)" />
-    </template>
     <div class="l0k-swap-connect-reject-modal">
       <Text class="title" bold :size="'md'" :color="'red'">
         {{ t('connect_reject_modal.title') }}
@@ -23,7 +20,6 @@
 import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
-import ModalHeader from '../Modal/ModalHeader.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
 import useConnector from '../../hooks/useConnector'
@@ -32,7 +28,6 @@ import { useModalStore } from '../../state'
 export default defineComponent({
   components: {
     Modal,
-    ModalHeader,
     Text,
     Button,
   },

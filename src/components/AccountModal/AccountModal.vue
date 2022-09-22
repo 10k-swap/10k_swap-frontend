@@ -1,8 +1,5 @@
 <template>
-  <Modal v-model="showModal">
-    <template v-slot:header>
-      <ModalHeader @dismiss="() => (showModal = false)" :title="t('account_modal.account')" />
-    </template>
+  <Modal v-model="showModal" :title="t('account_modal.account')">
     <div class="l0k-swap-account-modal-card">
       <div class="l0k-swap-account-modal-card-top">
         <Text color="secondary-text" size="small"> {{ t('account_modal.tips', { wallet }) }}</Text>
@@ -33,7 +30,6 @@ import { computed, defineComponent, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ClipboardJS from 'clipboard'
 import Modal from '../Modal/Modal.vue'
-import ModalHeader from '../Modal/ModalHeader.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
 import RecentTransactions from '../RecentTransactions/RecentTransactions.vue'
@@ -47,7 +43,6 @@ import { shortenAddress } from '../../utils'
 export default defineComponent({
   components: {
     Modal,
-    ModalHeader,
     Button,
     Text,
     CopyIcon,

@@ -1,8 +1,5 @@
 <template>
   <Modal v-model="showModal">
-    <template v-slot:header>
-      <ModalHeader @dismiss="() => (showModal = false)" />
-    </template>
     <div class="l0k-swap-connecting-modal">
       <div class="content">
         <LoadingIcon width="48" :color="'secondary'" />
@@ -23,7 +20,6 @@
 import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
-import ModalHeader from '../Modal/ModalHeader.vue'
 import Text from '../Text/Text.vue'
 import { LoadingIcon } from '../Svg'
 import { useModalStore } from '../../state'
@@ -31,7 +27,6 @@ import { useModalStore } from '../../state'
 export default defineComponent({
   components: {
     Modal,
-    ModalHeader,
     LoadingIcon,
     Text,
   },

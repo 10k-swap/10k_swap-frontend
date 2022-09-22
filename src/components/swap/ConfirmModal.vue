@@ -1,8 +1,5 @@
 <template>
-  <Modal v-model="showModal" :top="160">
-    <template v-slot:header>
-      <ModalHeader @dismiss="() => (showModal = false)" :title="t('swap.confirm_swap')" />
-    </template>
+  <Modal v-model="showModal" :top="160" :title="t('swap.confirm_swap')">
     <div class="l0k-swap-confirm-swap-modal">
       <div class="card">
         <Text :size="'large'" bold>
@@ -40,7 +37,6 @@
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
-import ModalHeader from '../Modal/ModalHeader.vue'
 import TradePrice from './TradePrice.vue'
 import TokenLogo from '../TokenLogo/TokenLogo'
 import AdvancedSwapDetails from './AdvancedSwapDetails.vue'
@@ -61,7 +57,6 @@ export default defineComponent({
   },
   components: {
     Modal,
-    ModalHeader,
     Text,
     Button,
     TradePrice,

@@ -1,8 +1,5 @@
 <template>
-  <Modal v-model="showModal" :top="160">
-    <template v-slot:header>
-      <ModalHeader @dismiss="() => (showModal = false)" :title="t('remove_liqiudit.confirm_title')" />
-    </template>
+  <Modal v-model="showModal" :top="160" :title="t('remove_liqiudit.confirm_title')">
     <div class="l0k-swap-confirm-burn-modal">
       <div class="output">
         <Text bold :size="'large'">
@@ -68,7 +65,6 @@
 import { computed, defineComponent, PropType, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
-import ModalHeader from '../Modal/ModalHeader.vue'
 import TokenLogo from '../TokenLogo/TokenLogo'
 import DoubleLogo from '../DoubleLogo/index.vue'
 import Text from '../Text/Text.vue'
@@ -96,7 +92,6 @@ export default defineComponent({
   },
   components: {
     Modal,
-    ModalHeader,
     Text,
     Button,
     TokenLogo,
