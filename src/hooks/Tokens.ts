@@ -3,7 +3,7 @@ import tokens from '../constants/tokens'
 import { Token, ChainId } from 'l0k_swap-sdk'
 import { useStarknetCall } from '../starknet-vue/hooks/call'
 import { useStarknet } from '../starknet-vue/providers/starknet'
-import { BN2String, isEqualsAddress } from '../utils'
+import { parseBN2String, isEqualsAddress } from '../utils'
 import { useTokenContract } from './Contract'
 
 const tokenCaches = tokens
@@ -40,8 +40,8 @@ export function useToken(tokenAddress: ComputedRef<string | undefined>): Compute
         chainId.value,
         address.value,
         toRaw(decimals.state.data[0]).toNumber(),
-        BN2String(symbol.state.data?.[0]),
-        BN2String(tokenName.state.data?.[0])
+        parseBN2String(symbol.state.data?.[0]),
+        parseBN2String(tokenName.state.data?.[0])
       )
       tokenCaches[chainId.value].push(newToken)
       return newToken
