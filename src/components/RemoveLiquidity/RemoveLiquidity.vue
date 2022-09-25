@@ -1,7 +1,7 @@
 <template>
-  <div class="l0k-swap-remove-liqiudit">
+  <div class="l0k-swap-remove-liquidity">
     <Text class="tips" :color="'description-text'" :size="'small'">
-      {{ t('remove_liqiudit.tips') }}
+      {{ t('remove_liquidity.tips') }}
     </Text>
     <CurrencyInputPanel
       :selector="false"
@@ -39,7 +39,7 @@
       @input="onUserInput(Field.CURRENCY_B, $event)"
     />
     <div class="price-wrap">
-      <Text :size="'mini'">{{ t('remove_liqiudit.price') }}</Text>
+      <Text :size="'mini'">{{ t('remove_liquidity.price') }}</Text>
       <div class="price">
         <Text :size="'mini'" :color="'description-text'">
           {{ prices[0] }}
@@ -51,7 +51,7 @@
     </div>
     <div class="position">
       <Text :size="'small'">
-        {{ t('remove_liqiudit.your_position') }}
+        {{ t('remove_liquidity.your_position') }}
       </Text>
       <div class="cell LP">
         <div class="label">
@@ -64,7 +64,7 @@
       </div>
       <div class="cell">
         <Text class="label" :size="'small'">
-          {{ t('remove_liqiudit.pool_share') }}
+          {{ t('remove_liquidity.pool_share') }}
         </Text>
         <Text class="value" :size="'small'" :color="'description-text'"
           >{{ (poolShare?.lessThan(ONE_BIPS) ? '<0.01' : poolShare?.toFixed(2)) ?? '0' }} %
@@ -91,7 +91,7 @@
       {{ t('connect') }}
     </Button>
     <Button class="approve" v-else :disabled="!!error" :size="'large'" bold :type="'primary'" @click="onApprove">
-      {{ error ? error : t('remove_liqiudit.approve') }}
+      {{ error ? error : t('remove_liquidity.approve') }}
     </Button>
   </div>
   <ConfirmModal :show="showConfirm" :parsedAmounts="parsedAmounts" :prices="prices" :pair="pair" @dismiss="showConfirm = false" @burn="onBurn" />
@@ -126,7 +126,7 @@ import WaittingModal from '../transaction/WaittingModal.vue'
 import ScuccessModal from '../transaction/ScuccessModal.vue'
 import RejectedModal from '../transaction/RejectedModal.vue'
 import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
-import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
+import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { toBN } from 'starknet/utils/number'
 
 export default defineComponent({
@@ -167,7 +167,7 @@ export default defineComponent({
     const token1 = computed(() => pair.value?.token1)
     const token0Balance = useTokenBalances(account, token0)
     const token1Balance = useTokenBalances(account, token1)
-    const allowedSlippage = useUserLiqiuditSlippageTolerance()
+    const allowedSlippage = useUserLiquiditySlippageTolerance()
 
     const routerAddress = computed(() => chainId.value && ROUTER_ADDRESSES[chainId.value])
     const executeContractAddresses = computed(() => {
@@ -288,7 +288,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '../../styles/index';
 
-.l0k-swap-remove-liqiudit {
+.l0k-swap-remove-liquidity {
   .tips {
     margin-bottom: 8px;
   }

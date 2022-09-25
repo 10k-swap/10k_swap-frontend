@@ -7,8 +7,8 @@
       <Text class="APR" :size="'small'">
         {{ t('pool.APR') }}
       </Text>
-      <Text class="liquidit" :size="'small'">
-        {{ t('pool.liquidit') }}
+      <Text class="liquidity" :size="'small'">
+        {{ t('pool.liquidity') }}
       </Text>
     </div>
     <div class="pools">
@@ -20,7 +20,7 @@
           </Text>
         </div>
         <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text>
-        <Text class="liquidit" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.totalSupply.toSignificant() }} </Text>
+        <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> ${{ pair.totalSupply.toSignificant() }} </Text>
         <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
           {{ t('pool.get', { token: `${pair.token0.symbol}-${pair.token1.symbol}` }) }}
         </Text>
@@ -57,7 +57,7 @@ export default defineComponent({
     const isMobile = useIsMobile()
 
     const onGet = (pool: any) => {
-      poolModalStore.addLiqiudit(pool.pair)
+      poolModalStore.addLiquidity(pool.pair)
     }
 
     return {
@@ -87,7 +87,7 @@ export default defineComponent({
 
     .name,
     .APR,
-    .liquidit {
+    .liquidity {
       display: flex;
       justify-content: center;
     }
@@ -107,7 +107,7 @@ export default defineComponent({
         }
       }
       .APR,
-      .liquidit {
+      .liquidity {
         display: flex;
         justify-content: center;
       }
@@ -138,7 +138,7 @@ export default defineComponent({
             margin-left: 4px;
           }
         }
-        .liquidit {
+        .liquidity {
           @include no-wrap;
         }
       }

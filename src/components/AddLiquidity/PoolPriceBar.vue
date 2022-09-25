@@ -11,7 +11,7 @@
     <div class="column">
       <Text :size="'small'"> {{ poolTokenPercentageLabel }}%</Text>
       <Text :size="'small'" :color="'description-text'">
-        {{ t('add_liqiudit.share_of_pool') }}
+        {{ t('add_liquidity.share_of_pool') }}
       </Text>
     </div>
   </div>

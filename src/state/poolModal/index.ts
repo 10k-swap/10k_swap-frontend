@@ -7,8 +7,8 @@ export enum Actions {
 }
 
 export interface PoolModalStoreState {
-  removeLiqiuditPair: Pair | undefined
-  addLiqiuditPair: Pair | undefined
+  removeLiquidityPair: Pair | undefined
+  addLiquidityPair: Pair | undefined
   show: boolean
   action: Actions
 }
@@ -16,7 +16,7 @@ export interface PoolModalStoreState {
 interface PoolStoreAction {
   togglePoolModal: (show: boolean) => void
   newPosition: () => void
-  addLiqiudit: (pair: Pair) => void
+  addLiquidity: (pair: Pair) => void
   withdraw: (pair: Pair) => void
   _resetState: () => void
 }
@@ -26,8 +26,8 @@ export const usePoolModalStore = defineStore<'poolModal', PoolModalStoreState, {
     return {
       show: false,
       action: Actions.MINT,
-      addLiqiuditPair: undefined,
-      removeLiqiuditPair: undefined,
+      addLiquidityPair: undefined,
+      removeLiquidityPair: undefined,
     }
   },
   actions: {
@@ -41,19 +41,19 @@ export const usePoolModalStore = defineStore<'poolModal', PoolModalStoreState, {
       this._resetState()
       this.show = true
     },
-    addLiqiudit(pair) {
+    addLiquidity(pair) {
       this.show = true
-      this.addLiqiuditPair = pair
+      this.addLiquidityPair = pair
       this.action = Actions.MINT
     },
     withdraw(pair) {
       this.show = true
-      this.removeLiqiuditPair = pair
+      this.removeLiquidityPair = pair
       this.action = Actions.BURN
     },
     _resetState() {
-      this.addLiqiuditPair = undefined
-      this.removeLiqiuditPair = undefined
+      this.addLiquidityPair = undefined
+      this.removeLiquidityPair = undefined
       this.action = Actions.MINT
     },
   },
