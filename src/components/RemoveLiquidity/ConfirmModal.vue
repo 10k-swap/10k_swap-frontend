@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal" :top="160">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => (showModal = false)" :title="t('remove_liqiudit.confirm_title')" />
+      <ModalHeader @dismiss="() => (showModal = false)" :title="t('remove_liquidity.confirm_title')" />
     </template>
     <div class="l0k-swap-confirm-burn-modal">
       <div class="output">
@@ -27,23 +27,23 @@
         </div>
       </div>
       <Text class="tips" :color="'secondary-text'" :size="'mini'">
-        {{ t('remove_liqiudit.confirm_tips', { slippage: slippage / 100 }) }}
+        {{ t('remove_liquidity.confirm_tips', { slippage: slippage / 100 }) }}
       </Text>
       <div class="card">
         <div class="cell">
           <Text class="label" :size="'small'">
-            {{ t('remove_liqiudit.burned', { token: `${pair?.token0.symbol}/${pair?.token1.symbol}` }) }}
+            {{ t('remove_liquidity.burned', { token: `${pair?.token0.symbol}/${pair?.token1.symbol}` }) }}
           </Text>
           <div class="value">
             <DoubleLogo :token0="pair?.token0" :token1="pair?.token1" :size="20" />
-            <Text class="liqiudit" :size="'small'" :color="'description-text'">
+            <Text class="liquidity" :size="'small'" :color="'description-text'">
               {{ parsedAmounts?.[Field.CURRENCY_A]?.toSignificant() }}
             </Text>
           </div>
         </div>
         <div class="cell">
           <Text class="label" :size="'small'">
-            {{ t('remove_liqiudit.price') }}
+            {{ t('remove_liquidity.price') }}
           </Text>
           <div class="price">
             <Text :size="'mini'" :color="'description-text'">
@@ -57,7 +57,7 @@
       </div>
       <div class="confirm">
         <Button :type="'primary'" bold @click="onConfirm">
-          {{ t('remove_liqiudit.confirm') }}
+          {{ t('remove_liquidity.confirm') }}
         </Button>
       </div>
     </div>
@@ -74,7 +74,7 @@ import DoubleLogo from '../DoubleLogo/index.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
 import { TokenAmount, Pair } from 'l0k_swap-sdk'
-import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
+import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { Field } from '../../state/burn/types'
 import { AddIcon } from '../Svg'
 
@@ -108,7 +108,7 @@ export default defineComponent({
     const { show, parsedAmounts } = toRefs(props)
     const { t } = useI18n()
 
-    const slippage = useUserLiqiuditSlippageTolerance()
+    const slippage = useUserLiquiditySlippageTolerance()
 
     const showModal = computed({
       get: () => show.value,
@@ -174,7 +174,7 @@ export default defineComponent({
         margin-bottom: 0;
       }
 
-      .liqiudit {
+      .liquidity {
         margin-left: 8px;
       }
 

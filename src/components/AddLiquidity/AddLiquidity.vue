@@ -1,5 +1,5 @@
 <template>
-  <div class="l0k-swap-add-liqiudit">
+  <div class="l0k-swap-add-liquidity">
     <div class="l0k-swap-add-content">
       <CurrencyInputPanel
         :value="formattedAmounts[Field.CURRENCY_A]"
@@ -20,11 +20,11 @@
         @token-select="handleCurrencyBSelect"
         @input="onFieldBInput"
       />
-      <Text class="liqiudity" :color="'description-text'" :size="'mini'">
-        {{ t('add_liqiudit.liqiudity', { value: LPTotalSupply }) }}
+      <Text class="liquidity" :color="'description-text'" :size="'mini'">
+        {{ t('add_liquidity.liquidity', { value: LPTotalSupply }) }}
       </Text>
       <Text :color="'description-text'" :size="'mini'" v-if="noLiquidity">
-        {{ t('add_liqiudit.no_liqiudity_tips') }}
+        {{ t('add_liquidity.no_liquidity_tips') }}
       </Text>
       <PoolPriceBar
         class="pool-price-bar"
@@ -38,10 +38,10 @@
         {{ t('connect') }}
       </Button>
       <Button class="deposit" v-else :disabled="!!error" :size="'large'" :type="'primary'" bold @click="onDeposit">
-        {{ error ? error : t('add_liqiudit.deposit') }}
+        {{ error ? error : t('add_liquidity.deposit') }}
       </Button>
       <Text class="desc" :size="'mini'" :color="'description-text'">
-        {{ t('add_liqiudit.desc') }}
+        {{ t('add_liquidity.desc') }}
       </Text>
     </div>
   </div>
@@ -83,7 +83,7 @@ import erc20 from '../../constants/abis/erc20.json'
 import { Abi } from 'starknet'
 import { bnToUint256 } from 'starknet/dist/utils/uint256'
 import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
-import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
+import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { ROUTER_ADDRESSES } from '../../constants/address'
 import useConnector from '../../hooks/useConnector'
 import { useMintStore } from '../../state'
@@ -131,7 +131,7 @@ export default defineComponent({
       liquidityMinted,
     } = useDerivedMintInfo(tokenA, tokenB)
     const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
-    const allowedSlippage = useUserLiqiuditSlippageTolerance()
+    const allowedSlippage = useUserLiquiditySlippageTolerance()
 
     const routerAddress = computed(() => chainId.value && ROUTER_ADDRESSES[chainId.value])
     const executeContractAddresses = computed(() => {
@@ -157,7 +157,7 @@ export default defineComponent({
 
     const LPTotalSupply = computed(() => {
       if (noLiquidity.value) {
-        return t('add_liqiudit.no_liqiudity')
+        return t('add_liquidity.no_liquidity')
       }
       if (totalSupply.value === null) {
         return t('loading')
@@ -271,14 +271,14 @@ export default defineComponent({
 <style lang="scss">
 @import '../../styles/index.scss';
 
-.l0k-swap-add-liqiudit {
+.l0k-swap-add-liquidity {
   .l0k-swap-add-content {
     .add-wrap {
       display: flex;
       justify-content: center;
     }
 
-    .liqiudity {
+    .liquidity {
       margin-top: 8px;
       margin-bottom: 5px;
     }

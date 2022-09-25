@@ -13,10 +13,10 @@
     </template>
     <div class="l0k-swap-pair-modal">
       <div v-if="currentTab === Actions.MINT">
-        <AddLiqiudit />
+        <AddLiquidity />
       </div>
       <div v-if="currentTab === Actions.BURN">
-        <RemoveLiqiudit :pair="removeLiqiuditPair ?? undefined" />
+        <RemoveLiquidity :pair="removeLiquidityPair ?? undefined" />
       </div>
     </div>
   </Modal>
@@ -28,8 +28,8 @@ import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import ModalHeader from '../Modal/ModalHeader.vue'
 import Tabs from './Tabs.vue'
-import AddLiqiudit from '../AddLiqiudit/AddLiqiudit.vue'
-import RemoveLiqiudit from '../RemoveLiqiudit/RemoveLiqiudit.vue'
+import AddLiquidity from '../AddLiquidity/AddLiquidity.vue'
+import RemoveLiquidity from '../RemoveLiquidity/RemoveLiquidity.vue'
 import { BackIcon, SettingIcon } from '../Svg'
 import { useModalStore, useSlippageToleranceSettingsStore, usePoolModalStore, useMintStore } from '../../state'
 import { Actions } from '../../state/poolModal'
@@ -43,8 +43,8 @@ export default defineComponent({
     BackIcon,
     SettingIcon,
     Tabs,
-    AddLiqiudit,
-    RemoveLiqiudit,
+    AddLiquidity,
+    RemoveLiquidity,
   },
   setup() {
     const { t } = useI18n()
@@ -54,14 +54,14 @@ export default defineComponent({
     const mintStore = useMintStore()
     const slippageToleranceSettingsStore = useSlippageToleranceSettingsStore()
 
-    const addLiqiuditPair = computed(() => poolModalStore.addLiqiuditPair)
-    const removeLiqiuditPair: ComputedRef<Pair | undefined> = computed(() => poolModalStore.removeLiqiuditPair as Pair)
+    const addLiquidityPair = computed(() => poolModalStore.addLiquidityPair)
+    const removeLiquidityPair: ComputedRef<Pair | undefined> = computed(() => poolModalStore.removeLiquidityPair as Pair)
 
-    watch([addLiqiuditPair], () => {
-      if (addLiqiuditPair.value) {
+    watch([addLiquidityPair], () => {
+      if (addLiquidityPair.value) {
         mintStore.selectToken({
-          tokenA: addLiqiuditPair.value?.token0,
-          tokenB: addLiqiuditPair.value?.token1,
+          tokenA: addLiquidityPair.value?.token0,
+          tokenB: addLiquidityPair.value?.token1,
         })
       }
     })
@@ -81,7 +81,7 @@ export default defineComponent({
     const currentTab = computed<Actions>(() => current.value ?? action.value)
 
     const tabs = computed(() => {
-      const base: { label: string; value: Actions }[] = [{ label: t('pool_modal.add_liqiudit'), value: Actions.MINT }]
+      const base: { label: string; value: Actions }[] = [{ label: t('pool_modal.add_liquidity'), value: Actions.MINT }]
       if (action.value === Actions.BURN) {
         base.push({
           label: t('pool_modal.withdraw'),
@@ -93,7 +93,7 @@ export default defineComponent({
 
     const onSetting = () => {
       modalStore.toggleSlippageToleranceSettingsModal(true)
-      slippageToleranceSettingsStore.updateCurrentSet('liqiudit')
+      slippageToleranceSettingsStore.updateCurrentSet('liquidity')
     }
     const onChange = (tab: Actions) => {
       current.value = tab
@@ -103,7 +103,7 @@ export default defineComponent({
       showModal,
       tabs,
       currentTab,
-      removeLiqiuditPair,
+      removeLiquidityPair,
       isMobile,
       Actions,
 

@@ -1,7 +1,7 @@
 <template>
   <Modal v-model="showModal" :top="160">
     <template v-slot:header>
-      <ModalHeader @dismiss="() => (showModal = false)" :title="t('add_liqiudit.confirm_title')" />
+      <ModalHeader @dismiss="() => (showModal = false)" :title="t('add_liquidity.confirm_title')" />
     </template>
     <div class="l0k-swap-confirm-mint-modal">
       <div class="liquidity">
@@ -12,18 +12,18 @@
       </div>
       <Text :color="'secondary-text'">
         {{
-          t('add_liqiudit.pool_token', {
+          t('add_liquidity.pool_token', {
             tokens: `${currencies?.[Field.CURRENCY_A]?.symbol}/${currencies?.[Field.CURRENCY_B]?.symbol}`,
           })
         }}
       </Text>
       <Text class="tips" :color="'secondary-text'" :size="'mini'">
-        {{ t('add_liqiudit.confirm_tips', { slippage: slippage / 100 }) }}
+        {{ t('add_liquidity.confirm_tips', { slippage: slippage / 100 }) }}
       </Text>
       <div class="card">
         <div class="cell">
           <Text class="label" :size="'small'">
-            {{ t('add_liqiudit.deposited', { token: currencies?.[Field.CURRENCY_A]?.symbol }) }}
+            {{ t('add_liquidity.deposited', { token: currencies?.[Field.CURRENCY_A]?.symbol }) }}
           </Text>
           <div class="value">
             <TokenLogo :token="currencies?.[Field.CURRENCY_A]" :size="20" />
@@ -34,7 +34,7 @@
         </div>
         <div class="cell">
           <Text class="label" :size="'small'">
-            {{ t('add_liqiudit.deposited', { token: currencies?.[Field.CURRENCY_B]?.symbol }) }}
+            {{ t('add_liquidity.deposited', { token: currencies?.[Field.CURRENCY_B]?.symbol }) }}
           </Text>
           <div class="value">
             <TokenLogo :token="currencies?.[Field.CURRENCY_B]" :size="20" />
@@ -45,7 +45,7 @@
         </div>
         <div class="cell">
           <Text class="label" :size="'small'">
-            {{ t('add_liqiudit.rates') }}
+            {{ t('add_liquidity.rates') }}
           </Text>
           <div class="value">
             <div class="rates">
@@ -60,7 +60,7 @@
         </div>
         <div class="cell">
           <Text class="label" :size="'small'">
-            {{ t('add_liqiudit.share_of_pool') }}
+            {{ t('add_liquidity.share_of_pool') }}
           </Text>
           <div class="value">
             <Text :size="'small'" :color="'description-text'">{{ poolTokenPercentageLabel }}%</Text>
@@ -69,7 +69,7 @@
       </div>
       <div class="confirm">
         <Button :type="'primary'" bold @click="onConfirm">
-          {{ t('add_liqiudit.confirm') }}
+          {{ t('add_liquidity.confirm') }}
         </Button>
       </div>
     </div>
@@ -86,7 +86,7 @@ import DoubleLogo from '../DoubleLogo/index.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
 import { Price, TokenAmount, Token, Percent } from 'l0k_swap-sdk'
-import { useUserLiqiuditSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
+import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { Field } from '../../state/mint/types'
 import usePoolTokenPercentageLabel from '../../hooks/usePoolTokenPercentageLabel'
 
@@ -124,7 +124,7 @@ export default defineComponent({
     const { show, currencies, liquidity, parsedAmounts, poolTokenPercentage, price, noLiquidity } = toRefs(props)
     const { t } = useI18n()
 
-    const slippage = useUserLiqiuditSlippageTolerance()
+    const slippage = useUserLiquiditySlippageTolerance()
     const poolTokenPercentageLabel = usePoolTokenPercentageLabel(poolTokenPercentage, price, noLiquidity)
 
     const showModal = computed({
