@@ -1,6 +1,6 @@
 import { Abi, AddTransactionResponse, Contract } from 'starknet'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'l0k_swap-sdk'
-import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIALSWAP_ALLOWED_SLIPPAGE } from '../constants'
+import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_SWAP_ALLOWED_SLIPPAGE } from '../constants'
 import { getRouterContract } from '../utils'
 import { computed, ComputedRef, Ref, toRaw } from 'vue'
 import { useStarknet } from '../starknet-vue/providers/starknet'
@@ -44,7 +44,7 @@ interface SwapCall {
  */
 function useSwapCallArguments(
   trade: Ref<Trade | null | undefined>, // trade to execute, required
-  allowedSlippage: ComputedRef<number> | number = INITIALSWAP_ALLOWED_SLIPPAGE, // in bips
+  allowedSlippage: ComputedRef<number> | number = INITIAL_SWAP_ALLOWED_SLIPPAGE, // in bips
   deadline: number = DEFAULT_DEADLINE_FROM_NOW // in seconds from now
   // recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): ComputedRef<SwapCall[]> {
@@ -96,7 +96,7 @@ function useSwapCallArguments(
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(
   trade: Ref<Trade | null | undefined>, // trade to execute, required
-  allowedSlippage: ComputedRef<number> | number = INITIALSWAP_ALLOWED_SLIPPAGE, // in bips
+  allowedSlippage: ComputedRef<number> | number = INITIAL_SWAP_ALLOWED_SLIPPAGE, // in bips
   deadline: number = DEFAULT_DEADLINE_FROM_NOW // in seconds from now
   // recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): ComputedRef<{ state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null }> {

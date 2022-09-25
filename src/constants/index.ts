@@ -8,7 +8,7 @@ export const ADDRESS_ZORE = '0x0000000000000000000000000000000000000000000000000
 export const MOBILE_SIZE = 768
 
 // default allowed slippage, in bips
-export const INITIALSWAP_ALLOWED_SLIPPAGE = 20
+export const INITIAL_SWAP_ALLOWED_SLIPPAGE = 20
 export const INITIAL_ALLOWED_SLIPPAGE = 200
 
 // 60 minutes, denominated in seconds

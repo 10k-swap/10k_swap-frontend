@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { INITIALSWAP_ALLOWED_SLIPPAGE, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { INITIAL_ALLOWED_SLIPPAGE, INITIAL_SWAP_ALLOWED_SLIPPAGE } from '../../constants'
 import SlippageStorageManager from './SlippageStorageManager'
 
 type SetType = 'swap' | 'liquidity'
@@ -29,7 +29,7 @@ export const useSlippageToleranceSettingsStore = defineStore<'SlippageToleranceS
       return {
         currentSet: undefined,
         slippageTolerances: {
-          swap: swap ? swap : INITIALSWAP_ALLOWED_SLIPPAGE,
+          swap: swap ? swap : INITIAL_SWAP_ALLOWED_SLIPPAGE,
           liquidity: liquidity ? liquidity : INITIAL_ALLOWED_SLIPPAGE,
         },
       }
