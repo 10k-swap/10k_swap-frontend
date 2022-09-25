@@ -19,8 +19,8 @@
         <Text class="APR" :size="'small'">
           {{ t('pool.APR') }}
         </Text>
-        <Text class="liquidit" :size="'small'">
-          {{ t('pool.liquidit') }}
+        <Text class="liquidity" :size="'small'">
+          {{ t('pool.liquidity') }}
         </Text>
         <Text class="pool-share" :size="'small'">
           {{ t('pool.pool_share') }}
@@ -35,7 +35,7 @@
             </Text>
           </div>
           <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ item.APR }}% </Text>
-          <Text class="liquidit" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> ${{ item.totalSupply.toSignificant() }} </Text>
+          <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> ${{ item.totalSupply.toSignificant() }} </Text>
           <div class="pool-share">
             <Text :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">
               $ {{ item.balance.toSignificant() }} ({{ item.poolShareView }}%)
@@ -111,7 +111,7 @@ export default defineComponent({
 
     .name,
     .APR,
-    .liquidit {
+    .liquidity {
       display: flex;
       justify-content: center;
     }
@@ -142,7 +142,7 @@ export default defineComponent({
         }
       }
       .APR,
-      .liquidit {
+      .liquidity {
         display: flex;
         justify-content: center;
       }
@@ -176,7 +176,7 @@ export default defineComponent({
             margin-left: 4px;
           }
         }
-        .liquidit {
+        .liquidity {
           @include no-wrap;
         }
       }

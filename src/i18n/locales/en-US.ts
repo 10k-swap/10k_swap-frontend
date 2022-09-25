@@ -90,7 +90,7 @@ export default {
     new_position: '+ New position',
     name: 'Name',
     APR: 'APR',
-    liquidit: 'Liquidit',
+    liquidity: 'Liquidity',
     pool_share: 'Pool Share',
     get: 'Get %{token} LP',
     withdraw: 'Withdraw',
@@ -99,14 +99,14 @@ export default {
     deposit: 'Deposit',
   },
   pool_modal: {
-    add_liqiudit: 'Add liqiudit',
+    add_liquidity: 'Add liquidity',
     withdraw: 'Withdraw',
   },
-  add_liqiudit: {
-    liqiudity: 'Liqiudity: %{value}',
-    no_liqiudity: 'No Liqiudity',
+  add_liquidity: {
+    liquidity: 'Liquidity: %{value}',
+    no_liquidity: 'No Liquidity',
     share_of_pool: 'Share of Pool',
-    no_liqiudity_tips: 'Initial prices and pool share',
+    no_liquidity_tips: 'Initial prices and pool share',
     deposit: 'Deposit',
     desc: 'Liquidity  providers earn  a 0.25% fee  on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time  and can be claimed by withdrawing your liquidity.',
     confirm_title: 'You will receive',
@@ -116,7 +116,7 @@ export default {
     rates: 'Rates',
     confirm: 'Confirm Supply',
   },
-  remove_liqiudit: {
+  remove_liquidity: {
     tips: 'Tip: Removing pool tokens converts your position back into underlying tokens at the current rate, proportional to your share of the pool. Accrued fees are included in the amounts you receive.',
     approve: 'Approve',
     price: 'Price',
