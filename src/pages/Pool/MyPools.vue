@@ -35,7 +35,7 @@
             </Text>
           </div>
           <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ item.APR }}% </Text>
-          <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> ${{ item.totalSupply.toSignificant() }} </Text>
+          <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ item.totalSupply.toSignificant() }} </Text>
           <div class="pool-share">
             <Text :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">
               {{ item.balance.toSignificant() }} ({{ item.poolShareView }}%)
