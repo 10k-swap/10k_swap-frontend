@@ -7,7 +7,7 @@
     :content-style="{ marginTop: isNumber(top) ? `${top}px` : top }"
   >
     <slot name="header" v-if="slots.header"></slot>
-    <ModalHeader v-else :title="title" />
+    <ModalHeader v-else :title="title" @dismiss="() => (showModal = false)" />
     <div class="l0k-swap-modal-wrap">
       <slot />
     </div>

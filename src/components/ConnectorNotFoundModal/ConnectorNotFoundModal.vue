@@ -1,8 +1,5 @@
 <template>
   <Modal v-model="showModal">
-    <template v-slot:header>
-      <ModalHeader @dismiss="() => (showModal = false)" />
-    </template>
     <div class="l0k-swap-connector-not-found-modal">
       <Text class="title" bold :size="'md'">
         {{ t('connector_not_found_modal.title') }}
@@ -28,14 +25,12 @@
 import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
-import ModalHeader from '../Modal/ModalHeader.vue'
 import Text from '../Text/Text.vue'
 import { useModalStore } from '../../state'
 
 export default defineComponent({
   components: {
     Modal,
-    ModalHeader,
     Text,
   },
   setup() {

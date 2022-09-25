@@ -1,3 +1,4 @@
+// parse scientific notation to string, like this 1e5->10000
 export function scientificNotationToString(param: string) {
   if (!/e/.test(param)) {
     return param

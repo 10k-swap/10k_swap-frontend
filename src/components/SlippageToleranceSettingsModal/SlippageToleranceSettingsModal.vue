@@ -1,8 +1,5 @@
 <template>
-  <Modal v-model="showModal">
-    <template v-slot:header>
-      <ModalHeader :title="t('slippage_tolerance_settings_modal.title')" @dismiss="() => (showModal = false)" />
-    </template>
+  <Modal v-model="showModal" :title="t('slippage_tolerance_settings_modal.title')">
     <div class="l0k-swap-slippage-tolerance-settings-modal">
       <div class="l0k-swap-slippage-tolerance-settings-tips">
         <Text :size="'small'"> {{ t('slippage_tolerance_settings_modal.slippage_tolerance') }}: </Text>
@@ -31,7 +28,6 @@
 import { computed, defineComponent, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
-import ModalHeader from '../Modal/ModalHeader.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants/index'
@@ -40,7 +36,6 @@ import { useModalStore, useSlippageToleranceSettingsStore, RISKY_SLIPPAGE_LOW, M
 export default defineComponent({
   components: {
     Modal,
-    ModalHeader,
     Text,
     Button,
   },
