@@ -1,5 +1,6 @@
 import { TokenAmount, JSBI } from 'l0k_swap-sdk'
 import { toBN } from 'starknet/utils/number'
+import { SupporteChainId } from '../constants'
 
 export function noop() {}
 
@@ -29,4 +30,8 @@ export function getDeadlineFromNow(ttl: number) {
 
 export function isEqualsAddress(addressA: string, addressB: string): boolean {
   return toBN(addressA).eq(toBN(addressB))
+}
+
+export function isSupportedChain(chainId: string | undefined) {
+  return !!chainId && chainId === SupporteChainId
 }
