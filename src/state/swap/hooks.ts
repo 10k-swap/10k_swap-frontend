@@ -6,7 +6,7 @@ import { useToken } from '../../hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from '../../hooks/Trades'
 import { Token, Trade } from 'l0k_swap-sdk'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
-import { isAddress } from '../../utils'
+import { isAddress, isSupportedChain } from '../../utils'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
 import { tryParseAmount } from '../../utils/tryParseAmount'
 import { useUserSwapSlippageTolerance } from '../slippageToleranceSettings/hooks'
@@ -61,7 +61,7 @@ export function useSwapState() {
 // from the current swap inputs, compute the best trade and return it.
 export function useDerivedSwapInfo() {
   const {
-    state: { account },
+    state: { account, chainId },
   } = useStarknet()
 
   const swapState = useSwapState()
@@ -120,6 +120,9 @@ export function useDerivedSwapInfo() {
     if (!account.value) {
       inputError.value = 'Connect Wallet'
     }
+    if (!isSupportedChain(chainId.value)) {
+      inputError.value = inputError.value ?? 'Wrong Network'
+    }
     if (!parsedAmount.value) {
       inputError.value = inputError.value ?? 'Enter an amount'
     }
@@ -139,7 +142,7 @@ export function useDerivedSwapInfo() {
     }
 
     if (balanceIn.value && amountIn.value && balanceIn.value.lessThan(amountIn.value)) {
-      inputError.value = `Insufficient ${amountIn.value.token.symbol} balance`
+      inputError.value = inputError.value ?? `Insufficient ${amountIn.value.token.symbol} balance`
     }
   })
 
