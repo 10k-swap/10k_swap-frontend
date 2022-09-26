@@ -1,4 +1,4 @@
-import { onMounted, reactive, Ref, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, Ref, ref } from 'vue'
 import { Provider, AccountInterface, ProviderInterface } from 'starknet'
 import { StarknetMethods, StarknetState } from './model'
 import { Connector, InjectedConnector } from '../../connectors'
@@ -28,7 +28,25 @@ export function useStarknetManager(
   const connectorId = ConnectorStorageManager.get()
   const currentConnector = ref<Connector | undefined>(connectorId ? new InjectedConnector({ id: connectorId }) : undefined)
 
+  const _getConnectorInfo = async () => {
+    if (!currentConnector.value) {
+      return
+    }
+    const connector = currentConnector.value
+    const account = await connector.connect()
+    currentConnector.value = connector
+    state.account = account.address
+    state.library = account
+    state.chainId = account.chainId
+  }
+  const _watch = (connector: Connector) => {
+    connector.on('accountsChanged', _getConnectorInfo)
+    connector.on('networkChanged', _getConnectorInfo)
+  }
+
   const connect = async (connector: Connector) => {
+    _watch(connector)
+
     if (state.account) {
       return
     }
@@ -69,6 +87,13 @@ export function useStarknetManager(
       }
     )
   }
+
+  onUnmounted(() => {
+    if (currentConnector.value) {
+      currentConnector.value.off('accountsChanged', _getConnectorInfo)
+      currentConnector.value.off('networkChanged', _getConnectorInfo)
+    }
+  })
 
   onMounted(() => {
     if (connectorId) {

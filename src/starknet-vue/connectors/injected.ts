@@ -1,6 +1,6 @@
 import { AccountInterface } from 'starknet'
 import { Connector } from './base'
-import { IStarknetWindowObject } from 'get-starknet'
+import { IStarknetWindowObject, EventType, EventHandler } from 'get-starknet'
 import { ConnectorNotConnectedError, ConnectorNotFoundError, UserNotConnectedError, UserRejectedRequestError } from '../errors'
 
 export interface InjectedConnectorOptions {
@@ -85,6 +85,16 @@ export class InjectedConnector extends Connector<InjectedConnectorOptions> {
       throw new ConnectorNotConnectedError()
     }
     return this._wallet.name
+  }
+
+  on(event: EventType, callback: EventHandler): void {
+    this.ensureWallet()
+    this._wallet?.on(event, callback)
+  }
+
+  off(event: EventType, callback: EventHandler): void {
+    this.ensureWallet()
+    this._wallet?.off(event, callback)
   }
 
   private ensureWallet() {

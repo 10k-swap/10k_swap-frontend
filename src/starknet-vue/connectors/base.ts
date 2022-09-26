@@ -1,4 +1,5 @@
 import { AccountInterface } from 'starknet'
+import { EventType, EventHandler } from 'get-starknet'
 
 export abstract class Connector<Options = unknown> {
   /** Options to use with connector */
@@ -20,4 +21,6 @@ export abstract class Connector<Options = unknown> {
   abstract id(): string
   /** Connector name */
   abstract name(): string
+  abstract on(event: EventType, callback: EventHandler): void
+  abstract off(event: EventType, callback: EventHandler): void
 }
