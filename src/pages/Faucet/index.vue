@@ -13,6 +13,7 @@
         <Button :type="'primary'" :size="'large'">{{ t('faucet.retweet') }}</Button></a
       >
     </div>
+    <JumpToMainnet />
   </Page>
 </template>
 
@@ -22,6 +23,7 @@ import { useI18n } from 'vue-i18n'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import Text from '../../components/Text/Text.vue'
 import Page from '../../components/Page/Page.vue'
+import JumpToMainnet from '../../components/JumpToMainnet/index.vue'
 import Button from '../../components/Button/Button'
 import useConnector from '../../hooks/useConnector'
 
@@ -30,6 +32,7 @@ export default defineComponent({
     Page,
     Text,
     Button,
+    JumpToMainnet,
   },
   setup() {
     const { t } = useI18n()
@@ -39,7 +42,7 @@ export default defineComponent({
     const { onConnect } = useConnector()
 
     const href = computed(() => {
-      const text = `I'm+claiming+testnet+tokens+for+%4010Kswap%2C+a+decentralized+exchange+built+on Starknet!+%0A%0AMy+Address:+${account.value}%0A%0ALearn+more:+&url=https://10kswap.com/`
+      const text = `I'm+claiming+testnet+tokens+for+%4010KSwap%2C+an+open+sourced+AMM+protocol+built+on+StarkNet+in+Cairo.+%0A10KSwap+mainnet+has+been+launched:+https://10kswap.com+%0A%0AMy+Address:+${account.value}%0A%0ATestnet:+https://goerli.10kswap.com`
 
       return `https://twitter.com/intent/tweet?text=${text}`
     })
@@ -62,6 +65,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   margin-top: 28px;
+  padding-bottom: 30px;
   @include mobile {
     margin-top: 5px;
   }
@@ -76,7 +80,7 @@ export default defineComponent({
     flex: 1;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 20px 30px;
+    padding: 0 20px;
     .retweet {
       display: block;
       width: 100%;

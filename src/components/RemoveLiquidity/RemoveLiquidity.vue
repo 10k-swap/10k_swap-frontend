@@ -178,7 +178,7 @@ export default defineComponent({
       state: executeState,
       execute: executeInvoke,
       reset: executeReset,
-    } = useStarknetExecute(executeContractAddresses, [erc20 as Abi, erc20 as Abi, l0k_router_abi as Abi], ['approve', 'removeLiquidity'])
+    } = useStarknetExecute(executeContractAddresses, [erc20 as Abi, l0k_router_abi as Abi], ['approve', 'removeLiquidity'])
 
     const showRejectedModal = computed(() => !!executeState.error && executeState.error.includes('User abort'))
 
