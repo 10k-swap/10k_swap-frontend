@@ -4,7 +4,7 @@ import { StarknetMethods, StarknetState } from './model'
 import { Connector, InjectedConnector } from '../../connectors'
 import { ConnectorNotFoundError, UserRejectedRequestError, ConnectorNotConnectedError } from '../../errors'
 import ConnectorStorageManager from '../../utils/ConnectorStorageManager'
-import { ChainId } from 'l0k_swap-sdk'
+import { ChainId, isEqualAddress } from 'l0k_swap-sdk'
 import { defaultProvider } from './const'
 
 export function useStarknetManager(
@@ -34,10 +34,11 @@ export function useStarknetManager(
     }
     const connector = currentConnector.value
     const account = await connector.connect()
-    currentConnector.value = connector
-    state.account = account.address
-    state.library = account
-    state.chainId = account.chainId
+    if ((state.account && !isEqualAddress(account.address, state.account)) || state.chainId !== account.chainId) {
+      state.account = account.address
+      state.library = account
+      state.chainId = account.chainId
+    }
   }
   const _watch = (connector: Connector) => {
     connector.on('accountsChanged', _getConnectorInfo)
