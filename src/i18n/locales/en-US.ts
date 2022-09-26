@@ -80,7 +80,7 @@ export default {
     title: 'Faucet',
     connectTips1: 'We will provide free test coins,',
     connectTips2: 'please connect wallet for more information.',
-    tips: 'Retweet to get 500 TKA, 500 TKB and 0.01 Goerli ETH within 30 mins.',
+    tips: 'Retweet to get 500 TKA, 500 TKB and 0.005 Goerli ETH within 30 mins.',
     retweet: 'Retweet',
   },
   pool: {
