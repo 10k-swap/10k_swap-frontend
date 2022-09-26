@@ -51,7 +51,6 @@
           {{ !isValid ? swapInputError : t('swap.swap') }}
         </Button>
       </div>
-      <JumpToMainnet />
     </div>
   </Page>
   <ConfirmModal :show="swapState.showConfirm" :trade="tradeToConfirm" @swap="handleSwap" @dismiss="onReset" />
@@ -70,7 +69,6 @@ import CurrencyInputPanel from '../../components/CurrencyInputPanel/index.vue'
 import TradePrice from '../../components/swap/TradePrice.vue'
 import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails.vue'
 import ConfirmModal from '../../components/swap/ConfirmModal.vue'
-import JumpToMainnet from '../../components/JumpToMainnet/index.vue'
 import WaittingModal from '../../components/transaction/WaittingModal.vue'
 import RejectedModal from '../../components/transaction/RejectedModal.vue'
 import ScuccessModal from '../../components/transaction/ScuccessModal.vue'
@@ -101,7 +99,6 @@ export default defineComponent({
     WaittingModal,
     RejectedModal,
     ScuccessModal,
-    JumpToMainnet,
   },
   setup() {
     const { t } = useI18n()

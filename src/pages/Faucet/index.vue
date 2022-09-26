@@ -13,7 +13,6 @@
         <Button :type="'primary'" :size="'large'">{{ t('faucet.retweet') }}</Button></a
       >
     </div>
-    <JumpToMainnet />
   </Page>
 </template>
 
@@ -23,7 +22,6 @@ import { useI18n } from 'vue-i18n'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import Text from '../../components/Text/Text.vue'
 import Page from '../../components/Page/Page.vue'
-import JumpToMainnet from '../../components/JumpToMainnet/index.vue'
 import Button from '../../components/Button/Button'
 import useConnector from '../../hooks/useConnector'
 
@@ -32,7 +30,6 @@ export default defineComponent({
     Page,
     Text,
     Button,
-    JumpToMainnet,
   },
   setup() {
     const { t } = useI18n()
