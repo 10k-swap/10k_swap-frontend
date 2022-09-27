@@ -4,7 +4,7 @@
       <WarningIcon class="svg" />
     </div>
     <div class="content">
-      <Text bold>
+      <Text bold :size="'small'">
         <span v-html="t('wrong_network_tips', { network: chainId === ChainId.MAINNET ? 'Testnet' : 'Mainnet' })"></span>
       </Text>
     </div>
