@@ -47,6 +47,7 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
   actions: {
     async getAllPairs(chainId) {
       this.loadingPools = true
+      this.pairs = []
       const pairs = await getAllPairs(chainId)
       this.pairs = pairs
       this.loadingPools = false
