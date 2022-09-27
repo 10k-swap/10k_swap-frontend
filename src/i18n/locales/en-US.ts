@@ -7,8 +7,9 @@ export default {
   wrong_network_tips: `Please 
   <span style="color:rgba(204, 16, 16, 1);">switch</span> 
   the network to 
-  <span style="color:rgba(204, 16, 16, 1);">StarkNet %{network}!</span>`,
-  warning: `This is an ALPHA version, please use small transactions. You can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions.`,
+  <span style="color:rgba(204, 16, 16, 1);">StarkNet %{network}! and refresh the page.</span>`,
+  warning: `
+  This is an ALPHA version, you can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions and follow our <a  href="https://twitter.com/10KSwap" target="_blank">Twitter </a> to learn more information.`,
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',
