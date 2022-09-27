@@ -6,18 +6,32 @@
     </div>
     <Nav class="l0k-swap-app-header-nav" />
     <Connector class="l0k-swap-app-header-connector" />
+    <WrongNetworkCard class="wrong-network" v-if="!isSupportChain" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import Nav from '../Nav/Nav.vue'
 import Connector from './Connector.vue'
+import WrongNetworkCard from '../WrongNetworkCard/index.vue'
+import { useStarknet } from '../../starknet-vue/providers/starknet'
+import { isSupportedChain } from '../../utils'
 
 export default defineComponent({
   components: {
     Nav,
     Connector,
+    WrongNetworkCard,
+  },
+  setup() {
+    const {
+      state: { chainId },
+    } = useStarknet()
+
+    return {
+      isSupportChain: computed(() => isSupportedChain(chainId.value)),
+    }
   },
 })
 </script>
@@ -29,6 +43,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   height: 72px;
   padding: 0 20px;
 
@@ -56,6 +71,13 @@ export default defineComponent({
     display: flex;
     justify-content: flex-end;
     flex: 1;
+  }
+
+  .wrong-network {
+    position: absolute;
+    right: 20px;
+    bottom: 0px;
+    transform: translateY(100%);
   }
 
   @include mobile {
