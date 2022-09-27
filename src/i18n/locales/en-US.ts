@@ -4,7 +4,7 @@ export default {
   loading: 'loading...',
   connect: 'Connect Wallet',
   wrong_network_tips: `Please 
-  <span style="color:rgba(204, 16, 16, 1);">swith</span> 
+  <span style="color:rgba(204, 16, 16, 1);">switch</span> 
   the network to 
   <span style="color:rgba(204, 16, 16, 1);">Starknet %{network}!</span> and refresh the page.`,
   account_modal: {

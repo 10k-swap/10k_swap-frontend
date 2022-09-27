@@ -30,7 +30,7 @@ import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
-import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants/index'
+import { INITIAL_ALLOWED_SLIPPAGE, INITIAL_SWAP_ALLOWED_SLIPPAGE } from '../../constants/index'
 import { useModalStore, useSlippageToleranceSettingsStore, RISKY_SLIPPAGE_LOW, MAX_SLIPPAGE } from '../../state'
 
 export default defineComponent({
@@ -78,7 +78,7 @@ export default defineComponent({
     })
 
     const onAuto = () => {
-      typedValue.value = INITIAL_ALLOWED_SLIPPAGE / 100
+      typedValue.value = (currentSet.value === 'swap' ? INITIAL_SWAP_ALLOWED_SLIPPAGE : INITIAL_ALLOWED_SLIPPAGE) / 100
     }
     const onConfirm = () => {
       slippageToleranceSettingsStore.updateSlippageTolerance(parsedTypedValue.value)
