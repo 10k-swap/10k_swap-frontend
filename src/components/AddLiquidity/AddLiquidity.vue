@@ -53,6 +53,7 @@
     :parsedAmounts="parsedAmounts"
     :noLiquidity="noLiquidity"
     @dismiss="showConfirm = false"
+    :pool-token-percentage="poolTokenPercentage"
     @mint="onMint"
   />
   <ScuccessModal :show="!!txHash" :tx="txHash" @dismiss="onReset" />
