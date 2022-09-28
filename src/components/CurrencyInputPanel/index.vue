@@ -1,7 +1,7 @@
 <template>
   <div class="l0k-swap-currency-input-panel" :class="classes">
     <div class="inputs">
-      <input type="text" :value="typedValue" @input="onInput" placeholder="0.0" />
+      <input type="text" :value="typedValue" @input="onInput" placeholder="0.0" pattern="^[0-9]*[.,]?[0-9]*$" />
       <TokenSelector v-if="selector" class="token-select" :token="token ?? null" :otherToken="otherToken ?? null" @select="onSelect" />
       <div class="token" v-else>
         <template v-if="slots.token">
@@ -31,9 +31,6 @@ import { Token, TokenAmount } from 'l0k_swap-sdk'
 import TokenSelector from '../TokenSelector/TokenSelector.vue'
 import TokenLogo from '../TokenLogo/TokenLogo'
 import Text from '../Text/Text.vue'
-import { escapeRegExp } from '../../utils'
-
-const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
 
 export default defineComponent({
   props: {
@@ -72,14 +69,15 @@ export default defineComponent({
     })
 
     const onInput = (e: InputEvent) => {
-      const nextUserInput = (e.target as HTMLInputElement).value?.toString().replace(/,/g, '.') ?? ''
-      if (!inputRegex.test(nextUserInput) && nextUserInput !== '') {
+      const nextUserInput = (e.target as HTMLInputElement).value.replace(/,/g, '.') ?? ''
+
+      if (!new RegExp(/^[0-9]*[.,]?[0-9]*$/).test(nextUserInput) && nextUserInput !== '') {
         ;(e.target as HTMLInputElement).value = ''
         typedValue.value = ''
+        return
       }
-      if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
-        typedValue.value = nextUserInput
-      }
+
+      typedValue.value = nextUserInput
     }
 
     const onSelect = (token: Token) => {
