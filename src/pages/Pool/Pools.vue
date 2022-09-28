@@ -12,7 +12,7 @@
       </Text>
     </div>
     <div class="pools">
-      <div class="pair" v-for="pair in pairs" :key="pair.pairAddress">
+      <div class="pair" v-for="pair in sortedPairs" :key="pair.pairAddress">
         <div class="tokens">
           <DoubleLogo :token0="pair.token0" :token1="pair.token1" :size="20" :coverage="isMobile" />
           <Text class="symbol" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">
@@ -25,7 +25,7 @@
           {{ t('pool.get', { token: `${pair.token0.symbol}-${pair.token1.symbol}` }) }}
         </Text>
       </div>
-      <div class="loading" v-if="loading && !pairs.length">
+      <div class="loading" v-if="loading && !sortedPairs.length">
         <LoadingIcon />
       </div>
     </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
 import DoubleLogo from '../../components/DoubleLogo/index.vue'
@@ -41,6 +41,7 @@ import { LoadingIcon } from '../../components/Svg'
 import { useAllPairs, useIsLoadingAllPairs } from '../../state/pool/hooks'
 import useIsMobile from '../../hooks/useIsMobile'
 import { usePoolModalStore } from '../../state'
+import { cloneDeep } from 'lodash'
 
 export default defineComponent({
   components: {
@@ -56,6 +57,12 @@ export default defineComponent({
     const loading = useIsLoadingAllPairs()
     const isMobile = useIsMobile()
 
+    const sortedPairs = computed(() =>
+      cloneDeep(pairs.value).sort((a, b) => {
+        return `${b.token0.symbol}${b.token1.symbol}`.length - `${a.token0.symbol}${a.token1.symbol}`.length
+      })
+    )
+
     const onGet = (pool: any) => {
       poolModalStore.addLiquidity(pool.pair)
     }
@@ -64,7 +71,7 @@ export default defineComponent({
       t,
       onGet,
 
-      pairs,
+      sortedPairs,
       loading,
       isMobile,
     }
