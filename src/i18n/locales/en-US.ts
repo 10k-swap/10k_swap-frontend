@@ -76,7 +76,7 @@ export default {
     dismiss: 'Dismiss',
     transaction_submitted: 'Transaction Submitted',
     close: 'Close',
-    view_on_scan: 'View on Voyage',
+    view_on_scan: 'View on STARKSCAN',
   },
   token_select: {
     label: 'Select',
