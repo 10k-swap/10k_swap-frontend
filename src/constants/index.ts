@@ -27,4 +27,4 @@ export const SERVER_URLS: { [chainId in ChainId]: string } = {
   [ChainId.TESTNET]: 'https://goerli-api.10kswap.com',
 }
 
-export const SupporteChainId = ChainId.TESTNET
+export const SupporteChainId = ChainId.MAINNET

@@ -1,10 +1,9 @@
 <template>
-  <div :class="classes" v-show="show" v-html="placard?.content"></div>
+  <div :class="classes" v-html="placard?.content"></div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType, toRefs } from 'vue'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { Placard } from './types'
 import { createNamespace } from '../../utils/create'
 
@@ -15,18 +14,10 @@ export default defineComponent({
     placard: Object as PropType<Placard>,
   },
   setup(props) {
-    const {
-      state: { chainId },
-    } = useStarknet()
     const { placard } = toRefs(props)
-
-    const show = computed(() => chainId.value && placard.value?.chainIds.includes(chainId.value))
-
     const classes = computed(() => [bem([placard.value?.type ?? 'info'])])
 
     return {
-      show,
-
       classes,
     }
   },

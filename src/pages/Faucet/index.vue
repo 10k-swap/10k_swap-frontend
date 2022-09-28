@@ -62,6 +62,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   margin-top: 28px;
+  padding-bottom: 30px;
   @include mobile {
     margin-top: 5px;
   }
@@ -76,7 +77,7 @@ export default defineComponent({
     flex: 1;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 20px 30px;
+    padding: 0 20px;
     .retweet {
       display: block;
       width: 100%;
