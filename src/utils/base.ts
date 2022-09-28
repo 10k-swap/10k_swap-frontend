@@ -35,7 +35,3 @@ export function isEqualsAddress(addressA: string, addressB: string): boolean {
 export function isSupportedChain(chainId: string | undefined) {
   return !!chainId && chainId === SupporteChainId
 }
-
-export function escapeRegExp(string: string): string {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
-}
