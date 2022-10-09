@@ -16,9 +16,9 @@
         <Text class="name" :size="'small'">
           {{ t('pool.name') }}
         </Text>
-        <Text class="APR" :size="'small'">
+        <!-- <Text class="APR" :size="'small'">
           {{ t('pool.APR') }}
-        </Text>
+        </Text> -->
         <Text class="liquidity" :size="'small'">
           {{ t('pool.liquidity') }}
         </Text>
@@ -34,7 +34,7 @@
               {{ item.pair.token0.symbol }} - {{ item.pair.token1.symbol }}
             </Text>
           </div>
-          <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ item.APR }}% </Text>
+          <!-- <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ item.APR }}% </Text> -->
           <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ item.totalSupply.toSignificant() }} </Text>
           <div class="pool-share">
             <Text :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">

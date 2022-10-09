@@ -44,8 +44,8 @@ import { usePoolModalStore, usePoolStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useAllPairs } from '../../state/pool/hooks'
-import { poolWhitelist } from '../../constants/whitelist'
-import { isEqualAddress } from 'l0k_swap-sdk'
+// import { poolWhitelist } from '../../constants/whitelist'
+// import { isEqualAddress } from 'l0k_swap-sdk'
 import { isSupportedChain } from '../../utils'
 
 export default defineComponent({
@@ -69,10 +69,11 @@ export default defineComponent({
     const currentNav = ref<'pools' | 'my-pools'>('pools')
 
     const isShowPool = computed(() => {
-      if (poolWhitelist.find((address) => account.value && isEqualAddress(address, account.value))) {
-        return true
-      }
-      return false
+      return true
+      // if (poolWhitelist.find((address) => account.value && isEqualAddress(address, account.value))) {
+      //   return true
+      // }
+      // return false
     })
 
     const isSupportChain = computed(() => isSupportedChain(chainId.value))
