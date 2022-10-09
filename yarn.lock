@@ -916,7 +916,7 @@ base64-js@^1.3.1:
 
 big.js@^6.2.1:
   version "6.2.1"
-  resolved "https://registry.npmjs.org/big.js/-/big.js-6.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/big.js/-/big.js-6.2.1.tgz#7205ce763efb17c2e41f26f121c420c6a7c2744f"
   integrity sha512-bCtHMwL9LeDIozFn+oNhhFoq+yQ3BNdnsLSASUxLciOb1vgvpHsIO1dsENiGMgbb4SkP5TrzWzRiLddn8ahVOQ==
 
 bignumber.js@^9.0.0:
@@ -1131,7 +1131,7 @@ debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
 
 decimal.js-light@^2.5.1:
   version "2.5.1"
-  resolved "https://registry.npmjs.org/decimal.js-light/-/decimal.js-light-2.5.1.tgz"
+  resolved "https://registry.yarnpkg.com/decimal.js-light/-/decimal.js-light-2.5.1.tgz#134fd32508f19e208f4fb2f8dac0d2626a867934"
   integrity sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==
 
 deep-is@^0.1.3:
@@ -1805,7 +1805,7 @@ js-yaml@^4.1.0:
 
 jsbi@^4.3.0:
   version "4.3.0"
-  resolved "https://registry.npmjs.org/jsbi/-/jsbi-4.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-4.3.0.tgz#b54ee074fb6fcbc00619559305c8f7e912b04741"
   integrity sha512-SnZNcinB4RIcnEyZqFPdGPVgrg2AcnykiBy0sHVJQKHYeaLUvi3Exj+iaPpLnFVkDPZIV4U0yvgC9/R4uEAZ9g==
 
 jsesc@^2.5.1:
@@ -1837,7 +1837,7 @@ json5@^2.2.1:
 
 "l0k_swap-sdk@https://github.com/10k-swap/10k_swap-sdk.git#main":
   version "0.9.0"
-  resolved "https://github.com/10k-swap/10k_swap-sdk.git#9ed097b73ea812eb4c84943ba2c8a018140ed4ce"
+  resolved "https://github.com/10k-swap/10k_swap-sdk.git#2e992c2af39520ca6dabedfbc23508632b864f69"
   dependencies:
     big.js "^6.2.1"
     decimal.js-light "^2.5.1"
@@ -2300,13 +2300,13 @@ tiny-emitter@^2.0.0:
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
 tiny-invariant@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npmjs.org/tiny-invariant/-/tiny-invariant-1.2.0.tgz"
-  integrity sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.3.1.tgz#8560808c916ef02ecfd55e66090df23a4b7aa642"
+  integrity sha512-AD5ih2NlSssTCwsMznbvwMZpJ1cbhkGd2uueNxzv2jDlEeZdU04JQfRnggJQ8DrcVBGjAsCKwFBbDlVNtEMlzw==
 
 tiny-warning@^1.0.3:
   version "1.0.3"
-  resolved "https://registry.npmjs.org/tiny-warning/-/tiny-warning-1.0.3.tgz"
+  resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
 to-fast-properties@^2.0.0:
@@ -2323,7 +2323,7 @@ to-regex-range@^5.0.1:
 
 toformat@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.npmjs.org/toformat/-/toformat-2.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/toformat/-/toformat-2.0.0.tgz#7a043fd2dfbe9021a4e36e508835ba32056739d8"
   integrity sha512-03SWBVop6nU8bpyZCx7SodpYznbZF5R4ljwNLBcTQzKOD9xuihRo/psX58llS1BMFhhAI08H3luot5GoXJz2pQ==
 
 tr46@~0.0.3:
