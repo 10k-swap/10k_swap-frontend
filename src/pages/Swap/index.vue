@@ -10,6 +10,7 @@
         :currencyBalance="currencyBalances[Field.INPUT]"
         @token-select="onInputSelect"
         @input="handleTypeInput"
+        :onMax="onMax"
       />
       <div class="switch-wrap">
         <SwitchIcon class="switch" @click="onSwitch" />
@@ -73,7 +74,7 @@ import WaittingModal from '../../components/transaction/WaittingModal.vue'
 import RejectedModal from '../../components/transaction/RejectedModal.vue'
 import ScuccessModal from '../../components/transaction/ScuccessModal.vue'
 import { SettingIcon, SwitchIcon, LoadingIcon } from '../../components/Svg'
-import { Token, Trade, JSBI } from 'l0k_swap-sdk'
+import { Token, Trade, JSBI, TokenAmount } from 'l0k_swap-sdk'
 import { useModalStore, useSlippageToleranceSettingsStore } from '../../state'
 import { useDerivedSwapInfo, useSwapActionHandlers } from '../../state/swap/hooks'
 import { useSwapStore } from '../../state/swap'
@@ -211,6 +212,12 @@ export default defineComponent({
       swapState.txHash = undefined
     }
 
+    const onMax = (maxInputAmount: TokenAmount | undefined) => {
+      if (maxInputAmount) {
+        onUserInput(Field.INPUT, maxInputAmount.toExact())
+      }
+    }
+
     return {
       swapState,
       Field,
@@ -238,6 +245,7 @@ export default defineComponent({
       onOutputSelect,
       onSwapClick,
       onReset,
+      onMax,
       handleTypeInput,
       handleTypeOutput,
       handleSwap,

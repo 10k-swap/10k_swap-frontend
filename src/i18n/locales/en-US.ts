@@ -44,6 +44,7 @@ export default {
   },
   currency_input_panel: {
     balance: 'balance: %{balance}',
+    max: 'Max',
   },
   header: {
     nav: {
