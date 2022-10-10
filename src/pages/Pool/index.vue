@@ -1,11 +1,6 @@
 <template>
   <div class="l0k-swap-pool-wrapper">
-    <template v-if="!isShowPool">
-      <Text class="coming-soon" bold>
-        {{ t('comingSoon') }}
-      </Text>
-    </template>
-    <template v-else-if="!isSupportChain">
+    <template v-if="!isSupportChain">
       <Text class="wrong-network" bold> Wrong Network </Text>
     </template>
     <template v-else>
@@ -44,8 +39,6 @@ import { usePoolModalStore, usePoolStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useAllPairs } from '../../state/pool/hooks'
-// import { poolWhitelist } from '../../constants/whitelist'
-// import { isEqualAddress } from 'l0k_swap-sdk'
 import { isSupportedChain } from '../../utils'
 
 export default defineComponent({
@@ -67,14 +60,6 @@ export default defineComponent({
     const pairs = useAllPairs()
 
     const currentNav = ref<'pools' | 'my-pools'>('pools')
-
-    const isShowPool = computed(() => {
-      return true
-      // if (poolWhitelist.find((address) => account.value && isEqualAddress(address, account.value))) {
-      //   return true
-      // }
-      // return false
-    })
 
     const isSupportChain = computed(() => isSupportedChain(chainId.value))
 
@@ -101,7 +86,6 @@ export default defineComponent({
 
     return {
       isMobile,
-      isShowPool,
       isSupportChain,
       currentNav,
 
