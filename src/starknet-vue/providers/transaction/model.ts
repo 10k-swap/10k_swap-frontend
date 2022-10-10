@@ -28,6 +28,11 @@ export type Transaction = (TransactionSubmitted | TransactionReceived) & {
   fail: boolean
 }
 
+export interface TransactionRefreshData {
+  oldTransaction: Transaction
+  newTransaction: Transaction
+}
+
 export interface StarknetTransactionManager {
   addTransaction: (transaction: TransactionSubmitted) => void
   removeTransaction: (transactionHash: string) => void

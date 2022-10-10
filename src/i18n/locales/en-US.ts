@@ -7,6 +7,8 @@ export default {
   <span style="color:rgba(204, 16, 16, 1);">switch</span> 
   the network to 
   <span style="color:rgba(204, 16, 16, 1);">Starknet %{network}!</span> and refresh the page.`,
+  pending: '%{n} Pending',
+  view_on_scan: 'View on STARKSCAN',
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',
@@ -74,7 +76,6 @@ export default {
     dismiss: 'Dismiss',
     transaction_submitted: 'Transaction Submitted',
     close: 'Close',
-    view_on_scan: 'View on STARKSCAN',
   },
   token_select: {
     label: 'Select',

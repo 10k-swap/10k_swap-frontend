@@ -10,7 +10,7 @@
       </Text>
       <a class="link" :href="scanLink" target="_blank">
         <Text :color="'secondary-text'" :size="'small'">
-          {{ t('transaction.view_on_scan') }}
+          {{ t('view_on_scan') }}
         </Text>
       </a>
       <Button class="close" @click="showModal = false" plain bold>
