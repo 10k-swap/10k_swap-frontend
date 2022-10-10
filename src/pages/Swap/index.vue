@@ -8,9 +8,9 @@
         :value="formattedAmounts[Field.INPUT]"
         :token="currencies[Field.INPUT]"
         :currencyBalance="currencyBalances[Field.INPUT]"
+        :onMax="onMax"
         @token-select="onInputSelect"
         @input="handleTypeInput"
-        :onMax="onMax"
       />
       <div class="switch-wrap">
         <SwitchIcon class="switch" @click="onSwitch" />
@@ -76,7 +76,7 @@ import WaittingModal from '../../components/transaction/WaittingModal.vue'
 import RejectedModal from '../../components/transaction/RejectedModal.vue'
 import ScuccessModal from '../../components/transaction/ScuccessModal.vue'
 import { SettingIcon, SwitchIcon, LoadingIcon } from '../../components/Svg'
-import { Token, Trade, JSBI, TokenAmount } from 'l0k_swap-sdk'
+import { Token, Trade, JSBI, TokenAmount, ZERO } from 'l0k_swap-sdk'
 import { useModalStore, useSlippageToleranceSettingsStore } from '../../state'
 import { useDerivedSwapInfo, useSwapActionHandlers } from '../../state/swap/hooks'
 import { useSwapStore } from '../../state/swap'
@@ -216,7 +216,7 @@ export default defineComponent({
     }
 
     const onMax = (maxInputAmount: TokenAmount | undefined) => {
-      if (maxInputAmount) {
+      if (maxInputAmount && !maxInputAmount.equalTo(ZERO)) {
         onUserInput(Field.INPUT, maxInputAmount.toExact())
       }
     }
