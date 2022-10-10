@@ -2,7 +2,7 @@ import { ProviderInterface } from 'starknet'
 import { defineComponent, PropType, toRefs } from 'vue'
 
 import { StarknetBlockProvider } from './block'
-import { StarknetTransactionManagerProvider } from './transaction'
+import { StarknetTransactionManagerProvider, TransactionRefreshData } from './transaction'
 import { StarknetLibraryProvider } from './starknet'
 import { Connector } from '../connectors'
 
@@ -14,13 +14,16 @@ export const StarknetProvider = defineComponent({
       required: true,
     },
   },
-  setup(props, { slots }) {
+  emits: ['transactionRefresh'],
+  setup(props, { slots, emit }) {
     const { defaultProvider, connectors } = toRefs(props)
 
     return () => (
       <StarknetLibraryProvider defaultProvider={defaultProvider.value} connectors={connectors.value}>
         <StarknetBlockProvider>
-          <StarknetTransactionManagerProvider>{slots.default && slots.default()}</StarknetTransactionManagerProvider>
+          <StarknetTransactionManagerProvider onTransactionRefresh={(data: TransactionRefreshData) => emit('transactionRefresh', data)}>
+            {slots.default && slots.default()}
+          </StarknetTransactionManagerProvider>
         </StarknetBlockProvider>
       </StarknetLibraryProvider>
     )

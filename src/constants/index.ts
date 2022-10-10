@@ -28,3 +28,5 @@ export const SERVER_URLS: { [chainId in ChainId]: string } = {
 }
 
 export const SupporteChainId = ChainId.MAINNET
+
+export const DEFAULT_TXN_DISMISS_MS = 3000

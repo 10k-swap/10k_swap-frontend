@@ -5,11 +5,10 @@ export default {
   connect: 'Connect Wallet',
   comingSoon: 'Coming Soon',
   wrong_network_tips: `Please 
-  <span style="color:rgba(204, 16, 16, 1);">switch</span> 
-  the network to 
-  <span style="color:rgba(204, 16, 16, 1);">StarkNet %{network}! and refresh the page.</span>`,
-  warning: `
-  This is an ALPHA version, you can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions and follow our <a  href="https://twitter.com/10KSwap" target="_blank">Twitter </a> to learn more information.`,
+  <span style="color:rgba(204, 16, 16, 1);">switch</span> the network to <span style="color:rgba(204, 16, 16, 1);">StarkNet %{network}! and refresh the page.</span>`,
+  warning: `This is an ALPHA version, you can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions and follow our <a  href="https://twitter.com/10KSwap" target="_blank">Twitter </a> to learn more information.`,
+  pending: '%{n} Pending',
+  view_on_scan: 'View on STARKSCAN',
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',
@@ -77,7 +76,6 @@ export default {
     dismiss: 'Dismiss',
     transaction_submitted: 'Transaction Submitted',
     close: 'Close',
-    view_on_scan: 'View on STARKSCAN',
   },
   token_select: {
     label: 'Select',

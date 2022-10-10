@@ -1,7 +1,8 @@
 <template>
   <div class="l0k-swap-app-body" :class="{ root: isRoot }">
     <Placard />
-    <Header />
+    <MHeader />
+    <Popups />
     <slot></slot>
     <div class="socials"><Socials /></div>
   </div>
@@ -15,13 +16,15 @@ import Header from '../../components/Header/Header.vue'
 import Modals from '../../components/Modals/Modals.vue'
 import Socials from '../../components/Socials/index.vue'
 import Placard from '../../components/Placard/index.vue'
+import Popups from '../../components/Popups/index.vue'
 
 export default defineComponent({
   components: {
-    Header,
+    MHeader: Header,
     Modals,
     Socials,
     Placard,
+    Popups,
   },
   setup() {
     const route = useRoute()
