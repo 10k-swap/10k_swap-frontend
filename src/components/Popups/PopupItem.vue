@@ -1,5 +1,5 @@
 <template>
-  <div class="l0k-swap-popup-item">
+  <div class="l0k-swap-popup-item" @click="onPopupClick">
     <div class="icon">
       <ScuccessIcon v-if="txn?.scuccess" :color="'primary'" width="16px" />
       <FailIcon v-else-if="txn?.fail" color="red" width="16px" />
@@ -24,6 +24,7 @@ import { useRemovePopup } from '../../state/application/hooks'
 import { useI18n } from 'vue-i18n'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { getScanLink } from '../../utils/getScanLink'
+import { useModalStore } from '../../state'
 
 export default defineComponent({
   props: {
@@ -50,6 +51,7 @@ export default defineComponent({
       state: { chainId },
     } = useStarknet()
     const { t } = useI18n()
+    const store = useModalStore()
 
     const removePopup = useRemovePopup()
 
@@ -57,12 +59,17 @@ export default defineComponent({
       removePopup({ key: id.value })
     }, removeAfterMs.value ?? DEFAULT_TXN_DISMISS_MS)
 
+    const onPopupClick = () => {
+      store.toggleAccountModal(true)
+    }
+
     return {
       txn,
       chainId,
 
       t,
       getScanLink,
+      onPopupClick,
     }
   },
 })
