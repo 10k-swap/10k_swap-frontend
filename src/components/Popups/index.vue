@@ -26,9 +26,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '../../styles/index.scss';
 .l0k-swap-popups {
   position: absolute;
   top: 72px;
   right: 20px;
+  z-index: 1;
+  @include mobile {
+    top: 16px;
+    left: 12px;
+    right: 12px;
+  }
 }
 </style>

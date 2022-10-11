@@ -176,12 +176,15 @@ export default defineComponent({
     }
 
     @include mobile {
-      .btn {
-        width: 50%;
-      }
-
+      display: grid;
+      grid-template-columns: 90px 68px 68px 60px;
+      grid-template-rows: 40px 52px;
       .input-wrap {
-        width: 50%;
+        display: flex;
+        grid-column: 1/5;
+        grid-row: 2/2;
+        margin-top: 12px;
+        width: 100%;
       }
     }
   }

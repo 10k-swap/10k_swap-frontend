@@ -82,15 +82,6 @@ export default defineComponent({
     bottom: 0px;
     transform: translateY(100%);
   }
-  .transaction-pending {
-    position: absolute;
-    right: 20px;
-    bottom: 0px;
-    width: 120px;
-    transform: translateY(100%);
-    z-index: 1;
-  }
-
   @include mobile {
     display: grid;
     grid-template-columns: repeat(6, 1fr);

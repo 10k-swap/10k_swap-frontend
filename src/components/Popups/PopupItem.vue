@@ -85,6 +85,11 @@ export default defineComponent({
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4);
   border-radius: 12px;
   margin-bottom: 12px;
+  margin-right: 0;
+  @include mobile {
+    width: calc(100% - 24px);
+    background: rgba($color: $color-white, $alpha: 0.8);
+  }
   .icon {
     margin-right: 8px;
     margin-top: 3px;
