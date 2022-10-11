@@ -136,6 +136,7 @@ export default defineComponent({
       box-sizing: border-box;
       margin-right: 8px;
       font-size: $font-size-sm;
+      cursor: pointer;
     }
     .input-wrap {
       position: relative;
