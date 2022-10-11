@@ -8,9 +8,12 @@
         </Text>
       </div>
       <div class="l0k-swap-slippage-tolerance-settings-set">
-        <Button class="btn" @click="onAuto">
+        <Button class="auto" @click="onAuto" :type="'primary'">
           {{ t('slippage_tolerance_settings_modal.auto') }}
         </Button>
+        <div class="btn" @click="typedValue = 0.1">0.1 %</div>
+        <div class="btn" @click="typedValue = 0.5">0.5 %</div>
+        <div class="btn" @click="typedValue = 1">1 %</div>
         <div class="input-wrap">
           <input class="input" type="text" v-model="typedValue" />
         </div>
@@ -89,6 +92,7 @@ export default defineComponent({
       showModal,
       typedValue,
       isDisabled,
+
       t,
       onAuto,
       onConfirm,
@@ -113,23 +117,35 @@ export default defineComponent({
 
   .l0k-swap-slippage-tolerance-settings-set {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     width: 100%;
     margin-top: 20px;
 
-    .btn {
-      width: 170px;
-      margin-right: 10px;
+    .auto {
+      width: 80px;
+      margin-right: 8px;
     }
-
+    .btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      height: 40px;
+      border: 2px solid $color-primary;
+      border-radius: 20px;
+      box-sizing: border-box;
+      margin-right: 8px;
+      font-size: $font-size-sm;
+    }
     .input-wrap {
       position: relative;
-      width: 248px;
+      width: 145px;
+      box-sizing: border-box;
       height: 40px;
       background: $color-bg-secondary;
       border-radius: 20px;
       overflow: hidden;
-      padding-right: 30px;
+      padding-right: 40px;
 
       &::after {
         content: '%';
@@ -138,6 +154,7 @@ export default defineComponent({
         top: 50%;
         transform: translateY(-50%);
         font-size: $font-size-sm;
+        color: $color-description-text;
       }
 
       .input {
