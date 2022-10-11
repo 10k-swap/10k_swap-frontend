@@ -8,6 +8,7 @@
         :otherToken="currencies[Field.CURRENCY_B]"
         @token-select="handleCurrencyASelect"
         @input="onFieldAInput"
+        :onMax="onCurrencyAMax"
       />
       <div class="add-wrap">
         <AddIcon :color="'minor'" :width="'12px'" />
@@ -19,6 +20,7 @@
         :currencyBalance="currencyBalances[Field.CURRENCY_B]"
         @token-select="handleCurrencyBSelect"
         @input="onFieldBInput"
+        :onMax="onCurrencyBMax"
       />
       <Text class="liquidity" :color="'description-text'" :size="'mini'">
         {{ t('add_liquidity.liquidity', { value: LPTotalSupply }) }}
@@ -63,7 +65,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { Token } from 'l0k_swap-sdk'
+import { Token, TokenAmount, ZERO } from 'l0k_swap-sdk'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { Field } from '../../state/mint/types'
 import CurrencyInputPanel from '../CurrencyInputPanel/index.vue'
@@ -172,6 +174,16 @@ export default defineComponent({
         currencyBAmount?.token.symbol
       } for ${liquidityMinted.value?.toSignificant(3)} LP`
     })
+    const onCurrencyAMax = (maxInputAmount: TokenAmount | undefined) => {
+      if (maxInputAmount && !maxInputAmount.equalTo(ZERO)) {
+        onFieldAInput(maxInputAmount.toExact())
+      }
+    }
+    const onCurrencyBMax = (maxInputAmount: TokenAmount | undefined) => {
+      if (maxInputAmount && !maxInputAmount.equalTo(ZERO)) {
+        onFieldBInput(maxInputAmount.toExact())
+      }
+    }
     const handleCurrencyASelect = (token: Token) => {
       mintStore.selectToken({ tokenA: token })
     }
@@ -264,6 +276,8 @@ export default defineComponent({
       onMint,
       onReset,
       openWalletModal,
+      onCurrencyAMax,
+      onCurrencyBMax,
     }
   },
 })
