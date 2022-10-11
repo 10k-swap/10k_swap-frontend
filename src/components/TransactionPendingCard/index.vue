@@ -51,10 +51,22 @@ export default defineComponent({
 .l0k-swap-pending-transaction {
   display: flex;
   position: absolute;
+  right: 20px;
+  bottom: 0px;
+  width: 120px;
+  transform: translateY(100%);
+  z-index: 1;
   background: $color-white;
   box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4);
   border-radius: 12px;
   cursor: pointer;
+  @include mobile {
+    bottom: 32px;
+    height: 36px;
+    right: 0;
+    transform: translateX(20px);
+    background: rgba($color-white, $alpha: 0.8);
+  }
   .icon {
     display: flex;
     justify-content: center;
