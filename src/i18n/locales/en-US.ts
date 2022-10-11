@@ -9,6 +9,11 @@ export default {
   warning: `This is an ALPHA version, you can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions and follow our <a  href="https://twitter.com/10KSwap" target="_blank">Twitter </a> to learn more information.`,
   pending: '%{n} Pending',
   view_on_scan: 'View on STARKSCAN',
+  wallet_modal: {
+    title: 'connect a wallet',
+    tips: 'By connecting a wallet,you agree to 10K Swap Labs’ Terms of Service and acknowledge that you have read and understand the 10K Swap Protocol Disclaimer.',
+    install: 'Install %{wallet}',
+  },
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',

@@ -6,14 +6,15 @@ import { ConnectorNotFoundError, UserRejectedRequestError, ConnectorNotConnected
 import ConnectorStorageManager from '../../utils/ConnectorStorageManager'
 import { ChainId, isEqualAddress } from 'l0k_swap-sdk'
 import { defaultProvider } from './const'
+import { InjectedConnectorOptions } from '../../connectors/injected'
 
 export function useStarknetManager(
   userDefaultProvider: Ref<ProviderInterface | undefined>,
-  connectors: Ref<Connector[]>
+  connectors: Ref<Connector<InjectedConnectorOptions>[]>
 ): StarknetMethods & { state: StarknetState } {
   const state = reactive<{
     library: ProviderInterface | AccountInterface | Provider
-    connectors: Connector[]
+    connectors: Connector<InjectedConnectorOptions>[]
     account: string | undefined
     chainId: ChainId | undefined
     error: Error | undefined

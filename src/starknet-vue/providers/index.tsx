@@ -5,12 +5,13 @@ import { StarknetBlockProvider } from './block'
 import { StarknetTransactionManagerProvider, TransactionRefreshData } from './transaction'
 import { StarknetLibraryProvider } from './starknet'
 import { Connector } from '../connectors'
+import { InjectedConnectorOptions } from '../connectors/injected'
 
 export const StarknetProvider = defineComponent({
   props: {
     defaultProvider: Object as PropType<ProviderInterface>,
     connectors: {
-      type: Array as PropType<Connector[]>,
+      type: Array as PropType<Connector<InjectedConnectorOptions>[]>,
       required: true,
     },
   },
