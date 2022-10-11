@@ -34,7 +34,7 @@
         :poolTokenPercentage="poolTokenPercentage"
         :price="price"
       />
-      <Button class="deposit" :type="'primary'" :size="'large'" v-if="!account" bold @click="onConnect">
+      <Button class="deposit" :type="'primary'" :size="'large'" v-if="!account" bold @click="openWalletModal">
         {{ t('connect') }}
       </Button>
       <Button class="deposit" v-else :disabled="!!error" :size="'large'" :type="'primary'" bold @click="onDeposit">
@@ -86,9 +86,9 @@ import { bnToUint256 } from 'starknet/dist/utils/uint256'
 import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
 import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { ROUTER_ADDRESSES } from '../../constants/address'
-import useConnector from '../../hooks/useConnector'
 import { useMintStore } from '../../state'
 import { toBN } from 'starknet/utils/number'
+import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
   components: {
@@ -112,7 +112,7 @@ export default defineComponent({
     const showConfirm = ref(false)
     const attemptingTxn = ref(false)
     const txHash = ref<string>()
-    const { onConnect } = useConnector()
+    const openWalletModal = useOpenWalletModal()
 
     const {
       state: { chainId, account },
@@ -263,7 +263,7 @@ export default defineComponent({
       onDeposit,
       onMint,
       onReset,
-      onConnect,
+      openWalletModal,
     }
   },
 })

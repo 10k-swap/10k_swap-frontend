@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="swap">
-        <Button :type="'primary'" :size="'large'" bold v-if="!account" @click="onConnect">
+        <Button :type="'primary'" :size="'large'" bold v-if="!account" @click="openWalletModal">
           {{ t('connect') }}
         </Button>
         <Button :type="'primary'" :size="'large'" bold disabled v-else-if="noTrade && userHasSpecifiedInputOutput">
@@ -81,11 +81,11 @@ import { useModalStore, useSlippageToleranceSettingsStore } from '../../state'
 import { useDerivedSwapInfo, useSwapActionHandlers } from '../../state/swap/hooks'
 import { useSwapStore } from '../../state/swap'
 import { Field } from '../../state/swap/types'
-import useConnector from '../../hooks/useConnector'
 import useSwapCallback from '../../hooks/useSwapCallback'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useUserSwapSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import useSwapSummary from '../../hooks/useSwapSummary'
+import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
   components: {
@@ -107,7 +107,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const modalStore = useModalStore()
-    const { onConnect } = useConnector()
+    const openWalletModal = useOpenWalletModal()
     const slippageToleranceSettingsStore = useSlippageToleranceSettingsStore()
     const userSwapSlippageTolerance = useUserSwapSlippageTolerance()
     const {
@@ -243,7 +243,7 @@ export default defineComponent({
       t,
       onSetting,
       onInputSelect,
-      onConnect,
+      openWalletModal,
       onSwitch,
       onOutputSelect,
       onSwapClick,

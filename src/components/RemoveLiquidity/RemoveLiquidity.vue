@@ -87,7 +87,7 @@
         </Text>
       </div>
     </div>
-    <Button class="approve" :type="'primary'" :size="'large'" bold v-if="!account" @click="onConnect">
+    <Button class="approve" :type="'primary'" :size="'large'" bold v-if="!account" @click="openWalletModal">
       {{ t('connect') }}
     </Button>
     <Button class="approve" v-else :disabled="!!error" :size="'large'" bold :type="'primary'" @click="onApprove">
@@ -114,7 +114,6 @@ import { DownIcon, AddIcon } from '../Svg'
 import CurrencyInputPanel from '../CurrencyInputPanel/index.vue'
 import { useTokenBalances } from '../../hooks/Balances'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
-import useConnector from '../../hooks/useConnector'
 import { ONE_BIPS, DEFAULT_DEADLINE_FROM_NOW } from '../../constants'
 import { ROUTER_ADDRESSES } from '../../constants/address'
 import { useStarknetExecute } from '../../starknet-vue/hooks/execute'
@@ -128,6 +127,7 @@ import RejectedModal from '../transaction/RejectedModal.vue'
 import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
 import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { toBN } from 'starknet/utils/number'
+import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
   props: {
@@ -154,7 +154,7 @@ export default defineComponent({
       state: { account, chainId },
     } = useStarknet()
     const { onUserInput } = useBurnActionHandlers()
-    const { onConnect } = useConnector()
+    const openWalletModal = useOpenWalletModal()
     const { parsedAmounts, error, userLiquidity, poolShare, liquidityValueB, liquidityValueA } = useDerivedBurnInfo(pair)
 
     const showConfirm = ref(false)
@@ -276,7 +276,7 @@ export default defineComponent({
 
       t,
       onUserInput,
-      onConnect,
+      openWalletModal,
       onApprove,
       onBurn,
       onReset,

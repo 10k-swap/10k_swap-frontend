@@ -1,20 +1,10 @@
-import { computed, nextTick, ref, toRaw, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { Connector } from '../starknet-vue/connectors'
-import { ConnectorNotFoundError, UserRejectedRequestError } from '../starknet-vue/errors'
+import { InjectedConnectorOptions } from '../starknet-vue/connectors/injected'
+import { UserRejectedRequestError } from '../starknet-vue/errors'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { useModalStore } from '../state'
 import useArgentXRejectCallback from './useArgentXRejectCallback'
-
-function getConnector(connectors: Connector<unknown>[], isRetry: boolean) {
-  if (connectors.length === 1) {
-    return connectors[0]
-  }
-  const argentX = connectors.find((item) => item.id() === 'argent-x')
-  if (argentX && !isRetry) {
-    return argentX
-  }
-  return isRetry ? connectors.filter((item) => item.id() !== 'argent-x')[0] : connectors[0]
-}
 
 export default function useConnector() {
   const connectError = ref<Error>()
@@ -22,7 +12,7 @@ export default function useConnector() {
   const store = useModalStore()
 
   const {
-    state: { account, connectors },
+    state: { account },
     connect,
   } = useStarknet()
 
@@ -37,9 +27,6 @@ export default function useConnector() {
       store.toggleConnectingModal(false)
     }
 
-    if (newErr instanceof ConnectorNotFoundError) {
-      store.toggleConnectorNotFoundModal(true)
-    }
     if (newErr instanceof UserRejectedRequestError) {
       store.toggleConnectRejectModal(true)
     }
@@ -60,16 +47,10 @@ export default function useConnector() {
     })
   })
 
-  const onConnect = async (isRetry = false) => {
+  const onConnect = async (connector: Connector<InjectedConnectorOptions>) => {
     connectError.value = undefined
 
-    if (!connectors.value.length) {
-      connectError.value = new ConnectorNotFoundError()
-      return
-    }
-
     try {
-      const connector = getConnector(toRaw(connectors.value), isRetry)
       const ready = await connector.ready()
 
       if (!ready) {

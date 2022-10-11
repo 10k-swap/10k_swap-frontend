@@ -9,6 +9,11 @@ export default {
   <span style="color:rgba(204, 16, 16, 1);">Starknet %{network}!</span> and refresh the page.`,
   pending: '%{n} Pending',
   view_on_scan: 'View on STARKSCAN',
+  wallet_modal: {
+    title: 'connect a wallet',
+    tips: 'By connecting a wallet,you agree to 10K Swap Labs’ Terms of Service and acknowledge that you have read and understand the 10K Swap Protocol Disclaimer.',
+    install: 'Install %{wallet}',
+  },
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',

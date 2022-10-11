@@ -18,7 +18,7 @@
         {{ shortenAddress(account) }}
       </Button>
     </div>
-    <Button type="primary" bold v-else @click="onConnect">
+    <Button type="primary" bold v-else @click="openWalletModal">
       {{ t('header.connector.connect') }}
     </Button>
   </div>
@@ -33,8 +33,8 @@ import { shortenAddress } from '../../utils'
 import { StarknetIcon } from '../Svg/index'
 import Button from '../Button/Button'
 import { useModalStore } from '../../state'
-import useConnector from '../../hooks/useConnector'
 import useIsMobile from '../../hooks/useIsMobile'
+import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
   components: {
@@ -49,7 +49,7 @@ export default defineComponent({
       state: { account, library },
     } = useStarknet()
     const { t } = useI18n()
-    const { onConnect } = useConnector()
+    const openWalletModal = useOpenWalletModal()
 
     const chainId = computed(() => library.value.chainId ?? undefined)
 
@@ -61,7 +61,7 @@ export default defineComponent({
       isMobile,
 
       t,
-      onConnect,
+      openWalletModal,
       shortenAddress,
     }
   },

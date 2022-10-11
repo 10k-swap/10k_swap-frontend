@@ -8,7 +8,7 @@
       <Text :size="'small'" v-else> {{ t('faucet.tips') }} </Text>
     </div>
     <div class="buttons">
-      <Button v-if="!account" :type="'primary'" :size="'large'" @click="onConnect" bold>{{ t('connect') }}</Button>
+      <Button v-if="!account" :type="'primary'" :size="'large'" @click="openWalletModal" bold>{{ t('connect') }}</Button>
       <a v-else class="retweet" :href="href" target="_blank" rel="noopener noreferrer">
         <Button :type="'primary'" :size="'large'">{{ t('faucet.retweet') }}</Button></a
       >
@@ -25,7 +25,7 @@ import Text from '../../components/Text/Text.vue'
 import Page from '../../components/Page/Page.vue'
 import JumpToMainnet from '../../components/JumpToMainnet/index.vue'
 import Button from '../../components/Button/Button'
-import useConnector from '../../hooks/useConnector'
+import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
   components: {
@@ -39,7 +39,7 @@ export default defineComponent({
     const {
       state: { account },
     } = useStarknet()
-    const { onConnect } = useConnector()
+    const openWalletModal = useOpenWalletModal()
 
     const href = computed(() => {
       const text = `I'm+claiming+testnet+tokens+for+%4010KSwap%2C+an+open+sourced+AMM+protocol+built+on+StarkNet+in+Cairo.+%0A10KSwap+mainnet+has+been+launched:+https://10kswap.com+%0A%0AMy+Address:+${account.value}%0A%0ATestnet:+https://goerli.10kswap.com`
@@ -52,7 +52,7 @@ export default defineComponent({
       href,
 
       t,
-      onConnect,
+      openWalletModal,
     }
   },
 })
