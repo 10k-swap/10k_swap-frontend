@@ -56,13 +56,15 @@
         </div>
       </div>
     </div>
-    <div class="btns">
-      <Button class="approve" :type="'primary'" :size="'large'" bold v-if="!account" @click="openWalletModal">
-        {{ t('connect') }}
-      </Button>
-      <Button class="approve" v-else :disabled="!!error" :size="'large'" bold :type="'primary'" @click="onApprove">
-        {{ error ? error : t('remove_liquidity.approve') }}
-      </Button>
+    <div class="btns-wrapper">
+      <div class="btns">
+        <Button class="approve" :type="'primary'" :size="'large'" bold v-if="!account" @click="openWalletModal">
+          {{ t('connect') }}
+        </Button>
+        <Button class="approve" v-else :disabled="!!error" :size="'large'" bold :type="'primary'" @click="onApprove">
+          {{ error ? error : t('remove_liquidity.approve') }}
+        </Button>
+      </div>
     </div>
   </div>
   <ConfirmModal :show="showConfirm" :parsedAmounts="parsedAmounts" :prices="prices" :pair="pair" @dismiss="showConfirm = false" @burn="onBurn" />
@@ -301,12 +303,23 @@ export default defineComponent({
     }
   }
 
-  .btns {
+  .btns-wrapper {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding-top: 10px;
+    .btns {
+      position: relative;
+      padding-top: 10px;
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -20px;
+        right: -20px;
+        border-top: 1px solid #eaeaea;
+      }
+    }
   }
 }
 </style>

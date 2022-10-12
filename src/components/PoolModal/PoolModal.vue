@@ -1,21 +1,21 @@
 <template>
-  <Modal v-model="showModal" :top="currentTab === Actions.BURN ? '80px' : isMobile ? '30%' : '140px'">
+  <Modal v-model="showModal" :top="currentNav === Actions.BURN ? '80px' : isMobile ? '30%' : '140px'">
     <template v-slot:header>
       <ModalHeader>
         <template v-slot:left>
           <BackIcon class="l0k-swap-pair-modal-icon" @click="showModal = false" />
         </template>
-        <Tabs :tabs="tabs" :current="currentTab" @change="onChange" />
+        <Tabs :tabs="tabs" :current="currentNav" @change="onChange" />
         <template v-slot:right>
           <SettingIcon class="l0k-swap-pair-modal-icon" @click="onSetting" />
         </template>
       </ModalHeader>
     </template>
     <div class="l0k-swap-pair-modal">
-      <div v-if="currentTab === Actions.MINT">
+      <div v-if="currentNav === Actions.MINT">
         <AddLiquidity />
       </div>
-      <div v-if="currentTab === Actions.BURN">
+      <div v-if="currentNav === Actions.BURN">
         <RemoveLiquidity :pair="removeLiquidityPair ?? undefined" />
       </div>
     </div>
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent, ref, watch } from 'vue'
+import { computed, ComputedRef, defineComponent, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import ModalHeader from '../Modal/ModalHeader.vue'
@@ -69,40 +69,25 @@ export default defineComponent({
     const showModal = computed({
       get: () => poolModalStore.show,
       set(newValue) {
-        if (!newValue) {
-          current.value = undefined
-        }
         poolModalStore.togglePoolModal(newValue)
       },
     })
 
-    const current = ref<Actions>()
-    const action = computed(() => poolModalStore.action)
-    const currentTab = computed<Actions>(() => current.value ?? action.value)
-
-    const tabs = computed(() => {
-      const base: { label: string; value: Actions }[] = [{ label: t('pool_modal.add_liquidity'), value: Actions.MINT }]
-      if (action.value === Actions.BURN) {
-        base.push({
-          label: t('pool_modal.withdraw'),
-          value: Actions.BURN,
-        })
-      }
-      return base
-    })
+    const tabs = computed(() => poolModalStore.tabs)
+    const currentNav = computed(() => poolModalStore.currentNav)
 
     const onSetting = () => {
       modalStore.toggleSlippageToleranceSettingsModal(true)
       slippageToleranceSettingsStore.updateCurrentSet('liquidity')
     }
     const onChange = (tab: Actions) => {
-      current.value = tab
+      poolModalStore.updateNav(tab)
     }
 
     return {
       showModal,
       tabs,
-      currentTab,
+      currentNav,
       removeLiquidityPair,
       isMobile,
       Actions,

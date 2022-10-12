@@ -87,7 +87,7 @@ export function useDerivedBurnInfo(pair: Ref<Pair | undefined | null>): {
 
   const percentToRemove = computed(() => {
     if (independentField.value === Field.LIQUIDITY_PERCENT) {
-      return new Percent(debouncedTypedValue.value, '100')
+      return new Percent(typedValue.value, '100')
     }
     // user specified a specific amount of liquidity tokens
     else if (independentField.value === Field.LIQUIDITY) {
