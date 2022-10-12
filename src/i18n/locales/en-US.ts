@@ -141,5 +141,8 @@ export default {
     confirm_tips: 'Output is estimated.If the price changes by more than %{slippage}% your transaction will revert',
     burned: '%{token} Burned',
     confirm: 'Confirm',
+    remove_amount: 'Remove Amount',
+    simple: 'Simple',
+    detailed: 'Detailed',
   },
 }

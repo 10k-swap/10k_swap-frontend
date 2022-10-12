@@ -2,7 +2,7 @@ import { computed, ComputedRef, ref, Ref, watch } from 'vue'
 import { useBurnStore } from '.'
 import useTotalSupply from '../../data/TotalSupply'
 import { useTokenBalances } from '../../hooks/Balances'
-import { Pair, Percent, TokenAmount, JSBI } from 'l0k_swap-sdk'
+import { Pair, Percent, TokenAmount, JSBI, Token } from 'l0k_swap-sdk'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { Field } from './types'
 import { tryParseAmount } from '../../utils/tryParseAmount'
@@ -18,10 +18,16 @@ export function useDerivedBurnInfo(pair: Ref<Pair | undefined | null>): {
     [Field.LIQUIDITY]?: TokenAmount
     [Field.CURRENCY_A]?: TokenAmount
     [Field.CURRENCY_B]?: TokenAmount
+    [Field.LIQUIDITY_PERCENT]?: Percent
   }>
   error: Ref<string | undefined>
   userLiquidity: ComputedRef<TokenAmount | null | undefined>
   poolShare: ComputedRef<Percent | undefined>
+  tokens: ComputedRef<{
+    [Field.CURRENCY_A]?: Token
+    [Field.CURRENCY_B]?: Token
+    [Field.LIQUIDITY]?: Token
+  }>
   liquidityValueB: ComputedRef<TokenAmount | undefined>
   liquidityValueA: ComputedRef<TokenAmount | undefined>
 } {
@@ -71,14 +77,20 @@ export function useDerivedBurnInfo(pair: Ref<Pair | undefined | null>): {
       : undefined
   })
 
-  const liquidityValues: ComputedRef<{ [Field.CURRENCY_A]?: TokenAmount; [Field.CURRENCY_B]?: TokenAmount }> = computed(() => ({
+  const liquidityValues: ComputedRef<{
+    [Field.CURRENCY_A]?: TokenAmount
+    [Field.CURRENCY_B]?: TokenAmount
+  }> = computed(() => ({
     [Field.CURRENCY_A]: liquidityValueA.value,
     [Field.CURRENCY_B]: liquidityValueB.value,
   }))
 
   const percentToRemove = computed(() => {
+    if (independentField.value === Field.LIQUIDITY_PERCENT) {
+      return new Percent(debouncedTypedValue.value, '100')
+    }
     // user specified a specific amount of liquidity tokens
-    if (independentField.value === Field.LIQUIDITY) {
+    else if (independentField.value === Field.LIQUIDITY) {
       if (pair.value?.liquidityToken && userLiquidity.value) {
         const independentAmount = tryParseAmount(debouncedTypedValue.value, pair.value.liquidityToken)
         if (independentAmount && userLiquidity.value && !independentAmount.greaterThan(userLiquidity.value)) {
@@ -94,18 +106,20 @@ export function useDerivedBurnInfo(pair: Ref<Pair | undefined | null>): {
         return new Percent(independentAmount.raw, liquidityValue.raw)
       }
     }
-    return undefined
+    return new Percent('0', '100')
   })
 
   const parsedAmounts: ComputedRef<{
     [Field.LIQUIDITY]?: TokenAmount
     [Field.CURRENCY_A]?: TokenAmount
     [Field.CURRENCY_B]?: TokenAmount
+    [Field.LIQUIDITY_PERCENT]?: Percent
   }> = computed(() => {
     const tokenA = tokens.value[Field.CURRENCY_A]
     const tokenB = tokens.value[Field.CURRENCY_B]
 
     return {
+      [Field.LIQUIDITY_PERCENT]: percentToRemove.value,
       [Field.LIQUIDITY]:
         userLiquidity.value && percentToRemove.value && percentToRemove.value.greaterThan('0')
           ? new TokenAmount(userLiquidity.value.token, percentToRemove.value.multiply(userLiquidity.value.raw).quotient)
@@ -141,7 +155,7 @@ export function useDerivedBurnInfo(pair: Ref<Pair | undefined | null>): {
     }
   })
 
-  return { parsedAmounts, error, userLiquidity, poolShare, liquidityValueA, liquidityValueB }
+  return { parsedAmounts, error, userLiquidity, poolShare, tokens, liquidityValueA, liquidityValueB }
 }
 
 export function useBurnActionHandlers(): {
