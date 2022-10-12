@@ -76,7 +76,19 @@ export default defineComponent({
 
 .my-pools-wrapper {
   padding: 0 20px 20px;
-  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 58vh;
+  &::-webkit-scrollbar {
+    height: 80px;
+    width: 4px;
+  }
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $color-bg-transparent;
+    border-radius: 4px;
+  }
   .tips-wrap {
     display: flex;
     align-items: center;
