@@ -119,7 +119,7 @@ export default defineComponent({
     justify-content: space-between;
 
     input {
-      width: 50%;
+      width: 100%;
       background: transparent;
       border: 0;
       font-weight: 700;
@@ -143,6 +143,8 @@ export default defineComponent({
     .token {
       display: flex;
       align-items: center;
+      justify-content: flex-end;
+      width: fit-content;
 
       .symbol {
         margin-left: 8px;
@@ -175,7 +177,11 @@ export default defineComponent({
 
     .inputs {
       input {
-        width: 40%;
+        width: 60%;
+        font-size: 22px;
+        @include mobile {
+          width: 40%;
+        }
       }
     }
 
