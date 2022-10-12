@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="showModal" :top="isMobile ? '30%' : '140px'">
+  <Modal v-model="showModal" :top="currentTab === Actions.BURN ? '80px' : isMobile ? '30%' : '140px'">
     <template v-slot:header>
       <ModalHeader>
         <template v-slot:left>
