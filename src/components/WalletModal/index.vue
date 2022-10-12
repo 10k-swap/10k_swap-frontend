@@ -26,6 +26,8 @@ import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { WalletProvider } from './types'
 import useConnector from '../../hooks/useConnector'
 
+const normalId = (id: string) => id.replace(/\s|-/g, '').toLowerCase()
+
 export default defineComponent({
   components: {
     Modal,
@@ -38,7 +40,6 @@ export default defineComponent({
     const {
       state: { connectors },
     } = useStarknet()
-
     const { onConnect } = useConnector()
 
     const showModal = computed({
@@ -49,7 +50,7 @@ export default defineComponent({
     })
 
     const isInstalled = (id: string) => {
-      return !!connectors.value.find((item) => item.options.id === id)
+      return !!connectors.value.find((item) => normalId(item.options.id) === id)
     }
 
     const onWalletSelect = (wallet: WalletProvider) => {
@@ -64,7 +65,7 @@ export default defineComponent({
         return
       }
 
-      const connector = connectors.value.find((item) => item.options.id === wallet.id)
+      const connector = connectors.value.find((item) => normalId(item.options.id) === wallet.id)
       if (connector) {
         onConnect(toRaw(connector))
       }
