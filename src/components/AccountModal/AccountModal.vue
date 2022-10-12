@@ -1,5 +1,5 @@
 <template>
-  <Modal v-model="showModal" :title="t('account_modal.account')">
+  <Modal v-model="showModal" :title="t('account_modal.account')" :top="160">
     <div class="l0k-swap-account-modal-card">
       <div class="l0k-swap-account-modal-card-top">
         <Text color="secondary-text" size="small"> {{ t('account_modal.tips', { wallet }) }}</Text>

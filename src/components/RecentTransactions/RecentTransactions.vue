@@ -63,10 +63,7 @@ export default defineComponent({
     const { t } = useI18n()
     const { state, clearTransactions } = useStarknetTransactionManager()
     const isMobile = useIsMobile()
-    const sortdTransactions = computed(() => {
-      const data = cloneDeep(state.transactions.value)
-      return data.sort((a, b) => b.createAt - a.createAt)
-    })
+    const sortdTransactions = computed(() => cloneDeep(state.transactions.value).sort((a, b) => b.createAt - a.createAt))
 
     return {
       chainId,
@@ -82,12 +79,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import '../../styles/index';
 .l0k-swap-recent-transactions-wrap {
   margin-top: 20px;
 
   .l0k-swap-recent-transactions-head {
     display: flex;
     justify-content: space-between;
+    padding-bottom: 10px;
 
     .clear {
       display: flex;
@@ -101,8 +100,20 @@ export default defineComponent({
   }
 
   .l0k-swap-recent-transactions {
-    padding-top: 20px;
-
+    max-height: 220px;
+    overflow-y: auto;
+    padding-top: 10px;
+    &::-webkit-scrollbar {
+      height: 80px;
+      width: 4px;
+    }
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-bg-transparent;
+      border-radius: 4px;
+    }
     .l0k-swap-recent-transaction {
       display: flex;
       align-items: center;

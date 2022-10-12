@@ -87,7 +87,6 @@ export default defineComponent({
 
 .pools-wrapper {
   padding: 0 20px 20px;
-
   .pools-head {
     display: grid;
     align-items: center;
@@ -105,6 +104,19 @@ export default defineComponent({
   }
   .pools {
     margin-top: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 58vh;
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-bg-transparent;
+      border-radius: 4px;
+    }
     .pair {
       display: grid;
       align-items: center;
