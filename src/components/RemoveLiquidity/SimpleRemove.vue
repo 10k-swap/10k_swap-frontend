@@ -5,7 +5,7 @@
         {{ t('remove_liquidity.remove_amount') }}
       </Text>
       <Text bold :size="'large'">{{ formattedAmounts[Field.LIQUIDITY_PERCENT] ?? '-' }}%</Text>
-      <input class="range" :value="formattedAmounts[Field.LIQUIDITY_PERCENT]" type="range" min="0" max="100" step="1" @input="onRange" />
+      <input class="range" :value="formattedAmounts[Field.LIQUIDITY_PERCENT]" type="range" min="0" max="100" step="1" @change="onRange" />
       <div class="ranges">
         <span v-for="item in [25, 50, 75, 100]" :key="item" @click="onRangeClick(item)">{{ item }}% </span>
       </div>
@@ -120,6 +120,7 @@ export default defineComponent({
     .range {
       width: 100%;
       appearance: none;
+      cursor: pointer;
       &::-webkit-slider-runnable-track {
         height: 4px;
         border-radius: 4px;
