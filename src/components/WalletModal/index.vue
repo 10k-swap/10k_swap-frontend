@@ -7,9 +7,9 @@
           <Text bold :color="'secondary-text'"> {{ isInstalled(item.id) ? item.name : t('wallet_modal.install', { wallet: item.name }) }} </Text>
         </div>
       </div>
-      <div class="card">
+      <!-- <div class="card">
         <Text :color="'secondary-text'" :size="'small'"> {{ t('wallet_modal.tips') }} </Text>
-      </div>
+      </div> -->
     </div>
   </Modal>
 </template>
