@@ -79,7 +79,7 @@ export default defineComponent({
     })
 
     const onAdd = () => {
-      poolModalStore.addLiquidity(data.value.pair)
+      poolModalStore.addLiquidityFromMyPool(data.value.pair)
     }
     const onRemove = () => {
       poolModalStore.withdraw(data.value.pair)
