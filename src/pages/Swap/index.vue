@@ -8,6 +8,7 @@
         :value="formattedAmounts[Field.INPUT]"
         :token="currencies[Field.INPUT]"
         :currencyBalance="currencyBalances[Field.INPUT]"
+        :onMax="onMax"
         @token-select="onInputSelect"
         @input="handleTypeInput"
       />
@@ -34,7 +35,7 @@
         </div>
       </div>
       <div class="swap">
-        <Button :type="'primary'" :size="'large'" bold v-if="!account" @click="onConnect">
+        <Button :type="'primary'" :size="'large'" bold v-if="!account" @click="openWalletModal">
           {{ t('connect') }}
         </Button>
         <Button :type="'primary'" :size="'large'" bold disabled v-else-if="noTrade && userHasSpecifiedInputOutput">
@@ -75,16 +76,16 @@ import WaittingModal from '../../components/transaction/WaittingModal.vue'
 import RejectedModal from '../../components/transaction/RejectedModal.vue'
 import ScuccessModal from '../../components/transaction/ScuccessModal.vue'
 import { SettingIcon, SwitchIcon, LoadingIcon } from '../../components/Svg'
-import { Token, Trade, JSBI } from 'l0k_swap-sdk'
+import { Token, Trade, JSBI, TokenAmount, ZERO } from 'l0k_swap-sdk'
 import { useModalStore, useSlippageToleranceSettingsStore } from '../../state'
 import { useDerivedSwapInfo, useSwapActionHandlers } from '../../state/swap/hooks'
 import { useSwapStore } from '../../state/swap'
 import { Field } from '../../state/swap/types'
-import useConnector from '../../hooks/useConnector'
 import useSwapCallback from '../../hooks/useSwapCallback'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useUserSwapSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import useSwapSummary from '../../hooks/useSwapSummary'
+import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
   components: {
@@ -106,7 +107,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const modalStore = useModalStore()
-    const { onConnect } = useConnector()
+    const openWalletModal = useOpenWalletModal()
     const slippageToleranceSettingsStore = useSlippageToleranceSettingsStore()
     const userSwapSlippageTolerance = useUserSwapSlippageTolerance()
     const {
@@ -214,6 +215,12 @@ export default defineComponent({
       swapState.txHash = undefined
     }
 
+    const onMax = (maxInputAmount: TokenAmount | undefined) => {
+      if (maxInputAmount && !maxInputAmount.equalTo(ZERO)) {
+        onUserInput(Field.INPUT, maxInputAmount.toExact())
+      }
+    }
+
     return {
       swapState,
       Field,
@@ -236,11 +243,12 @@ export default defineComponent({
       t,
       onSetting,
       onInputSelect,
-      onConnect,
+      openWalletModal,
       onSwitch,
       onOutputSelect,
       onSwapClick,
       onReset,
+      onMax,
       handleTypeInput,
       handleTypeOutput,
       handleSwap,

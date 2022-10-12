@@ -29,6 +29,7 @@ interface PoolState {
   pairs: Pool[]
   loadingPools: boolean
   userPools: UserPool[]
+  loadingUserPools: boolean
 }
 
 interface PoolActions {
@@ -42,6 +43,7 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
       pairs: [],
       loadingPools: false,
       userPools: [],
+      loadingUserPools: false,
     }
   },
   actions: {
@@ -72,7 +74,9 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
         }
         return undefined
       })
+      this.loadingUserPools = true
       const userPools = await Promise.all(promises)
+      this.loadingUserPools = false
 
       this.userPools = userPools.filter((item): item is UserPool => !!(item && item.balance.greaterThan(ZERO)))
     },

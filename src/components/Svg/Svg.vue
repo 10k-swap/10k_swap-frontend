@@ -10,7 +10,7 @@ import { createNamespace } from '../../utils/create'
 import { SvgColor, SvgProps } from './types'
 
 const [, bem] = createNamespace('svg')
-const normalColor = (color: SvgColor) => (['white', 'red', 'primary'].includes(color) ? `g-${color}` : color)
+const normalColor = (color: SvgColor) => (['white', 'red', 'primary', 'blue'].includes(color) ? `g-${color}` : color)
 
 export default defineComponent({
   props: {
@@ -47,8 +47,9 @@ $colors: (
   'g-white': $color-white,
   'g-primary': $color-primary,
   'g-red': $color-red,
+  'g-blue': $color-blue,
 );
-$textNames: 'g-red' 'g-primary' 'g-white' 'secondary' 'minor' 'normal' 'transparent';
+$textNames: 'g-red' 'g-primary' 'g-white' 'secondary' 'minor' 'normal' 'transparent' 'g-blue';
 
 .#{$svg-prefix} {
   width: 24px;

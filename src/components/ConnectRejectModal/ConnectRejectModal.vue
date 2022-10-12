@@ -22,8 +22,8 @@ import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import Text from '../Text/Text.vue'
 import Button from '../Button/Button'
-import useConnector from '../../hooks/useConnector'
 import { useModalStore } from '../../state'
+import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
   components: {
@@ -34,6 +34,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n()
     const store = useModalStore()
+    const openWalletModal = useOpenWalletModal()
 
     const showModal = computed({
       get: () => store.showConnectRejectModal,
@@ -42,11 +43,9 @@ export default defineComponent({
       },
     })
 
-    const { onConnect } = useConnector()
-
     const onRetry = () => {
       showModal.value = false
-      onConnect(true)
+      openWalletModal()
     }
 
     return {

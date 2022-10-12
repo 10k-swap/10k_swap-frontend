@@ -14,8 +14,8 @@ interface BurnActions {
 export const useBurnStore = defineStore<'burn', BurnState, {}, BurnActions>('burn', {
   state: () => {
     return {
-      independentField: Field.LIQUIDITY,
-      typedValue: '',
+      independentField: Field.LIQUIDITY_PERCENT,
+      typedValue: '0',
     }
   },
   actions: {

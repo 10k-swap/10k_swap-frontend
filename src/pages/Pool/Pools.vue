@@ -4,11 +4,14 @@
       <Text class="name" :size="'small'">
         {{ t('pool.name') }}
       </Text>
-      <Text class="APR" :size="'small'">
+      <!-- <Text class="APR" :size="'small'">
         {{ t('pool.APR') }}
-      </Text>
+      </Text> -->
       <Text class="liquidity" :size="'small'">
         {{ t('pool.liquidity') }}
+      </Text>
+      <Text class="add" :size="'small'">
+        {{ t('pool.add') }}
       </Text>
     </div>
     <div class="pools">
@@ -19,7 +22,7 @@
             {{ pair.token0.symbol }} - {{ pair.token1.symbol }}
           </Text>
         </div>
-        <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text>
+        <!-- <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text> -->
         <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.totalSupply.toSignificant() }} </Text>
         <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
           {{ t('pool.get', { token: `${pair.token0.symbol}-${pair.token1.symbol}` }) }}
@@ -40,7 +43,7 @@ import DoubleLogo from '../../components/DoubleLogo/index.vue'
 import { LoadingIcon } from '../../components/Svg'
 import { useAllPairs, useIsLoadingAllPairs } from '../../state/pool/hooks'
 import useIsMobile from '../../hooks/useIsMobile'
-import { usePoolModalStore } from '../../state'
+import { Pool, usePoolModalStore } from '../../state'
 import { cloneDeep } from 'lodash'
 
 export default defineComponent({
@@ -63,7 +66,7 @@ export default defineComponent({
       })
     )
 
-    const onGet = (pool: any) => {
+    const onGet = (pool: Pool) => {
       poolModalStore.addLiquidity(pool.pair)
     }
 
@@ -88,13 +91,14 @@ export default defineComponent({
   .pools-head {
     display: grid;
     align-items: center;
-    grid-template-columns: 170px 90px 170px 170px;
+    grid-template-columns: 170px 260px 170px;
     background: $color-bg-secondary;
     height: 32px;
 
     .name,
     .APR,
-    .liquidity {
+    .liquidity,
+    .add {
       display: flex;
       justify-content: center;
     }
@@ -104,7 +108,7 @@ export default defineComponent({
     .pair {
       display: grid;
       align-items: center;
-      grid-template-columns: 170px 90px 170px 170px;
+      grid-template-columns: 170px 260px 170px;
       padding: 10px 0;
       .tokens {
         display: flex;
@@ -135,11 +139,11 @@ export default defineComponent({
     padding: 0;
 
     .pools-head {
-      grid-template-columns: 108px 40px 103px 100px;
+      grid-template-columns: 108px 143px 100px;
     }
     .pools {
       .pair {
-        grid-template-columns: 108px 40px 103px 100px;
+        grid-template-columns: 108px 143px 100px;
         .tokens {
           .symbol {
             margin-left: 4px;

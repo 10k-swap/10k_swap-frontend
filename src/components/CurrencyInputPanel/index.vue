@@ -21,6 +21,9 @@
           })
         }}
       </Text>
+      <span class="max" @click="() => onMax && onMax(currencyBalance ?? undefined)" v-if="onMax && currencyBalance">
+        {{ t('currency_input_panel.max') }}
+      </span>
     </div>
   </div>
 </template>
@@ -48,6 +51,9 @@ export default defineComponent({
     size: {
       default: 'normal',
       type: String as PropType<'small' | 'normal'>,
+    },
+    onMax: {
+      type: Function as PropType<(amount: TokenAmount | undefined) => void>,
     },
   },
   components: {
@@ -146,8 +152,22 @@ export default defineComponent({
 
   .balance {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     margin-top: 8px;
+    .max {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 18px;
+      margin-left: 8px;
+      border-radius: 9px;
+      background: $color-primary;
+      font-size: $font-size-mini;
+      color: $color-white;
+      cursor: pointer;
+    }
   }
 
   &-small {

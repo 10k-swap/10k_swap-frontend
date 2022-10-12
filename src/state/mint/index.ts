@@ -29,6 +29,14 @@ export const useMintStore = defineStore<'mint', MintState, {}, MintActions>('min
   },
   actions: {
     selectToken({ tokenA, tokenB }) {
+      if (this.tokenA && tokenA && this.tokenA !== tokenA) {
+        this.otherTypedValue = ''
+        this.typedValue = ''
+      }
+      if (this.tokenB && tokenB && this.tokenB !== tokenB) {
+        this.otherTypedValue = ''
+        this.typedValue = ''
+      }
       this.tokenA = tokenA ? tokenA : this.tokenA
       this.tokenB = tokenB ? tokenB : this.tokenB
     },

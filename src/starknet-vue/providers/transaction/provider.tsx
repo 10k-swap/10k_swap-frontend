@@ -40,7 +40,8 @@ export const StarknetTransactionManagerProvider = defineComponent({
   props: {
     interval: Number,
   },
-  setup(props, { slots }) {
+  emits: ['transactionRefresh'],
+  setup(props, { slots, emit }) {
     const { interval } = toRefs(props)
     const {
       state: { library, account, chainId },
@@ -82,6 +83,7 @@ export const StarknetTransactionManagerProvider = defineComponent({
         if (!oldTransaction) {
           return
         }
+
         const status = transactionResponse.status
         const newTransaction: Transaction = {
           transactionHash,
@@ -94,6 +96,7 @@ export const StarknetTransactionManagerProvider = defineComponent({
           transaction: transactionResponse.transaction,
           metadata: oldTransaction.metadata,
         }
+        emit('transactionRefresh', { oldTransaction: toRaw(oldTransaction), newTransaction })
         state.transactions[index] = newTransaction
         if (account.value && chainId.value) {
           TransactionStorageManager.set(toRaw(state.transactions), account.value, chainId.value)

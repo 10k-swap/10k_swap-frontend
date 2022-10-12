@@ -92,6 +92,7 @@ export function useTradeExactIn(
   const allowedPairs = useAllCommonPairs(currencyIn, currencyOut)
 
   return computed(() => {
+    // if loading
     if (allowedPairs.value[1]) {
       return null
     }
@@ -118,6 +119,7 @@ export function useTradeExactOut(
   const allowedPairs = useAllCommonPairs(currencyIn, out)
 
   return computed(() => {
+    // if loading
     if (allowedPairs.value[1]) {
       return null
     }
