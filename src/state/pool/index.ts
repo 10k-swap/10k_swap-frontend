@@ -29,6 +29,8 @@ interface PoolState {
   pairs: Pool[]
   loadingPools: boolean
   userPools: UserPool[]
+  loadingUserPools: boolean
+  lastUpdateUserPoolAt: number | undefined
 }
 
 interface PoolActions {
@@ -42,6 +44,8 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
       pairs: [],
       loadingPools: false,
       userPools: [],
+      loadingUserPools: false,
+      lastUpdateUserPoolAt: undefined,
     }
   },
   actions: {
@@ -54,6 +58,10 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
     },
     async getUserPairs(chainId, account) {
       if (!this.pairs.length) {
+        return
+      }
+
+      if (this.lastUpdateUserPoolAt && new Date().getTime() - this.lastUpdateUserPoolAt < 1000 * 60) {
         return
       }
 
@@ -72,7 +80,11 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
         }
         return undefined
       })
+
+      this.loadingUserPools = true
       const userPools = await Promise.all(promises)
+      this.lastUpdateUserPoolAt = new Date().getTime()
+      this.loadingUserPools = false
 
       this.userPools = userPools.filter((item): item is UserPool => !!(item && item.balance.greaterThan(ZERO)))
     },

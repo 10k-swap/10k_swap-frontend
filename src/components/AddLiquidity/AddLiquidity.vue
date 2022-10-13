@@ -8,6 +8,7 @@
         :otherToken="currencies[Field.CURRENCY_B]"
         @token-select="handleCurrencyASelect"
         @input="onFieldAInput"
+        :onMax="onCurrencyAMax"
       />
       <div class="add-wrap">
         <AddIcon :color="'minor'" :width="'12px'" />
@@ -19,6 +20,7 @@
         :currencyBalance="currencyBalances[Field.CURRENCY_B]"
         @token-select="handleCurrencyBSelect"
         @input="onFieldBInput"
+        :onMax="onCurrencyBMax"
       />
       <Text class="liquidity" :color="'description-text'" :size="'mini'">
         {{ t('add_liquidity.liquidity', { value: LPTotalSupply }) }}
@@ -34,7 +36,7 @@
         :poolTokenPercentage="poolTokenPercentage"
         :price="price"
       />
-      <Button class="deposit" :type="'primary'" :size="'large'" v-if="!account" bold @click="onConnect">
+      <Button class="deposit" :type="'primary'" :size="'large'" v-if="!account" bold @click="openWalletModal">
         {{ t('connect') }}
       </Button>
       <Button class="deposit" v-else :disabled="!!error" :size="'large'" :type="'primary'" bold @click="onDeposit">
@@ -63,7 +65,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { Token } from 'l0k_swap-sdk'
+import { Token, TokenAmount } from 'l0k_swap-sdk'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { Field } from '../../state/mint/types'
 import CurrencyInputPanel from '../CurrencyInputPanel/index.vue'
@@ -83,12 +85,12 @@ import l0k_router_abi from '../../constants/abis/l0k_router_abi.json'
 import erc20 from '../../constants/abis/erc20.json'
 import { Abi } from 'starknet'
 import { bnToUint256 } from 'starknet/dist/utils/uint256'
-import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
+import { calculateSlippageAmount, getDeadlineFromNow, getDeductGasMaxAmount } from '../../utils'
 import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { ROUTER_ADDRESSES } from '../../constants/address'
-import useConnector from '../../hooks/useConnector'
 import { useMintStore } from '../../state'
 import { toBN } from 'starknet/utils/number'
+import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
   components: {
@@ -112,7 +114,7 @@ export default defineComponent({
     const showConfirm = ref(false)
     const attemptingTxn = ref(false)
     const txHash = ref<string>()
-    const { onConnect } = useConnector()
+    const openWalletModal = useOpenWalletModal()
 
     const {
       state: { chainId, account },
@@ -172,6 +174,18 @@ export default defineComponent({
         currencyBAmount?.token.symbol
       } for ${liquidityMinted.value?.toSignificant(3)} LP`
     })
+    const onCurrencyAMax = (maxInputAmount: TokenAmount | undefined) => {
+      const amount = getDeductGasMaxAmount(maxInputAmount)
+      if (amount) {
+        onFieldAInput(amount.toExact())
+      }
+    }
+    const onCurrencyBMax = (maxInputAmount: TokenAmount | undefined) => {
+      const amount = getDeductGasMaxAmount(maxInputAmount)
+      if (amount) {
+        onFieldBInput(amount.toExact())
+      }
+    }
     const handleCurrencyASelect = (token: Token) => {
       mintStore.selectToken({ tokenA: token })
     }
@@ -263,7 +277,9 @@ export default defineComponent({
       onDeposit,
       onMint,
       onReset,
-      onConnect,
+      openWalletModal,
+      onCurrencyAMax,
+      onCurrencyBMax,
     }
   },
 })

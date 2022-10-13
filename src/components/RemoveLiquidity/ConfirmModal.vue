@@ -81,7 +81,11 @@ export default defineComponent({
       type: Boolean,
     },
     parsedAmounts: {
-      type: Object as PropType<{ [field in Field]?: TokenAmount }>,
+      type: Object as PropType<{
+        [Field.LIQUIDITY]?: TokenAmount
+        [Field.CURRENCY_A]?: TokenAmount
+        [Field.CURRENCY_B]?: TokenAmount
+      }>,
     },
     prices: {
       type: Array as PropType<string[]>,

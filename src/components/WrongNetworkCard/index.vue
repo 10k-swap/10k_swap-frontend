@@ -44,7 +44,6 @@ export default defineComponent({
 @import '../../styles/index.scss';
 .l0kswap-wrong-network {
   display: flex;
-  position: absolute;
   width: 252px;
   background: $color-white;
   border-radius: 20px;

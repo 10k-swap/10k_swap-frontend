@@ -7,6 +7,7 @@
     <Nav class="l0k-swap-app-header-nav" />
     <Connector class="l0k-swap-app-header-connector" />
     <WrongNetworkCard class="wrong-network" v-if="!isSupportChain" />
+    <TransactionPendingCard class="transaction-pending" />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import { computed, defineComponent } from 'vue'
 import Nav from '../Nav/Nav.vue'
 import Connector from './Connector.vue'
 import WrongNetworkCard from '../WrongNetworkCard/index.vue'
+import TransactionPendingCard from '../TransactionPendingCard/index.vue'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { isSupportedChain } from '../../utils'
 
@@ -23,6 +25,7 @@ export default defineComponent({
     Nav,
     Connector,
     WrongNetworkCard,
+    TransactionPendingCard,
   },
   setup() {
     const {
@@ -79,7 +82,6 @@ export default defineComponent({
     bottom: 0px;
     transform: translateY(100%);
   }
-
   @include mobile {
     display: grid;
     grid-template-columns: repeat(6, 1fr);

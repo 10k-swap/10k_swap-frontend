@@ -3,12 +3,13 @@ import { ProviderInterface } from 'starknet'
 import { useStarknetManager } from './manager'
 import { Connector } from '../../connectors'
 import { StarknetMethodsSymbol, StarknetStateSymbol } from './const'
+import { InjectedConnectorOptions } from '../../connectors/injected'
 
 export const StarknetLibraryProvider = defineComponent({
   props: {
     defaultProvider: Object as PropType<ProviderInterface | undefined>,
     connectors: {
-      type: Array as PropType<Connector[]>,
+      type: Array as PropType<Connector<InjectedConnectorOptions>[]>,
       required: true,
     },
   },

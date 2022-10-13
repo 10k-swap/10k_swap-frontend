@@ -5,11 +5,15 @@ export default {
   connect: 'Connect Wallet',
   comingSoon: 'Coming Soon',
   wrong_network_tips: `Please 
-  <span style="color:rgba(204, 16, 16, 1);">switch</span> 
-  the network to 
-  <span style="color:rgba(204, 16, 16, 1);">StarkNet %{network}! and refresh the page.</span>`,
-  warning: `
-  This is an ALPHA version, you can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions and follow our <a  href="https://twitter.com/10KSwap" target="_blank">Twitter </a> to learn more information.`,
+  <span style="color:rgba(204, 16, 16, 1);">switch</span> the network to <span style="color:rgba(204, 16, 16, 1);">StarkNet %{network}! and refresh the page.</span>`,
+  warning: `This is an ALPHA version, you can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions and follow our <a  href="https://twitter.com/10KSwap" target="_blank">Twitter </a> to learn more information.`,
+  pending: '%{n} Pending',
+  view_on_scan: 'View on STARKSCAN',
+  wallet_modal: {
+    title: 'connect a wallet',
+    tips: 'By connecting a wallet,you agree to 10K Swap Labs’ Terms of Service and acknowledge that you have read and understand the 10K Swap Protocol Disclaimer.',
+    install: 'Install %{wallet}',
+  },
   account_modal: {
     account: 'Account',
     tips: 'Connected with %{wallet}',
@@ -44,6 +48,7 @@ export default {
   },
   currency_input_panel: {
     balance: 'balance: %{balance}',
+    max: 'Max',
   },
   header: {
     nav: {
@@ -76,7 +81,6 @@ export default {
     dismiss: 'Dismiss',
     transaction_submitted: 'Transaction Submitted',
     close: 'Close',
-    view_on_scan: 'View on STARKSCAN',
   },
   token_select: {
     label: 'Select',
@@ -98,10 +102,16 @@ export default {
     liquidity: 'Liquidity',
     pool_share: 'Pool Share',
     get: 'Get %{token} LP',
-    withdraw: 'Withdraw',
     tips: 'Connect wallet to check your pools',
     tips2: 'Your liquidity positions will appear here',
     deposit: 'Deposit',
+    add: 'Add',
+    manage: 'Manage',
+    total_pool_tokens: 'Your total pool tokens:',
+    pooled: 'Pooled %{symbol}:',
+    your_pool_share: 'Your Pool share:',
+    add_liquidity: '+Add',
+    withdraw: '-Withdraw',
   },
   pool_modal: {
     add_liquidity: 'Add liquidity',
@@ -131,5 +141,8 @@ export default {
     confirm_tips: 'Output is estimated.If the price changes by more than %{slippage}% your transaction will revert',
     burned: '%{token} Burned',
     confirm: 'Confirm',
+    remove_amount: 'Remove Amount',
+    simple: 'Simple',
+    detailed: 'Detailed',
   },
 }

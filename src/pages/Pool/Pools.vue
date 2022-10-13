@@ -10,6 +10,9 @@
       <Text class="liquidity" :size="'small'">
         {{ t('pool.liquidity') }}
       </Text>
+      <Text class="add" :size="'small'">
+        {{ t('pool.add') }}
+      </Text>
     </div>
     <div class="pools">
       <div class="pair" v-for="pair in sortedPairs" :key="pair.pairAddress">
@@ -40,7 +43,7 @@ import DoubleLogo from '../../components/DoubleLogo/index.vue'
 import { LoadingIcon } from '../../components/Svg'
 import { useAllPairs, useIsLoadingAllPairs } from '../../state/pool/hooks'
 import useIsMobile from '../../hooks/useIsMobile'
-import { usePoolModalStore } from '../../state'
+import { Pool, usePoolModalStore } from '../../state'
 import { cloneDeep } from 'lodash'
 
 export default defineComponent({
@@ -63,7 +66,7 @@ export default defineComponent({
       })
     )
 
-    const onGet = (pool: any) => {
+    const onGet = (pool: Pool) => {
       poolModalStore.addLiquidity(pool.pair)
     }
 
@@ -84,7 +87,6 @@ export default defineComponent({
 
 .pools-wrapper {
   padding: 0 20px 20px;
-
   .pools-head {
     display: grid;
     align-items: center;
@@ -94,13 +96,27 @@ export default defineComponent({
 
     .name,
     .APR,
-    .liquidity {
+    .liquidity,
+    .add {
       display: flex;
       justify-content: center;
     }
   }
   .pools {
     margin-top: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 58vh;
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-bg-transparent;
+      border-radius: 4px;
+    }
     .pair {
       display: grid;
       align-items: center;
