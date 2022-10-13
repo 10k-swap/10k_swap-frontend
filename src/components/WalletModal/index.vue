@@ -54,14 +54,11 @@ export default defineComponent({
     }
 
     const onWalletSelect = (wallet: WalletProvider) => {
-      const browser = getBrowserName()
-      if (!browser) {
-        return
-      }
-
-      const url = wallet.downloads[browser]
-      if (!isInstalled(wallet.id) && url) {
-        window.open(url)
+      if (!isInstalled(wallet.id)) {
+        const browser = getBrowserName()
+        if (browser && wallet.downloads[browser]) {
+          window.open(wallet.downloads[browser])
+        }
         return
       }
 
@@ -69,7 +66,6 @@ export default defineComponent({
       if (connector) {
         onConnect(toRaw(connector))
       }
-
       showModal.value = false
     }
 
