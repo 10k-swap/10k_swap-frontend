@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { Token, TokenAmount, ZERO } from 'l0k_swap-sdk'
+import { Token, TokenAmount } from 'l0k_swap-sdk'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { Field } from '../../state/mint/types'
 import CurrencyInputPanel from '../CurrencyInputPanel/index.vue'
@@ -85,7 +85,7 @@ import l0k_router_abi from '../../constants/abis/l0k_router_abi.json'
 import erc20 from '../../constants/abis/erc20.json'
 import { Abi } from 'starknet'
 import { bnToUint256 } from 'starknet/dist/utils/uint256'
-import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
+import { calculateSlippageAmount, getDeadlineFromNow, getDeductGasMaxAmount } from '../../utils'
 import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { ROUTER_ADDRESSES } from '../../constants/address'
 import { useMintStore } from '../../state'
@@ -175,13 +175,15 @@ export default defineComponent({
       } for ${liquidityMinted.value?.toSignificant(3)} LP`
     })
     const onCurrencyAMax = (maxInputAmount: TokenAmount | undefined) => {
-      if (maxInputAmount && !maxInputAmount.equalTo(ZERO)) {
-        onFieldAInput(maxInputAmount.toExact())
+      const amount = getDeductGasMaxAmount(maxInputAmount)
+      if (amount) {
+        onFieldAInput(amount.toExact())
       }
     }
     const onCurrencyBMax = (maxInputAmount: TokenAmount | undefined) => {
-      if (maxInputAmount && !maxInputAmount.equalTo(ZERO)) {
-        onFieldBInput(maxInputAmount.toExact())
+      const amount = getDeductGasMaxAmount(maxInputAmount)
+      if (amount) {
+        onFieldBInput(amount.toExact())
       }
     }
     const handleCurrencyASelect = (token: Token) => {

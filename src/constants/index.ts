@@ -30,3 +30,5 @@ export const SERVER_URLS: { [chainId in ChainId]: string } = {
 export const SupporteChainId = ChainId.TESTNET
 
 export const DEFAULT_TXN_DISMISS_MS = 3000
+
+export const ESTIMATE_GAS_FREE = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(15))
