@@ -74,7 +74,7 @@ import WaittingModal from '../../components/transaction/WaittingModal.vue'
 import RejectedModal from '../../components/transaction/RejectedModal.vue'
 import ScuccessModal from '../../components/transaction/ScuccessModal.vue'
 import { SettingIcon, SwitchIcon, LoadingIcon } from '../../components/Svg'
-import { Token, Trade, JSBI, TokenAmount, ZERO } from 'l0k_swap-sdk'
+import { Token, Trade, JSBI, TokenAmount } from 'l0k_swap-sdk'
 import { useModalStore, useSlippageToleranceSettingsStore } from '../../state'
 import { useDerivedSwapInfo, useSwapActionHandlers } from '../../state/swap/hooks'
 import { useSwapStore } from '../../state/swap'
@@ -84,6 +84,7 @@ import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { useUserSwapSlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import useSwapSummary from '../../hooks/useSwapSummary'
 import { useOpenWalletModal } from '../../state/modal/hooks'
+import { getDeductGasMaxAmount } from '../../utils'
 
 export default defineComponent({
   components: {
@@ -213,8 +214,9 @@ export default defineComponent({
     }
 
     const onMax = (maxInputAmount: TokenAmount | undefined) => {
-      if (maxInputAmount && !maxInputAmount.equalTo(ZERO)) {
-        onUserInput(Field.INPUT, maxInputAmount.toExact())
+      const amount = getDeductGasMaxAmount(maxInputAmount)
+      if (amount) {
+        onUserInput(Field.INPUT, amount.toExact())
       }
     }
 
