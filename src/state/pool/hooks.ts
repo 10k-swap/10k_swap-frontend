@@ -38,7 +38,7 @@ export function useUserPairs(): ComputedRef<UserPool[]> {
   } = useStarknet()
 
   const _getUserPairs = () => {
-    if (pairs.value.length && account.value && chainId.value && !userPools.value.length) {
+    if (pairs.value.length && account.value && chainId.value) {
       store.getUserPairs(chainId.value, account.value)
     }
   }
