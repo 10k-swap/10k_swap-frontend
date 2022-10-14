@@ -8,7 +8,7 @@ export const ADDRESS_ZORE = '0x0000000000000000000000000000000000000000000000000
 export const MOBILE_SIZE = 768
 
 // default allowed slippage, in bips
-export const INITIAL_SWAP_ALLOWED_SLIPPAGE = 20
+export const INITIAL_SWAP_ALLOWED_SLIPPAGE = 200
 export const INITIAL_ALLOWED_SLIPPAGE = 200
 
 // 60 minutes, denominated in seconds
@@ -31,4 +31,4 @@ export const SupporteChainId = ChainId.MAINNET
 
 export const DEFAULT_TXN_DISMISS_MS = 3000
 
-export const ESTIMATE_GAS_FREE = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(15))
+export const ESTIMATE_GAS_FREE = JSBI.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(15)), JSBI.BigInt(5)) // 0.005 ETH
