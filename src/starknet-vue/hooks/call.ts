@@ -3,6 +3,7 @@ import * as objectHash from 'object-hash'
 import { computed, ComputedRef, onMounted, reactive, watch } from 'vue'
 import { useStarknetBlock } from '../providers/block'
 import { BN } from '../../types'
+import { useIntervalFn } from '@vueuse/core'
 
 interface State {
   data?: Result | undefined
@@ -19,16 +20,21 @@ export interface UseStarknetCall {
   refresh: () => void
 }
 
-function toCallKey(address: string, method: string, block: string | undefined, data: string): string {
-  return `${address}-${method}-${block}-${data}`
-}
+const interval = 1000 * 30
 
 function argsToHash(args: any) {
   return objectHash.sha1(JSON.stringify(args))
 }
+function toCallKey(address: string, method: string, block: string | undefined, data: string): string {
+  return `${address}-${method}-${block}-${data}`
+}
+
+function isAvailableCache(time: number) {
+  return new Date().getTime() - time < interval
+}
 
 const caches: {
-  [key: string]: Result
+  [key: string]: { result: Result; updateAt: number }
 } = {}
 
 export function useStarknetCall<T extends unknown[]>(
@@ -55,12 +61,17 @@ export function useStarknetCall<T extends unknown[]>(
 
       const key = toCallKey(contract.value.address, method, block.value?.block_hash, argsToHash(arg))
       const current = caches[key]
-      if (current) {
+
+      if (current && isAvailableCache(current.updateAt)) {
         return current
       }
+
       try {
         const result = await contract.value.call(method, arg)
-        caches[key] = result
+        caches[key] = {
+          result,
+          updateAt: new Date().getTime(),
+        }
         return result
       } catch (error) {
         console.log('call:call error', error)
@@ -69,29 +80,35 @@ export function useStarknetCall<T extends unknown[]>(
     }
   }
 
-  const refresh = () => {
+  const refresh = async () => {
     state.loading = true
 
-    callContract()
-      .then((response) => {
-        if (response) {
-          state.data = response
-        }
-      })
-      .catch((err) => {
-        if (err.message) {
-          state.error = err.message
-        } else {
-          state.error = 'call failed'
-        }
-      })
-      .finally(() => {
-        state.loading = false
-      })
+    try {
+      const response = await callContract()
+      if (response) {
+        state.data = response.result
+      }
+    } catch (err: any) {
+      if (err.message) {
+        state.error = err.message
+      } else {
+        state.error = 'call failed'
+      }
+    } finally {
+      state.loading = false
+    }
   }
 
-  onMounted(() => {
-    refresh()
+  const { resume } = useIntervalFn(() => {
+    if (sholudWatch) {
+      refresh()
+    }
+  }, 1000 * 3)
+
+  onMounted(async () => {
+    await refresh()
+
+    resume()
   })
 
   const arg = computed(() => (Array.isArray(args) ? args : args?.value ? args.value : undefined))
@@ -145,13 +162,16 @@ export function useStarknetCalls<T extends unknown[]>(
         const key = toCallKey(contract.address, method, block.value?.block_hash, argsToHash(args))
         const current = caches[key]
 
-        if (current) {
-          return current
+        if (current && isAvailableCache(current.updateAt)) {
+          return current.result
         }
 
         try {
           const result: Result = await contract.call(method, args)
-          caches[key] = result
+          caches[key] = {
+            result,
+            updateAt: new Date().getTime(),
+          }
           return result
         } catch (error) {
           console.log('calls:call error', error)
@@ -163,29 +183,35 @@ export function useStarknetCalls<T extends unknown[]>(
     }
   }
 
-  const refresh = () => {
+  const refresh = async () => {
     states.loading = true
 
-    callContract()
-      .then((response) => {
-        if (response) {
-          states.data = response
-        }
-      })
-      .catch((err) => {
-        if (err.message) {
-          states.error = err.message
-        } else {
-          states.error = 'call failed'
-        }
-      })
-      .finally(() => {
-        states.loading = false
-      })
+    try {
+      const response = await callContract()
+      if (response) {
+        states.data = response
+      }
+    } catch (err: any) {
+      if (err.message) {
+        states.error = err.message
+      } else {
+        states.error = 'call failed'
+      }
+    } finally {
+      states.loading = false
+    }
   }
 
-  onMounted(() => {
-    refresh()
+  const { resume } = useIntervalFn(() => {
+    if (sholudWatch) {
+      refresh()
+    }
+  }, interval)
+
+  onMounted(async () => {
+    await refresh()
+
+    resume()
   })
 
   const arg = computed(() => (argsList?.value ? argsList.value : undefined))
