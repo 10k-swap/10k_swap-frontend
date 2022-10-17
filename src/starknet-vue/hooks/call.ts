@@ -4,6 +4,7 @@ import { computed, ComputedRef, onMounted, reactive, watch } from 'vue'
 import { useStarknetBlock } from '../providers/block'
 import { BN } from '../../types'
 import { useIntervalFn } from '@vueuse/core'
+import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 
 interface State {
   data?: Result | undefined
@@ -21,7 +22,6 @@ export interface UseStarknetCall {
 }
 
 const interval = 1000 * 30
-
 function argsToHash(args: any) {
   return objectHash.sha1(JSON.stringify(args))
 }
@@ -51,12 +51,13 @@ export function useStarknetCall<T extends unknown[]>(
   })
 
   const { block } = useStarknetBlock()
+  const isWindowVisible = useIsWindowVisible()
 
   // default to true
   const sholudWatch = options?.watch !== undefined ? options.watch : true
 
   const callContract = async () => {
-    if (contract.value && method) {
+    if (contract.value && method && isWindowVisible.value) {
       const arg = Array.isArray(args) ? args : args && args.value ? args.value : []
 
       const key = toCallKey(contract.value.address, method, block.value?.block_hash, argsToHash(arg))
@@ -81,6 +82,9 @@ export function useStarknetCall<T extends unknown[]>(
   }
 
   const refresh = async () => {
+    if (state.loading) {
+      return
+    }
     state.loading = true
 
     try {
@@ -114,6 +118,10 @@ export function useStarknetCall<T extends unknown[]>(
   const arg = computed(() => (Array.isArray(args) ? args : args?.value ? args.value : undefined))
   watch([contract, arg], () => {
     refresh()
+  })
+
+  watch([isWindowVisible], async () => {
+    await refresh()
   })
 
   watch([block], () => {
@@ -150,12 +158,13 @@ export function useStarknetCalls<T extends unknown[]>(
   })
 
   const { block } = useStarknetBlock()
+  const isWindowVisible = useIsWindowVisible()
 
   // default to false
   const sholudWatch = options?.watch !== undefined ? options.watch : true
 
   const callContract = async () => {
-    if (contracts.value && methods.value) {
+    if (contracts.value && methods.value && isWindowVisible.value) {
       const calls = contracts.value.map(async (contract, i) => {
         const args = argsList && argsList.value?.[i] ? argsList.value[i] : []
         const method = methods.value && methods.value?.[i] ? methods.value?.[i] : ''
@@ -184,6 +193,9 @@ export function useStarknetCalls<T extends unknown[]>(
   }
 
   const refresh = async () => {
+    if (states.loading) {
+      return
+    }
     states.loading = true
 
     try {
@@ -212,6 +224,10 @@ export function useStarknetCalls<T extends unknown[]>(
     await refresh()
 
     resume()
+  })
+
+  watch([isWindowVisible], async () => {
+    await refresh()
   })
 
   const arg = computed(() => (argsList?.value ? argsList.value : undefined))
