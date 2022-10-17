@@ -120,6 +120,10 @@ export function useStarknetCall<T extends unknown[]>(
     refresh()
   })
 
+  watch([isWindowVisible], async () => {
+    await refresh()
+  })
+
   watch([block], () => {
     if (block.value?.block_hash && sholudWatch) {
       if (block.value.block_hash === state.lastUpdatedAt) {
