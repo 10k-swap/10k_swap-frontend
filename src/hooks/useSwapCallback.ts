@@ -9,8 +9,8 @@ import l0k_router_abi from '../constants/abis/l0k_router_abi.json'
 import { isAccountInterface } from '../starknet-vue/utils'
 import { bnToUint256 } from 'starknet/dist/utils/uint256'
 import { useStarknetTransactionManager } from '../starknet-vue/providers/transaction'
-import useSwapSummary from './useSwapSummary'
-import useSwapApproveAmount from './useSwapApproveAmount'
+import { getSwapSummary } from './useSwapSummary'
+import { getSwapApproveAmount } from './useSwapApproveAmount'
 
 enum SwapCallbackState {
   INVALID,
@@ -106,8 +106,6 @@ export function useSwapCallback(
 
   const { addTransaction } = useStarknetTransactionManager()
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, deadline)
-  const summary = useSwapSummary(trade)
-  const swapApproveAmount = useSwapApproveAmount(trade, allowedSlippage)
 
   return computed(() => {
     if (!trade.value || !library.value || !account.value || !chainId.value) {
@@ -127,10 +125,17 @@ export function useSwapCallback(
           parameters: { methodName, args },
         } = swapCalls.value[0]
         console.log('args', args)
-        if (!swapApproveAmount.value) {
-          throw new Error('No Approve Amount')
+
+        const swapTrade = trade.value
+        if (!swapTrade) {
+          throw new Error('could not find trade')
         }
-        const approveAmount = bnToUint256(swapApproveAmount.value.raw.toString())
+
+        const swapApproveAmount = getSwapApproveAmount(
+          swapTrade,
+          Math.floor(typeof allowedSlippage === 'number' ? allowedSlippage : allowedSlippage.value)
+        )
+        const approveAmount = bnToUint256(swapApproveAmount.raw.toString())
 
         return libraryRaw
           .execute(
@@ -154,7 +159,7 @@ export function useSwapCallback(
               status: response.code,
               transactionHash: response.transaction_hash,
               metadata: {
-                message: summary.value,
+                message: getSwapSummary(swapTrade, swapApproveAmount),
               },
             })
 
