@@ -1,7 +1,17 @@
 import { computed, Ref } from 'vue'
-import { Trade } from 'l0k_swap-sdk'
+import { TokenAmount, Trade } from 'l0k_swap-sdk'
 import { useUserSwapSlippageTolerance } from '../state/slippageToleranceSettings/hooks'
 import useSwapApproveAmount from './useSwapApproveAmount'
+
+export function getSwapSummary(trade: Trade, swapApproveAmount?: TokenAmount) {
+  const inputSymbol = trade.inputAmount.token.symbol
+  const outputSymbol = trade.outputAmount.token.symbol
+  const inputAmount = trade.inputAmount.toSignificant(3)
+  const outputAmount = trade.outputAmount.toSignificant(3)
+  const approveAmount = swapApproveAmount?.toSignificant(3)
+
+  return `Approve ${approveAmount} ${inputSymbol} & Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+}
 
 export default function useSwapSummary(trade: Ref<Trade | null | undefined>) {
   const allowedSlippage = useUserSwapSlippageTolerance()
@@ -11,12 +21,7 @@ export default function useSwapSummary(trade: Ref<Trade | null | undefined>) {
     if (!trade.value) {
       return undefined
     }
-    const inputSymbol = trade.value.inputAmount.token.symbol
-    const outputSymbol = trade.value.outputAmount.token.symbol
-    const inputAmount = trade.value.inputAmount.toSignificant(3)
-    const outputAmount = trade.value.outputAmount.toSignificant(3)
-    const approveAmount = swapApproveAmount.value?.toSignificant(3)
 
-    return `Approve ${approveAmount} ${inputSymbol} & Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+    return getSwapSummary(trade.value, swapApproveAmount.value)
   })
 }
