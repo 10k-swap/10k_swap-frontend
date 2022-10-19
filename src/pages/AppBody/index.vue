@@ -4,7 +4,7 @@
     <MHeader />
     <Popups />
     <slot></slot>
-    <div class="socials"><Socials /></div>
+    <div class="socials" v-if="showSocials"><Socials /></div>
     <div class="l0k-swap-app-body-bg" :class="{ root: isRoot }"></div>
   </div>
   <Modals />
@@ -31,9 +31,11 @@ export default defineComponent({
     const route = useRoute()
 
     const isRoot = computed(() => route.path === '/')
+    const showSocials = computed(() => ['/', '/pool', '/faucet'].includes(route.path))
 
     return {
       isRoot,
+      showSocials,
     }
   },
 })

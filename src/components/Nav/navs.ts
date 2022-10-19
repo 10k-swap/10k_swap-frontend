@@ -15,6 +15,10 @@ export default {
       path: '/faucet',
       name: i18n.global.t('header.nav.faucet'),
     },
+    {
+      path: '/analytics',
+      name: i18n.global.t('header.nav.analytics'),
+    },
   ],
   [ChainId.MAINNET]: [
     {

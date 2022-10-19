@@ -55,6 +55,7 @@ export default {
       swap: 'Swap',
       pool: 'Pool',
       faucet: 'Faucet',
+      analytics: 'Analytics',
     },
     connector: {
       connect: 'Connect Wallet',
