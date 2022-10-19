@@ -29,5 +29,9 @@ export default {
       path: '/pool',
       name: i18n.global.t('header.nav.pool'),
     },
+    {
+      path: '/analytics',
+      name: i18n.global.t('header.nav.analytics'),
+    },
   ],
 }
