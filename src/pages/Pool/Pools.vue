@@ -106,7 +106,7 @@ export default defineComponent({
     margin-top: 10px;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 58vh;
+    max-height: 52vh;
     &::-webkit-scrollbar {
       width: 4px;
     }
