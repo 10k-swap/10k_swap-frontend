@@ -50,7 +50,7 @@ export default defineComponent({
   overflow-y: auto;
   overflow-x: hidden;
   .l0k-swap-app-body-bg {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     z-index: -1;
