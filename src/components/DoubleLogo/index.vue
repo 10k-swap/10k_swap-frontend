@@ -51,7 +51,7 @@ export default defineComponent({
         margin-right: 0;
       }
       &:last-child {
-        transform: translateY(-50%) translateX(12px);
+        transform: translateY(-50%) translateX(50%);
         z-index: 1;
       }
     }

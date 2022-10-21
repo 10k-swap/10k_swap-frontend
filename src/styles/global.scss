@@ -8,4 +8,5 @@ body {
   font-size: $font-size-normal;
   background-color: rgb(28, 74, 104);
   @include no-scrollbar;
+  overflow-x: hidden;
 }
