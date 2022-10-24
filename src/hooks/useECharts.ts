@@ -20,7 +20,8 @@ export type EChartsOption = echarts.ComposeOption<TitleComponentOption | Tooltip
 
 export default function useECharts(
   elementId: string,
-  options: Ref<EChartsOption>
+  options: Ref<EChartsOption>,
+  loading?: Ref<boolean>
 ): {
   echart: ShallowRef<echarts.ECharts | undefined>
 } {
@@ -30,6 +31,14 @@ export default function useECharts(
 
   watch([options], () => {
     echart.value?.setOption(merge(toRaw(options.value), defaultChartsOptions))
+  })
+
+  watch([loading], () => {
+    if (loading?.value) {
+      echart.value?.showLoading()
+    } else {
+      echart.value?.hideLoading()
+    }
   })
 
   onMounted(() => {
@@ -51,8 +60,18 @@ export default function useECharts(
 
 export const defaultChartsOptions: EChartsOption = {
   title: { show: false },
-  tooltip: { show: false },
-  grid: { top: 10, left: '0', right: '0', bottom: '0', containLabel: true },
+  color: ['rgb(28,119,255)'],
+  grid: { top: 10, left: 30, right: 0, bottom: 0, containLabel: true },
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'line',
+    },
+    backgroundColor: '#fff',
+    textStyle: {
+      color: '#111',
+    },
+  },
   xAxis: {
     type: 'category',
     axisLabel: { color: '#999', fontSize: 10 },
@@ -64,7 +83,7 @@ export const defaultChartsOptions: EChartsOption = {
   yAxis: {
     type: 'value',
     splitLine: { show: false },
-    axisLabel: { color: '#999999', fontSize: 10 },
+    axisLabel: { color: '#999', fontSize: 10 },
     offset: -6,
     position: 'right',
   },

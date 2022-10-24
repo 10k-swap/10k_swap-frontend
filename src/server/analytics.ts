@@ -21,6 +21,17 @@ export interface PairResponse {
   pairs: Pair[]
 }
 
+export interface ChartsDataResponse {
+  tvls: {
+    date: string
+    tvl: number
+  }[]
+  volumes: {
+    date: string
+    volume: number
+  }[]
+}
+
 export async function getTransactions(
   chainId: ChainId,
   { startTime, endTime, page, type }: { startTime: number; endTime: number; page: number; type: TransactionType | undefined }
@@ -50,6 +61,19 @@ export async function getPairs(chainId: ChainId, { startTime, endTime, page }: {
     const res = await axios.get<IResponse<PairResponse>>(`${SERVER_URLS[chainId]}/analytics/pairs`, {
       params: { startTime, endTime, page },
     })
+    if (res.data.errCode === ERR_OK) {
+      const data = res.data.data
+      return data
+    }
+    throw new Error('fetch pairs fail')
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}
+
+export async function getChartsData(chainId: ChainId) {
+  try {
+    const res = await axios.get<IResponse<ChartsDataResponse>>(`${SERVER_URLS[chainId]}/analytics`)
     if (res.data.errCode === ERR_OK) {
       const data = res.data.data
       return data

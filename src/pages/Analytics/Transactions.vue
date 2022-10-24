@@ -1,57 +1,66 @@
 <template>
   <div class="l0k-swap-analytics-transactions">
     <div class="header">
-      <Text>{{ t('analytics.transactions') }}</Text>
+      <Text class="title">{{ t('analytics.transactions') }}</Text>
       <div class="date-picker">
-        <el-date-picker v-model="dates" type="datetimerange" range-separator="~" start-placeholder="Start date" end-placeholder="End date" />
+        <el-date-picker
+          v-model="dates"
+          type="datetimerange"
+          range-separator="~"
+          start-placeholder="Start date"
+          end-placeholder="End date"
+          :clearable="false"
+        />
       </div>
     </div>
-    <div class="summary">
-      <div class="total">
-        <Text class="head" :size="'small'" :color="'description-text'">{{ t('analytics.total_transactions') }}</Text>
-        <Text class="value" :size="'small'">{{ transactions?.summary.total }}</Text>
-      </div>
-      <div class="profit">
-        <Text class="head" :size="'small'" :color="'description-text'">{{ t('analytics.profit') }}</Text>
-        <div class="value">
-          <div class="item" v-for="item in transactions?.summary.profits" :key="item.address">
-            <Text class="name" :size="'small'">{{ item.symbol }}</Text>
-            <Text class="amount" :size="'small'">{{ item.amountHuman }}</Text>
+    <div class="wrapper">
+      <div class="summary">
+        <div class="total">
+          <Text class="head" :size="'small'" :color="'description-text'">{{ t('analytics.total_transactions') }}</Text>
+          <Text class="value" :size="'small'">{{ transactions?.summary.total }}</Text>
+        </div>
+        <div class="profit">
+          <Text class="head" :size="'small'" :color="'description-text'">{{ t('analytics.profit') }}</Text>
+          <div class="value">
+            <div class="item" v-for="item in transactions?.summary.profits" :key="item.address">
+              <Text class="name" :size="'small'">{{ item.symbol }}</Text>
+              <Text class="amount" :size="'small'">{{ numeral(item.amountHuman) }}</Text>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="transactions">
-      <div class="head">
-        <div class="label">
-          <template v-for="item in TransactionTypes" :key="item.type">
-            <Text
-              class="type"
-              :size="'small'"
-              :color="item.type === currentType ? 'normal' : 'description-text'"
-              :class="{ active: item.type === currentType }"
-              @click="currentType = item.type"
-            >
-              {{ item.label }}
-            </Text>
-          </template>
+      <div class="transactions">
+        <div class="head">
+          <div class="label">
+            <template v-for="item in TransactionTypes" :key="item.type">
+              <Text
+                class="type"
+                :size="'small'"
+                :color="item.type === currentType ? 'normal' : 'description-text'"
+                :class="{ active: item.type === currentType }"
+                @click="currentType = item.type"
+              >
+                {{ item.label }}
+              </Text>
+            </template>
+          </div>
+          <Text class="token0" :size="'small'">{{ t('analytics.token0') }}</Text>
+          <Text class="token1" :size="'small'">{{ t('analytics.token1') }}</Text>
+          <Text class="account" :size="'small'">{{ t('analytics.account') }}</Text>
+          <Text class="fees" :size="'small'">{{ t('analytics.fees') }}</Text>
+          <Text class="time" :size="'small'">{{ t('analytics.time') }}</Text>
         </div>
-        <Text class="token0" :size="'small'">{{ t('analytics.token0') }}</Text>
-        <Text class="token1" :size="'small'">{{ t('analytics.token1') }}</Text>
-        <Text class="account" :size="'small'">{{ t('analytics.account') }}</Text>
-        <Text class="fees" :size="'small'">{{ t('analytics.fees') }}</Text>
-        <Text class="time" :size="'small'">{{ t('analytics.time') }}</Text>
-      </div>
-      <div class="contents">
-        <div class="content" v-for="item in transactions?.transactions.transactions" :key="item.id">
-          <Text class="label" :size="'small'" :title="getTransactionSummary(item)">{{ getTransactionSummary(item) }}</Text>
-          <Text class="token0" :size="'small'">{{ numeral(item.amount0_human) }} {{ item.token0.symbol }}</Text>
-          <Text class="token1" :size="'small'">{{ numeral(item.amount1_human) }} {{ item.token1.symbol }}</Text>
-          <Text class="account" :size="'small'" :title="item.account_address">{{ shortenAddress(item.account_address) }}</Text>
-          <Text class="fees" :size="'small'">{{ item.fee_usd !== '' ? `$ ${numeral(item.fee_usd)}` : '-' }}</Text>
-          <Text class="time" :size="'small'" :title="new Date(item.event_time).toLocaleString()">
-            {{ dayjs().to(new Date(item.event_time)) }}
-          </Text>
+        <div class="contents">
+          <div class="content" v-for="item in transactions?.transactions.transactions" :key="item.id">
+            <Text class="label" :size="'small'" :title="getTransactionSummary(item)">{{ getTransactionSummary(item) }}</Text>
+            <Text class="token0" :size="'small'">{{ numeral(item.amount0_human) }} {{ item.token0.symbol }}</Text>
+            <Text class="token1" :size="'small'">{{ numeral(item.amount1_human) }} {{ item.token1.symbol }}</Text>
+            <Text class="account" :size="'small'" :title="item.account_address">{{ shortenAddress(item.account_address) }}</Text>
+            <Text class="fees" :size="'small'">{{ item.fee_usd !== '' ? `$ ${numeral(item.fee_usd)}` : '-' }}</Text>
+            <Text class="time" :size="'small'" :title="new Date(item.event_time).toLocaleString()">
+              {{ dayjs().to(new Date(item.event_time)) }}
+            </Text>
+          </div>
         </div>
       </div>
     </div>
@@ -81,9 +90,9 @@ dayjs.extend(relativeTime)
 
 const TransactionTypes = [
   { label: i18n.global.t('analytics.all'), type: undefined },
-  { label: i18n.global.t('analytics.swap'), type: TransactionType.Swap },
-  { label: i18n.global.t('analytics.mint'), type: TransactionType.Mint },
-  { label: i18n.global.t('analytics.burn'), type: TransactionType.Burn },
+  { label: i18n.global.t('analytics.swaps'), type: TransactionType.Swap },
+  { label: i18n.global.t('analytics.adds'), type: TransactionType.Mint },
+  { label: i18n.global.t('analytics.removes'), type: TransactionType.Burn },
 ]
 
 export default defineComponent({
@@ -93,7 +102,7 @@ export default defineComponent({
     Text,
   },
   setup() {
-    const dates = ref<[Date, Date]>([new Date(2022, 8, 19), new Date()])
+    const dates = ref<[Date, Date]>([new Date(2022, 8, 18), new Date()])
     const currentPage = ref(1)
     const currentType = ref<TransactionType>()
 
@@ -153,127 +162,147 @@ export default defineComponent({
   .header {
     display: flex;
     align-items: center;
+    .title {
+      width: 100px;
+    }
     .date-picker {
       width: 368px;
-      margin-left: 8px;
     }
   }
-  .summary {
-    display: flex;
-    background: $color-white;
-    margin-top: 12px;
-    .head {
+  .wrapper {
+    overflow: auto;
+    width: 100%;
+    .summary {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 32px;
-      border: 1px solid #ccc;
-    }
-    .value {
-      display: flex;
-      height: 64px;
-      border: 1px solid #ccc;
-      border-top: 0;
-    }
-    .total {
-      flex: 0 0 170px;
-      .value {
-        justify-content: center;
-        align-items: center;
-        border-right: 0;
-      }
-    }
-    .profit {
-      flex: auto;
+      background: $color-white;
+      margin-top: 12px;
+      width: 1008px;
       .head {
-        border-left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px;
+        border: 1px solid #ccc;
       }
       .value {
-        .item {
-          display: flex;
-          flex-direction: column;
-          flex: 1;
-          .name,
-          .amount {
+        display: flex;
+        height: 64px;
+        border: 1px solid #ccc;
+        border-top: 0;
+      }
+      .total {
+        flex: 0 0 170px;
+        .value {
+          justify-content: center;
+          align-items: center;
+          border-right: 0;
+        }
+      }
+      .profit {
+        flex: auto;
+        .head {
+          border-left: 0;
+        }
+        .value {
+          .item {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50%;
-          }
-          .name {
-            border-right: 1px solid #ccc;
-            border-bottom: 1px solid #ccc;
-          }
-          .amount {
-            border-right: 1px solid #ccc;
-          }
-          &:last-child {
+            flex-direction: column;
+            flex: 1;
+            .name,
+            .amount {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 50%;
+            }
             .name {
-              border-right: none;
+              border-right: 1px solid #ccc;
+              border-bottom: 1px solid #ccc;
             }
             .amount {
-              border-right: none;
+              border-right: 1px solid #ccc;
+            }
+            &:last-child {
+              .name {
+                border-right: none;
+              }
+              .amount {
+                border-right: none;
+              }
             }
           }
         }
       }
     }
-  }
-  .transactions {
-    margin-top: 12px;
-    background: $color-white;
-    .head,
-    .contents {
-      display: flex;
-      .label {
-        width: 240px;
-        padding: 0 10px;
-      }
-      .token0,
-      .token1,
-      .account,
-      .fees,
-      .time {
+    .transactions {
+      margin-top: 12px;
+      background: $color-white;
+      width: 1008px;
+      .head,
+      .contents {
         display: flex;
-        align-items: center;
-        flex: 1;
-        padding: 0 10px;
+        .label {
+          width: 240px;
+          padding: 0 10px;
+        }
+        .token0,
+        .token1,
+        .account,
+        .fees,
+        .time {
+          display: flex;
+          align-items: center;
+          flex: 1;
+          padding: 0 10px;
+        }
       }
-    }
-    .head {
-      height: 32px;
-      background: $color-bg-secondary;
-      .label {
-        display: flex;
-        align-items: center;
-        .type {
-          margin-right: 12px;
-          cursor: pointer;
-          &.active {
-            font-weight: 500;
+      .head {
+        height: 32px;
+        background: $color-bg-secondary;
+        .label {
+          display: flex;
+          align-items: center;
+          .type {
+            margin-right: 12px;
+            cursor: pointer;
+            &.active {
+              font-weight: 500;
+            }
+          }
+        }
+        .label,
+        .token0,
+        .token1,
+        .account,
+        .fees,
+        .time {
+          font-weight: 500;
+        }
+      }
+      .contents {
+        flex-direction: column;
+        .content {
+          display: flex;
+          align-items: center;
+          height: 40px;
+          .label {
+            text-align: left;
+            word-break: break-all;
+            @include no-wrap;
           }
         }
       }
-      .label,
-      .token0,
-      .token1,
-      .account,
-      .fees,
-      .time {
-        font-weight: 500;
-      }
     }
-    .contents {
+  }
+  @include mobile {
+    padding: 0;
+    .header {
+      align-items: flex-start;
       flex-direction: column;
-      .content {
-        display: flex;
-        align-items: center;
-        height: 40px;
-        .label {
-          text-align: left;
-          word-break: break-all;
-          @include no-wrap;
-        }
+      .date-picker {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 8px;
       }
     }
   }

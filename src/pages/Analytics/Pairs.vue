@@ -1,9 +1,16 @@
 <template>
   <div class="l0k-swap-analytics-pairs">
-    <div class="head">
-      <Text>{{ t('analytics.pairs') }}</Text>
+    <div class="header">
+      <Text class="title">{{ t('analytics.pairs') }}</Text>
       <div class="date-picker">
-        <el-date-picker v-model="dates" type="datetimerange" range-separator="~" start-placeholder="Start date" end-placeholder="End date" />
+        <el-date-picker
+          v-model="dates"
+          type="datetimerange"
+          range-separator="~"
+          start-placeholder="Start date"
+          end-placeholder="End date"
+          :clearable="false"
+        />
       </div>
     </div>
     <div class="pairs">
@@ -60,7 +67,7 @@ export default defineComponent({
     DoubleLogo,
   },
   setup() {
-    const dates = ref<[Date, Date]>([new Date(2022, 8, 19), new Date()])
+    const dates = ref<[Date, Date]>([new Date(2022, 8, 18), new Date()])
     const currentPage = ref(1)
 
     const {
@@ -112,19 +119,24 @@ export default defineComponent({
   padding: 16px;
   margin-top: 16px;
   background: $color-white;
-  .head {
+  .header {
     display: flex;
     align-items: center;
+    .title {
+      width: 100px;
+    }
     .date-picker {
       width: 368px;
-      margin-left: 8px;
     }
   }
   .pairs {
     margin-top: 12px;
+    overflow: auto;
+    width: 100%;
     .head,
     .contents {
       display: flex;
+      width: 1008px;
       .name {
         width: 170px;
         padding: 0 10px;
@@ -175,6 +187,19 @@ export default defineComponent({
             margin-left: 12px;
           }
         }
+      }
+    }
+  }
+
+  @include mobile {
+    padding: 0;
+    .header {
+      align-items: flex-start;
+      flex-direction: column;
+      .date-picker {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 8px;
       }
     }
   }

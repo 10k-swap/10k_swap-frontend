@@ -1,5 +1,5 @@
 import { onMounted, ref, Ref, watch } from 'vue'
-import { getPairs, getTransactions, PairResponse, TransactionsResponse } from '../../server/analytics'
+import { getPairs, getTransactions, getChartsData, PairResponse, TransactionsResponse, ChartsDataResponse } from '../../server/analytics'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { TransactionType } from './types'
 
@@ -50,4 +50,25 @@ export function usePairs(dates: Ref<[Date, Date]>, page: Ref<number>) {
   watch([dates, page], () => _getPairs())
 
   return pairs
+}
+
+export function useChartsData(): [Ref<ChartsDataResponse | undefined>, Ref<boolean>] {
+  const chartsData = ref<ChartsDataResponse>()
+  const loading = ref(false)
+
+  const {
+    state: { chainId },
+  } = useStarknet()
+
+  const _getCharts = async () => {
+    if (chainId.value) {
+      loading.value = true
+      chartsData.value = await getChartsData(chainId.value)
+      loading.value = false
+    }
+  }
+
+  onMounted(() => _getCharts())
+
+  return [chartsData, loading]
 }

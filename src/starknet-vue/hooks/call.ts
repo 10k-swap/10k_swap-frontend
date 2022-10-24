@@ -5,6 +5,7 @@ import { useStarknetBlock } from '../providers/block'
 import { BN } from '../../types'
 import { useIntervalFn } from '@vueuse/core'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
+import { isUndefined } from 'lodash'
 
 interface State {
   data?: Result | undefined
@@ -62,6 +63,10 @@ export function useStarknetCall<T extends unknown[]>(
 
       const key = toCallKey(contract.value.address, method, block.value?.block_hash, argsToHash(arg))
       const current = caches[key]
+
+      if (arg.some((item) => isUndefined(item))) {
+        return
+      }
 
       if (current && isAvailableCache(current.updateAt)) {
         return current
@@ -170,6 +175,10 @@ export function useStarknetCalls<T extends unknown[]>(
         const method = methods.value && methods.value?.[i] ? methods.value?.[i] : ''
         const key = toCallKey(contract.address, method, block.value?.block_hash, argsToHash(args))
         const current = caches[key]
+
+        if (args.some((item) => isUndefined(item))) {
+          return
+        }
 
         if (current && isAvailableCache(current.updateAt)) {
           return current.result
