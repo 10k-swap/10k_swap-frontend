@@ -51,6 +51,7 @@ export default defineComponent({
   min-width: 375px;
   overflow-y: auto;
   overflow-x: hidden;
+
   .l0k-swap-app-body-bg {
     position: fixed;
     bottom: 0;
