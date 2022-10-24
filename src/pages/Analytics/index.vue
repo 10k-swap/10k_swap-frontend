@@ -61,35 +61,29 @@ export default defineComponent({
 
     const isMobile = useIsMobile()
 
-    const liquidityOps = computed<EChartsOption>(() => {
-      return {
-        xAxis: {
-          data: chartsData.value?.tvls.map((item) => item.date) ?? [],
-        },
-        yAxis: {
-          axisLabel: { formatter: (tvl: string) => numeral(tvl).format('$0.0 a').toUpperCase() },
-        },
-        series: {
-          smooth: true,
-          data: chartsData.value?.tvls.map((item) => item.tvl.toFixed(2)) ?? [],
-          areaStyle: isMobile.value ? areaStyle : undefined,
-        },
-      }
-    })
+    const liquidityOps = computed<EChartsOption>(() => ({
+      xAxis: { data: chartsData.value?.tvls.map((item) => item.date) ?? [] },
+      yAxis: {
+        axisLabel: { formatter: (tvl: string) => numeral(tvl).format('$0.0 a').toUpperCase() },
+      },
+      series: {
+        smooth: true,
+        data: chartsData.value?.tvls.map((item) => item.tvl.toFixed(2)) ?? [],
+        areaStyle: isMobile.value ? areaStyle : undefined,
+      },
+    }))
 
-    const volumeOps = computed<EChartsOption>(() => {
-      return {
-        xAxis: { data: chartsData.value?.volumes.map((item) => item.date) ?? [] },
-        yAxis: {
-          axisLabel: { formatter: (volume: string) => numeral(volume).format('$0.0 a').toUpperCase() },
-        },
-        series: {
-          smooth: true,
-          data: chartsData.value?.volumes.map((item) => item.volume.toFixed(2)) ?? [],
-          areaStyle: isMobile.value ? areaStyle : undefined,
-        },
-      }
-    })
+    const volumeOps = computed<EChartsOption>(() => ({
+      xAxis: { data: chartsData.value?.volumes.map((item) => item.date) ?? [] },
+      yAxis: {
+        axisLabel: { formatter: (volume: string) => numeral(volume).format('$0.0 a').toUpperCase() },
+      },
+      series: {
+        smooth: true,
+        data: chartsData.value?.volumes.map((item) => item.volume.toFixed(2)) ?? [],
+        areaStyle: isMobile.value ? areaStyle : undefined,
+      },
+    }))
 
     useECharts('l0k-swap-liquidity-chart', liquidityOps, loading)
     useECharts('l0k-swap-volume-chart', volumeOps, loading)
