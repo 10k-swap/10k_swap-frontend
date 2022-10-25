@@ -62,7 +62,7 @@ export default defineComponent({
     const isMobile = useIsMobile()
 
     const liquidityOps = computed<EChartsOption>(() => ({
-      xAxis: { data: chartsData.value?.tvls.map((item) => item.date) ?? [] },
+      xAxis: { data: chartsData.value?.tvls.map((item) => item.date + ' UTC') ?? [] },
       yAxis: {
         axisLabel: { formatter: (tvl: string) => numeral(tvl).format('$0.0 a').toUpperCase() },
       },
@@ -74,7 +74,7 @@ export default defineComponent({
     }))
 
     const volumeOps = computed<EChartsOption>(() => ({
-      xAxis: { data: chartsData.value?.volumes.map((item) => item.date) ?? [] },
+      xAxis: { data: chartsData.value?.volumes.map((item) => item.date + ' UTC') ?? [] },
       yAxis: {
         axisLabel: { formatter: (volume: string) => numeral(volume).format('$0.0 a').toUpperCase() },
       },

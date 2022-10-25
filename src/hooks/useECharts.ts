@@ -61,7 +61,7 @@ export default function useECharts(
 export const defaultChartsOptions: EChartsOption = {
   title: { show: false },
   color: ['rgb(28,119,255)'],
-  grid: { top: 10, left: 30, right: 0, bottom: 0, containLabel: true },
+  grid: { top: 10, left: 40, right: 0, bottom: 0, containLabel: true },
   tooltip: {
     trigger: 'axis',
     axisPointer: {
