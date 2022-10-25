@@ -47,6 +47,7 @@ export default defineComponent({
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
+      border-radius: 50%;
       &:first-child {
         margin-right: 0;
       }
