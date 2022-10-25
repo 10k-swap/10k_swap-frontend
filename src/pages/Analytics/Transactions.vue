@@ -183,19 +183,24 @@ export default defineComponent({
         justify-content: center;
         height: 32px;
         border: 1px solid #ccc;
+        box-sizing: border-box;
       }
       .value {
         display: flex;
         height: 64px;
         border: 1px solid #ccc;
         border-top: 0;
+        box-sizing: border-box;
       }
       .total {
         flex: 0 0 170px;
+        .head {
+          width: 100%;
+        }
         .value {
           justify-content: center;
           align-items: center;
-          border-right: 0;
+          width: 100%;
         }
       }
       .profit {
@@ -204,6 +209,7 @@ export default defineComponent({
           border-left: 0;
         }
         .value {
+          border-left: 0;
           .item {
             display: flex;
             flex-direction: column;
