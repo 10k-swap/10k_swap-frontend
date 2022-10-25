@@ -23,7 +23,7 @@
           </Text>
         </div>
         <!-- <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text> -->
-        <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.totalSupply.toSignificant() }} </Text>
+        <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">$ {{ pair.liquidity.toFixed(2) }} </Text>
         <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
           {{ t('pool.get', { token: `${pair.token0.symbol}-${pair.token1.symbol}` }) }}
         </Text>
@@ -106,7 +106,7 @@ export default defineComponent({
     margin-top: 10px;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 58vh;
+    max-height: 52vh;
     &::-webkit-scrollbar {
       width: 4px;
     }

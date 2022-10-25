@@ -23,6 +23,7 @@ export interface AllPairItem {
     name: string
     symbol: string
   }
+  liquidity: number
   pairAddress: string
   totalSupply: string //0x
   decimals: number

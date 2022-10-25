@@ -49,8 +49,8 @@ export default defineComponent({
 
 $text-prefix: '#{$prefix}-text';
 $textColors: (
-  'g-white': $color-primary,
-  'g-primary': $color-white,
+  'g-white': $color-white,
+  'g-primary': $color-primary,
   'g-red': $color-red,
   'g-blue': $color-blue,
   'g-normal': $color-primary-text,

@@ -14,6 +14,7 @@ export interface Pool {
   reserve0: string
   reserve1: string
   APR: number
+  liquidity: number
 }
 
 export interface UserPool {
