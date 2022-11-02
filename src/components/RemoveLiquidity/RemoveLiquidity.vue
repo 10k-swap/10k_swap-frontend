@@ -202,7 +202,9 @@ export default defineComponent({
           ],
         ],
         metadata: {
-          message: summary.value,
+          message: `Removing ${parsedAmountA?.toSignificant(3)} ${parsedAmountA?.token.symbol} and ${parsedAmountB?.toSignificant(3)} ${
+            parsedAmountB?.token.symbol
+          } `,
         },
       })
       if (response) {
