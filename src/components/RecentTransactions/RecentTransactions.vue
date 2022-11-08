@@ -19,11 +19,11 @@
             <LoadingIcon v-else-if="transaction.loading" :color="'minor'" width="16px" />
             <FailIcon v-else-if="transaction.fail" color="red" width="16px" />
           </div>
-          <Text class="text" :color="'secondary-text'" :size="isMobile ? 'mini' : 'small'">
-            {{ transaction.metadata?.message }}
-          </Text>
           <a target="_blank" :href="chainId && getScanLink(chainId, transaction.transactionHash, 'transaction')">
-            <ShareIcon :color="'transparent'" width="12px" />
+            <Text class="text" :color="'secondary-text'" :size="isMobile ? 'mini' : 'small'">
+              {{ transaction.metadata?.message }}
+            </Text>
+            <ShareIcon class="share" :color="'transparent'" width="12px" />
           </a>
         </div>
       </div>
@@ -103,6 +103,7 @@ export default defineComponent({
     max-height: 220px;
     overflow-y: auto;
     padding-top: 10px;
+    overflow-x: hidden;
     &::-webkit-scrollbar {
       height: 80px;
       width: 4px;
@@ -125,12 +126,16 @@ export default defineComponent({
 
       .svgs {
         display: flex;
-        align-items: center;
-        margin-right: 8px;
+        overflow: hidden;
       }
-
+      .share {
+        margin-left: 8px;
+      }
       a {
         margin-left: 8px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
       }
     }
   }
