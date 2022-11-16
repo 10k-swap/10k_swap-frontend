@@ -184,7 +184,7 @@ export default defineComponent({
   .el-pagination {
     justify-content: flex-end;
     .el-pager li.is-active {
-      background: $color-navy-blue;
+      background: $color-nav-blue;
       color: $color-white;
       border-radius: 8px;
     }

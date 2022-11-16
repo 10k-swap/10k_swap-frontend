@@ -55,7 +55,7 @@
       <JumpToMainnet />
     </div>
   </Page>
-  <ConfirmModal :show="swapState.showConfirm" :trade="tradeToConfirm" @swap="handleSwap" @dismiss="onReset" />
+  <ConfirmModal :show="swapState.showConfirm" :trade="tradeToConfirm" @swap="handleSwap" />
   <WaittingModal :show="swapState.attemptingTxn" :desc="summary" @dismiss="onReset" />
   <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
   <ScuccessModal :show="!!swapState.txHash" :tx="swapState.txHash" @dismiss="onReset" />
