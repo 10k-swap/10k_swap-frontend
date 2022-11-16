@@ -58,8 +58,8 @@
     :pool-token-percentage="poolTokenPercentage"
     @mint="onMint"
   />
+  <WaittingModal :show="attemptingTxn" :desc="summary" @dismiss="attemptingTxn = false" />
   <ScuccessModal :show="!!txHash" :tx="txHash" @dismiss="onReset" />
-  <WaittingModal :show="attemptingTxn" :desc="summary" @dismiss="onReset" />
   <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
 </template>
 
