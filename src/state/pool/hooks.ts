@@ -2,7 +2,7 @@ import { computed, onMounted, watch, ComputedRef } from 'vue'
 import { Pool, usePoolStore, UserPool } from '.'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 
-export function useAllPairs(): ComputedRef<Pool[]> {
+export function useAllPairs(): [ComputedRef<Pool[]>, ComputedRef<boolean>] {
   const store = usePoolStore()
 
   const {
@@ -20,17 +20,11 @@ export function useAllPairs(): ComputedRef<Pool[]> {
     }
   })
 
-  return computed(() => store.$state.pairs as Pool[])
+  return [computed(() => store.$state.pairs as Pool[]), computed(() => store.$state.loadingPools)]
 }
 
-export function useIsLoadingAllPairs() {
+export function useUserPairs(pairs: ComputedRef<Pool[]>): [ComputedRef<UserPool[]>, ComputedRef<boolean>] {
   const store = usePoolStore()
-  return computed(() => store.$state.loadingPools)
-}
-
-export function useUserPairs(): ComputedRef<UserPool[]> {
-  const store = usePoolStore()
-  const pairs = useAllPairs()
   const userPools = computed(() => store.$state.userPools as UserPool[])
 
   const {
@@ -43,13 +37,8 @@ export function useUserPairs(): ComputedRef<UserPool[]> {
     }
   }
 
-  watch([pairs, account, chainId], _getUserPairs)
+  watch([pairs, account], _getUserPairs)
   onMounted(_getUserPairs)
 
-  return userPools
-}
-
-export function useIsLoadingUserPairs() {
-  const store = usePoolStore()
-  return computed(() => store.$state.loadingUserPools)
+  return [userPools, computed(() => store.$state.loadingUserPools)]
 }
