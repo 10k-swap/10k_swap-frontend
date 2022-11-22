@@ -20,8 +20,8 @@
           {{ isMobile ? '+' : t('pool.new_position') }}
         </Button>
       </div>
-      <Pools v-if="currentNav === 'pools'" />
-      <MyPools v-else />
+      <Pools v-if="currentNav === 'pools'" :pairs="pairs" :loading="loadingPairs" />
+      <MyPools v-else :userPairs="userPairs" :loading="loadingUserPairs" />
     </template>
   </div>
   <PoolModal />
@@ -35,6 +35,7 @@ import Text from '../../components/Text/Text.vue'
 import PoolModal from '../../components/PoolModal/PoolModal.vue'
 import MyPools from './MyPools.vue'
 import Pools from './Pools.vue'
+import { useUserPairs, useAllPairs } from '../../state/pool/hooks'
 import { usePoolModalStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
@@ -56,6 +57,9 @@ export default defineComponent({
     const isMobile = useIsMobile()
     const poolModalStore = usePoolModalStore()
 
+    const [pairs, loadingPairs] = useAllPairs()
+    const [userPairs, loadingUserPairs] = useUserPairs(pairs)
+
     const currentNav = ref<'pools' | 'my-pools'>('pools')
 
     const isShowPool = computed(() => {
@@ -70,6 +74,10 @@ export default defineComponent({
       isMobile,
       isShowPool,
       currentNav,
+      pairs,
+      userPairs,
+      loadingUserPairs,
+      loadingPairs,
 
       onNewPosition,
       t,
