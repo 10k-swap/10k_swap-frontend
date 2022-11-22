@@ -78,7 +78,7 @@ export async function getChartsData(chainId: ChainId) {
       const data = res.data.data
       return data
     }
-    throw new Error('fetch pairs fail')
+    throw new Error('fetch charts fail')
   } catch (error: any) {
     throw new Error(error)
   }

@@ -11,7 +11,7 @@ export const MOBILE_SIZE = 768
 export const INITIAL_SWAP_ALLOWED_SLIPPAGE = 200
 export const INITIAL_ALLOWED_SLIPPAGE = 200
 
-// 60 minutes, denominated in seconds
+// 2 days, denominated in seconds
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 60 * 24 * 2
 
 export const ONE_BIPS = new Percent(JSBI.BigInt(1), JSBI.BigInt(10000))

@@ -58,8 +58,8 @@
     :pool-token-percentage="poolTokenPercentage"
     @mint="onMint"
   />
+  <WaittingModal :show="attemptingTxn" :desc="summary" @dismiss="attemptingTxn = false" />
   <ScuccessModal :show="!!txHash" :tx="txHash" @dismiss="onReset" />
-  <WaittingModal :show="attemptingTxn" :desc="summary" @dismiss="onReset" />
   <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
 </template>
 
@@ -238,7 +238,9 @@ export default defineComponent({
           ],
         ],
         metadata: {
-          message: summary.value,
+          message: `Supplying ${parsedAmountA?.toSignificant(3)} ${parsedAmountA?.token.symbol} & ${parsedAmountB?.toSignificant(3)} ${
+            parsedAmountB?.token.symbol
+          } for ${liquidityMinted.value?.toSignificant(3)} LP`,
         },
       })
       attemptingTxn.value = false

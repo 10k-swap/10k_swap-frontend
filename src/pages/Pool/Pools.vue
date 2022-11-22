@@ -36,32 +36,39 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, toRefs, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
 import DoubleLogo from '../../components/DoubleLogo/index.vue'
 import { LoadingIcon } from '../../components/Svg'
-import { useAllPairs, useIsLoadingAllPairs } from '../../state/pool/hooks'
 import useIsMobile from '../../hooks/useIsMobile'
 import { Pool, usePoolModalStore } from '../../state'
 import { cloneDeep } from 'lodash'
 
 export default defineComponent({
+  props: {
+    pairs: {
+      type: Array as PropType<Pool[]>,
+    },
+    loading: {
+      type: Boolean,
+    },
+  },
   components: {
     Text,
     DoubleLogo,
     LoadingIcon,
   },
-  setup() {
+  setup(props) {
+    const { pairs } = toRefs(props)
+
     const { t } = useI18n()
 
     const poolModalStore = usePoolModalStore()
-    const pairs = useAllPairs()
-    const loading = useIsLoadingAllPairs()
     const isMobile = useIsMobile()
 
     const sortedPairs = computed(() =>
-      cloneDeep(pairs.value).sort((a, b) => {
+      cloneDeep(pairs.value ?? []).sort((a, b) => {
         return `${b.token0.symbol}${b.token1.symbol}`.length - `${a.token0.symbol}${a.token1.symbol}`.length
       })
     )
@@ -75,7 +82,6 @@ export default defineComponent({
       onGet,
 
       sortedPairs,
-      loading,
       isMobile,
     }
   },

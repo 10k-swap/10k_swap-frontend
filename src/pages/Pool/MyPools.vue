@@ -1,6 +1,6 @@
 <template>
   <div class="my-pools-wrapper">
-    <div class="tips-wrap" v-if="!account || loading || !userPairs.length">
+    <div class="tips-wrap" v-if="!account || loading || !userPairs || !userPairs.length">
       <Text class="tips" v-if="!account" :color="'description-text'">
         {{ t('pool.tips') }}
       </Text>
@@ -25,18 +25,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
 import Button from '../../components/Button/Button'
 import useIsMobile from '../../hooks/useIsMobile'
 import MyPoolItem from './MyPoolItem.vue'
 import { LoadingIcon } from '../../components/Svg'
-import { useIsLoadingUserPairs, useUserPairs } from '../../state/pool/hooks'
-import { usePoolModalStore } from '../../state'
+import { usePoolModalStore, UserPool } from '../../state'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 
 export default defineComponent({
+  props: {
+    userPairs: {
+      type: Array as PropType<UserPool[]>,
+    },
+    loading: {
+      type: Boolean,
+    },
+  },
   components: {
     Text,
     Button,
@@ -50,8 +57,6 @@ export default defineComponent({
     } = useStarknet()
 
     const isMobile = useIsMobile()
-    const userPairs = useUserPairs()
-    const loading = useIsLoadingUserPairs()
     const poolModalStore = usePoolModalStore()
 
     const onDeposit = () => {
@@ -59,10 +64,8 @@ export default defineComponent({
     }
 
     return {
-      userPairs,
       isMobile,
       account,
-      loading,
 
       t,
       onDeposit,
