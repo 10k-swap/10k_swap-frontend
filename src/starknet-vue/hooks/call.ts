@@ -69,7 +69,7 @@ export function useStarknetCall<T extends unknown[]>(
       }
 
       if (current && isAvailableCache(current.updateAt)) {
-        return current.result
+        return current
       }
 
       try {
