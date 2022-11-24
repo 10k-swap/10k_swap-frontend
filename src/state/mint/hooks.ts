@@ -115,7 +115,6 @@ export function useDerivedMintInfo(
 
   // liquidity minted
   const liquidityMinted = computed(() => {
-    console.log(totalSupply.value)
     const { [Field.CURRENCY_A]: tokenAmountA, [Field.CURRENCY_B]: tokenAmountB } = parsedAmounts.value
     if (pair.value && totalSupply.value && tokenAmountA && tokenAmountB) {
       try {
