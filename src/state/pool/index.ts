@@ -83,11 +83,13 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
       })
 
       this.loadingUserPools = true
-      const userPools = await Promise.all(promises)
+      const userPools = await Promise.allSettled(promises)
       this.lastUpdateUserPoolAt = new Date().getTime()
       this.loadingUserPools = false
 
-      this.userPools = userPools.filter((item): item is UserPool => !!(item && item.balance.greaterThan(ZERO)))
+      this.userPools = userPools
+        .map((item) => (item.status === 'fulfilled' ? item.value : undefined))
+        .filter((item): item is UserPool => !!(item && item.balance.greaterThan(ZERO)))
     },
   },
 })
