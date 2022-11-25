@@ -69,7 +69,7 @@ export function useStarknetCall<T extends unknown[]>(
       }
 
       if (current && isAvailableCache(current.updateAt)) {
-        return current
+        return current.result
       }
 
       try {
@@ -95,7 +95,7 @@ export function useStarknetCall<T extends unknown[]>(
     try {
       const response = await callContract()
       if (response) {
-        state.data = response.result
+        state.data = response
       }
     } catch (err: any) {
       if (err.message) {
