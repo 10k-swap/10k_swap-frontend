@@ -25,7 +25,7 @@
         <!-- <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text> -->
         <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">$ {{ pair.liquidity.toFixed(2) }} </Text>
         <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
-          {{ t('pool.get', { token: `${pair.token0.symbol}-${pair.token1.symbol}` }) }}
+          {{ t('pool.get') }}
         </Text>
       </div>
       <div class="loading" v-if="loading && !sortedPairs.length">
@@ -67,11 +67,7 @@ export default defineComponent({
     const poolModalStore = usePoolModalStore()
     const isMobile = useIsMobile()
 
-    const sortedPairs = computed(() =>
-      cloneDeep(pairs.value ?? []).sort((a, b) => {
-        return `${b.token0.symbol}${b.token1.symbol}`.length - `${a.token0.symbol}${a.token1.symbol}`.length
-      })
-    )
+    const sortedPairs = computed(() => cloneDeep(pairs.value ?? []).sort((a, b) => b.liquidity - a.liquidity))
 
     const onGet = (pool: Pool) => {
       poolModalStore.addLiquidity(pool.pair)
@@ -141,8 +137,9 @@ export default defineComponent({
         justify-content: center;
       }
       .get {
-        padding-left: 10px;
+        padding-left: 5px;
         cursor: pointer;
+        text-align: center;
       }
     }
     .loading {
