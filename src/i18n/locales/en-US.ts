@@ -102,7 +102,7 @@ export default {
     APR: 'APR',
     liquidity: 'Liquidity',
     pool_share: 'Pool Share',
-    get: 'Get %{token} LP',
+    get: 'Add Liquidity',
     tips: 'Connect wallet to check your pools',
     tips2: 'Your liquidity positions will appear here',
     deposit: 'Deposit',
