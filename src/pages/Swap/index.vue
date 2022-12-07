@@ -54,7 +54,7 @@
       </div>
     </div>
   </Page>
-  <ConfirmModal :show="swapState.showConfirm" :trade="tradeToConfirm" @swap="handleSwap" />
+  <ConfirmModal :show="swapState.showConfirm" :trade="tradeToConfirm" @swap="handleSwap" @dismiss="swapState.showConfirm = false" />
   <WaittingModal :show="swapState.attemptingTxn" :desc="summary" @dismiss="swapState.attemptingTxn = false" />
   <RejectedModal :show="showRejectedModal" @dismiss="onReset" />
   <ScuccessModal :show="!!swapState.txHash" :tx="swapState.txHash" @dismiss="onReset" />
