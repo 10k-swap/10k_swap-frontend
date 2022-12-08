@@ -24,7 +24,7 @@
       <Text class="label" :size="'mini'">
         {{
           isExactIn
-            ? t('swap.minimun_received', { slippage: allowedSlippage / 100 })
+            ? t('swap.minimum_received', { slippage: allowedSlippage / 100 })
             : t('swap.maximum_received', { slippage: allowedSlippage / 100 })
         }}
       </Text>
