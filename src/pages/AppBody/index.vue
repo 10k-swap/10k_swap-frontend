@@ -51,7 +51,6 @@ export default defineComponent({
   min-width: 375px;
   overflow-y: auto;
   overflow-x: hidden;
-
   .l0k-swap-app-body-bg {
     position: fixed;
     bottom: 0;
@@ -75,6 +74,12 @@ export default defineComponent({
     left: 50%;
     transform: translateX(-50%);
     bottom: 80px;
+    @media screen and (max-height: 600px) {
+      display: none;
+    }
+    @include mobile {
+      display: block;
+    }
   }
 }
 </style>
