@@ -15,16 +15,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, toRaw } from 'vue'
+import { computed, defineComponent, toRaw, watch, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Modal from '../Modal/Modal.vue'
 import discovery from './discovery'
 import Text from '../Text/Text.vue'
 import getBrowserName from '../../utils/getBrowserName'
 import { useModalStore } from '../../state'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { WalletProvider } from './types'
 import useConnector from '../../hooks/useConnector'
+import { getInstalledInjectedConnectors } from '../../starknet-vue/connectors'
 
 const normalId = (id: string) => id.replace(/\s|-/g, '').toLowerCase()
 
@@ -37,9 +37,7 @@ export default defineComponent({
     const { t } = useI18n()
     const store = useModalStore()
 
-    const {
-      state: { connectors },
-    } = useStarknet()
+    const connectors = ref(getInstalledInjectedConnectors())
     const { onConnect } = useConnector()
 
     const showModal = computed({
@@ -47,6 +45,13 @@ export default defineComponent({
       set(newValue) {
         store.toggleWalletModal(newValue)
       },
+    })
+
+    // Check the installed extensions again when the modal appears
+    watch(showModal, () => {
+      if (showModal.value) {
+        connectors.value = getInstalledInjectedConnectors()
+      }
     })
 
     const isInstalled = (id: string) => {
