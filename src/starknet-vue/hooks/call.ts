@@ -60,7 +60,6 @@ export function useStarknetCall<T extends unknown[]>(
   const callContract = async () => {
     if (contract.value && method && isWindowVisible.value) {
       const arg = Array.isArray(args) ? args : args && args.value ? args.value : []
-
       const key = toCallKey(contract.value.address, method, block.value?.block_hash, argsToHash(arg))
       const current = caches[key]
 
