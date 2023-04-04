@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="confirm">
-        <Button :type="'primary'" bold @click="onConfirm">
+        <Button :type="'primary'" class="no-wrap" bold @click="onConfirm">
           {{ t('add_liquidity.confirm') }}
         </Button>
       </div>
@@ -209,6 +209,7 @@ export default defineComponent({
 
     button {
       width: 160px;
+      @include no-wrap;
     }
   }
 }
