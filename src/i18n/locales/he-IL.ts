@@ -44,7 +44,7 @@ export default {
   recent_transactions: {
     title: 'עסקאות ישנות',
     clear: 'נקה הכל',
-    tips: 'בקרוב נוכל לראות כאן את העסקאות שלנו...',
+    tips: 'העסקה שלך תופיע כאן...',
   },
   currency_input_panel: {
     balance: 'מאזן: %{balance}',
