@@ -2,7 +2,7 @@
   <div class="l0k-swap-wallet-card-wrapper" v-if="show">
     <div class="l0k-swap-wallet-card">
       <div class="close" @click="close = true">
-        <Close />
+        <img src="./close.png" width="14" height="14" />
       </div>
       <div class="title">{{ t('wallet.wallet_online') }}</div>
       <div class="desc">{{ t('wallet.check_layer2') }}</div>
@@ -21,12 +21,8 @@ import { computed, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import useIsMobile from '../../hooks/useIsMobile'
-import Close from './Close.vue'
 
 export default defineComponent({
-  components: {
-    Close,
-  },
   setup() {
     const { t } = useI18n()
 
@@ -62,8 +58,8 @@ export default defineComponent({
     padding: 17px 7px;
     .close {
       position: absolute;
-      right: 0;
-      top: 0;
+      right: 3px;
+      top: 3px;
       cursor: pointer;
     }
     .title {

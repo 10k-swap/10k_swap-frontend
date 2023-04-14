@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="banner">
-      <img src="./banner.png" width="629" height="485" />
+      <img src="./banner.png" width="594" height="527" />
     </div>
   </div>
 </template>
