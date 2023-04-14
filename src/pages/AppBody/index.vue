@@ -4,8 +4,9 @@
     <MHeader />
     <Popups />
     <slot></slot>
+    <WalletCard />
     <div class="socials" v-if="showSocials"><Socials /></div>
-    <div class="l0k-swap-app-body-bg" :class="{ root: isRoot }"></div>
+    <div class="l0k-swap-app-body-bg" :class="{ swap: isSwap, pool: isPool }"></div>
   </div>
   <Modals />
 </template>
@@ -18,6 +19,7 @@ import Modals from '../../components/Modals/Modals.vue'
 import Socials from '../../components/Socials/index.vue'
 import Placard from '../../components/Placard/index.vue'
 import Popups from '../../components/Popups/index.vue'
+import WalletCard from '../../components/WalletCard/index.vue'
 
 export default defineComponent({
   components: {
@@ -26,15 +28,22 @@ export default defineComponent({
     Socials,
     Placard,
     Popups,
+    WalletCard,
   },
   setup() {
     const route = useRoute()
 
-    const isRoot = computed(() => route.path === '/')
-    const showSocials = computed(() => ['/', '/pool'].includes(route.path))
+    const isSwap = computed(() => route.path === '/swap')
+    const isPool = computed(() => route.path === '/pool')
+    const isWallet = computed(() => route.path === '/wallet')
+
+    const showSocials = computed(() => ['/swap', '/pool'].includes(route.path))
 
     return {
-      isRoot,
+      isSwap,
+      isPool,
+      isWallet,
+
       showSocials,
     }
   },
@@ -61,9 +70,12 @@ export default defineComponent({
     width: 100vw;
     background-repeat: no-repeat;
     background-size: 100% 100vh;
-    @include bg-prefix('./bg2');
-    &.root {
+    background-image: url('./bg0.png');
+    &.swap {
       @include bg-prefix('./bg');
+    }
+    &.pool {
+      @include bg-prefix('./bg2');
     }
     @media screen and (min-width: $mobile-size) and (max-width: 1400px) {
       background-size: 1400px 100%;

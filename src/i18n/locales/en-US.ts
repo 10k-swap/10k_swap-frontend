@@ -168,4 +168,11 @@ export default {
     fees: 'Fees',
     time: 'Time',
   },
+  wallet: {
+    desc: 'Seize every alpha chance in Layer2 seamlessly',
+    wallet_online: '10K Wallet now online',
+    check_layer2: 'Check out your Layer2',
+    progress: 'progress and',
+    download_it: ' download it »',
+  },
 }

@@ -4,7 +4,7 @@ import i18n from '../../i18n/index'
 export default {
   [ChainId.TESTNET]: [
     {
-      path: '/',
+      path: '/swap',
       name: i18n.global.t('header.nav.swap'),
     },
     {
@@ -22,7 +22,7 @@ export default {
   ],
   [ChainId.MAINNET]: [
     {
-      path: '/',
+      path: '/swap',
       name: i18n.global.t('header.nav.swap'),
     },
     {

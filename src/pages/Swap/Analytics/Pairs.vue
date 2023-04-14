@@ -51,13 +51,13 @@
 import { defineComponent, ref } from 'vue'
 import { ElPagination, ElDatePicker } from 'element-plus'
 import numeral from 'numeral'
-import Text from '../../components/Text/Text.vue'
-import DoubleLogo from '../../components/DoubleLogo/index.vue'
+import Text from '../../../components/Text/Text.vue'
+import DoubleLogo from '../../../components/DoubleLogo/index.vue'
 import { useI18n } from 'vue-i18n'
-import { usePairs } from '../../state/analytics/hooks'
-import { Pair } from '../../state/analytics/types'
+import { usePairs } from '../../../state/analytics/hooks'
+import { Pair } from '../../../state/analytics/types'
 import { Token } from 'l0k_swap-sdk'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
+import { useStarknet } from '../../../starknet-vue/providers/starknet'
 
 export default defineComponent({
   components: {
@@ -113,7 +113,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../styles/index.scss';
+@import '../../../styles/index.scss';
 
 .l0k-swap-analytics-pairs {
   padding: 16px;

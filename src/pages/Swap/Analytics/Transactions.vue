@@ -79,12 +79,12 @@ import { defineComponent, ref } from 'vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { ElPagination, ElDatePicker } from 'element-plus'
-import Text from '../../components/Text/Text.vue'
+import Text from '../../../components/Text/Text.vue'
 import { useI18n } from 'vue-i18n'
-import { useTransactions } from '../../state/analytics/hooks'
-import i18n from '../../i18n'
-import { TransactionType, Transaction, SwapReverses } from '../../state/analytics/types'
-import { shortenAddress } from '../../utils'
+import { useTransactions } from '../../../state/analytics/hooks'
+import i18n from '../../../i18n'
+import { TransactionType, Transaction, SwapReverses } from '../../../state/analytics/types'
+import { shortenAddress } from '../../../utils'
 
 dayjs.extend(relativeTime)
 
@@ -154,7 +154,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../styles/index.scss';
+@import '../../../styles/index.scss';
 
 .l0k-swap-analytics-transactions {
   padding: 16px;

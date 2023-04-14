@@ -30,16 +30,16 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Button from '../../components/Button/Button'
-import Text from '../../components/Text/Text.vue'
-import PoolModal from '../../components/PoolModal/PoolModal.vue'
+import Button from '../../../components/Button/Button'
+import Text from '../../../components/Text/Text.vue'
+import PoolModal from '../../../components/PoolModal/PoolModal.vue'
 import MyPools from './MyPools.vue'
 import Pools from './Pools.vue'
-import { useUserPairs, useAllPairs } from '../../state/pool/hooks'
-import { usePoolModalStore } from '../../state'
-import useIsMobile from '../../hooks/useIsMobile'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
-import { isSupportedChain } from '../../utils'
+import { useUserPairs, useAllPairs } from '../../../state/pool/hooks'
+import { usePoolModalStore } from '../../../state'
+import useIsMobile from '../../../hooks/useIsMobile'
+import { useStarknet } from '../../../starknet-vue/providers/starknet'
+import { isSupportedChain } from '../../../utils'
 
 export default defineComponent({
   components: {
@@ -85,7 +85,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/index.scss';
+@import '../../../styles/index.scss';
 
 .l0k-swap-pool-wrapper {
   width: 640px;

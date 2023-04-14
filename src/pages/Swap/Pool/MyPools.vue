@@ -27,13 +27,13 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Text from '../../components/Text/Text.vue'
-import Button from '../../components/Button/Button'
-import useIsMobile from '../../hooks/useIsMobile'
+import Text from '../../../components/Text/Text.vue'
+import Button from '../../../components/Button/Button'
+import useIsMobile from '../../../hooks/useIsMobile'
 import MyPoolItem from './MyPoolItem.vue'
-import { LoadingIcon } from '../../components/Svg'
-import { usePoolModalStore, UserPool } from '../../state'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
+import { LoadingIcon } from '../../../components/Svg'
+import { usePoolModalStore, UserPool } from '../../../state'
+import { useStarknet } from '../../../starknet-vue/providers/starknet'
 
 export default defineComponent({
   props: {
@@ -75,7 +75,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../styles/index.scss';
+@import '../../../styles/index.scss';
 
 .my-pools-wrapper {
   padding: 0 20px 20px;

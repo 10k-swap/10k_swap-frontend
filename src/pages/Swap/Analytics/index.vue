@@ -31,14 +31,14 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import * as echarts from 'echarts/core'
-import useECharts, { EChartsOption } from '../../hooks/useECharts'
-import Text from '../../components/Text/Text.vue'
+import useECharts, { EChartsOption } from '../../../hooks/useECharts'
+import Text from '../../../components/Text/Text.vue'
 import Pairs from './Pairs.vue'
 import Transactions from './Transactions.vue'
 import { useI18n } from 'vue-i18n'
-import { useChartsData } from '../../state/analytics/hooks'
+import { useChartsData } from '../../../state/analytics/hooks'
 import numeral from 'numeral'
-import useIsMobile from '../../hooks/useIsMobile'
+import useIsMobile from '../../../hooks/useIsMobile'
 
 const areaStyle = {
   opacity: 0.8,
@@ -129,7 +129,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../styles/index.scss';
+@import '../../../styles/index.scss';
 
 .l0k-swap-analytics {
   width: 1040px;
