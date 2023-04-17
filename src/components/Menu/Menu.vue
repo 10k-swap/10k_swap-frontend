@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="l0k-swap-app-menu-mobile" v-else @click="showModal = !showModal">
-      <img src="./menu.png" />
+      <MenuIcon />
     </div>
   </div>
   <Modal v-model="showModal" />
@@ -18,10 +18,12 @@ import { useRoute, useRouter } from 'vue-router'
 import useIsMobile from '../../hooks/useIsMobile'
 import Modal from './Modal.vue'
 import { menus } from './menus'
+import { MenuIcon } from '../Svg'
 
 export default defineComponent({
   components: {
     Modal,
+    MenuIcon,
   },
   setup() {
     const route = useRoute()
@@ -63,7 +65,7 @@ export default defineComponent({
       justify-content: center;
       align-items: center;
       width: 196px;
-      height: 80px;
+      height: 60px;
       cursor: pointer;
       &.active {
         background: rgba(0, 0, 0, 0.2);

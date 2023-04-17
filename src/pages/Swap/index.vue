@@ -1,7 +1,6 @@
 <template>
   <div class="l0k-swap-app-swap-header">
     <Nav class="l0k-swap-app-header-nav" />
-    <Connector class="l0k-swap-app-header-connector" v-if="!isMobile" />
     <WrongNetworkCard class="wrong-network" v-if="!isSupportChain" />
     <TransactionPendingCard class="transaction-pending" />
   </div>
@@ -14,15 +13,12 @@ import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { isSupportedChain } from '../../utils'
 
 import Nav from '../../components/Nav/Nav.vue'
-import Connector from '../../components/Connector/Connector.vue'
 import WrongNetworkCard from '../../components/WrongNetworkCard/index.vue'
 import TransactionPendingCard from '../../components/TransactionPendingCard/index.vue'
-import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
   components: {
     Nav,
-    Connector,
     WrongNetworkCard,
     TransactionPendingCard,
   },
@@ -31,12 +27,8 @@ export default defineComponent({
       state: { chainId },
     } = useStarknet()
 
-    const isMobile = useIsMobile()
-
     return {
       isSupportChain: computed(() => isSupportedChain(chainId.value)),
-
-      isMobile,
     }
   },
 })
@@ -55,11 +47,6 @@ export default defineComponent({
 
   .l0k-swap-app-header-nav {
     flex: 1;
-  }
-
-  .l0k-swap-app-header-connector {
-    position: absolute;
-    right: 20px;
   }
 
   .wrong-network {
