@@ -50,16 +50,21 @@ export default {
     balance: 'balance: %{balance}',
     max: 'Max',
   },
+  nav: {
+    swap: 'Swap',
+    pool: 'Pool',
+    faucet: 'Faucet',
+    analytics: 'Analytics',
+  },
+  connector: {
+    connect: 'Connect Wallet',
+  },
   header: {
-    nav: {
-      swap: 'Swap',
-      pool: 'Pool',
-      faucet: 'Faucet',
-      analytics: 'Analytics',
-    },
-    connector: {
-      connect: 'Connect Wallet',
-    },
+    connect: 'Connect',
+  },
+  menu: {
+    swap: '10K Swap',
+    wallet: '10K Wallet',
   },
   swap: {
     title: 'Swap',
@@ -172,7 +177,10 @@ export default {
     desc: 'Seize every alpha chance in Layer2 seamlessly',
     wallet_online: '10K Wallet now online',
     check_layer2: 'Check out your Layer2',
+    check_l2_progress: 'Check your Layer2 progress',
     progress: 'progress and',
+    download: 'Download',
     download_it: ' download it »',
+    wallet: '10K Wallet',
   },
 }

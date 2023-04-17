@@ -1,54 +1,49 @@
 <template>
-  <div class="l0k-swap-app-meun" v-if="!isMobile">
-    <Logo class="app-logo" />
-    <div class="meuns">
-      <div class="meun" v-for="meun in meuns" :key="meun.path" :class="{ active: getMeunActive(meun.includePaths) }" @click="onMeunClick(meun.path)">
-        {{ meun.name }}
+  <div class="l0k-swap-app-menu-wrapper">
+    <div class="l0k-swap-app-menu" v-if="!isMobile">
+      <div class="menu" v-for="menu in menus" :key="menu.path" :class="{ active: getMenuActive(menu.includePaths) }" @click="onMenuClick(menu.path)">
+        {{ menu.name }}
       </div>
     </div>
+    <div class="l0k-swap-app-menu-mobile" v-else @click="showModal = !showModal">
+      <img src="./menu.png" />
+    </div>
   </div>
+  <Modal v-model="showModal" />
 </template>
+
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useIsMobile from '../../hooks/useIsMobile'
-import Logo from '../Logo/index.vue'
-
-const meuns = [
-  {
-    name: '10K Swap',
-    path: '/',
-    includePaths: ['/swap', '/pool', '/faucet', '/analytics'],
-  },
-  {
-    name: '10K Wallet',
-    path: '/wallet',
-    includePaths: ['/wallet'],
-  },
-]
+import Modal from './Modal.vue'
+import { menus } from './menus'
 
 export default defineComponent({
   components: {
-    Logo,
+    Modal,
   },
   setup() {
     const route = useRoute()
     const router = useRouter()
     const isMobile = useIsMobile()
 
-    const getMeunActive = (paths: string[]) => paths.includes(route.path)
+    const showModal = ref(false)
 
-    const onMeunClick = (path: string) => {
+    const getMenuActive = (paths: string[]) => paths.includes(route.path)
+
+    const onMenuClick = (path: string) => {
       router.replace({ path })
     }
 
     return {
-      meuns,
+      menus,
       isMobile,
+      showModal,
 
-      getMeunActive,
+      getMenuActive,
 
-      onMeunClick,
+      onMenuClick,
     }
   },
 })
@@ -56,22 +51,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '../../styles/index.scss';
-.l0k-swap-app-meun {
-  display: flex;
-  align-items: center;
-  height: 80px;
-  padding: 0 20px;
-  background-color: rgba(0, 0, 0, 0.15);
-  .app-logo {
-    flex: 0 0 275px;
-  }
-  .meuns {
+.l0k-swap-app-menu-wrapper {
+  .l0k-swap-app-menu {
     display: flex;
     flex: 1;
     font-size: 24px;
     font-weight: bold;
     color: $color-white;
-    .meun {
+    .menu {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -93,6 +80,13 @@ export default defineComponent({
           border-radius: 4px;
         }
       }
+    }
+  }
+  .l0k-swap-app-menu-mobile {
+    cursor: pointer;
+    img {
+      width: 24px;
+      height: 24px;
     }
   }
 }

@@ -19,7 +19,7 @@
       </Button>
     </div>
     <Button type="primary" bold v-else @click="openWalletModal">
-      {{ t('header.connector.connect') }}
+      {{ connectText || t('connector.connect') }}
     </Button>
   </div>
 </template>
@@ -37,6 +37,11 @@ import useIsMobile from '../../hooks/useIsMobile'
 import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
+  props: {
+    connectText: {
+      type: String,
+    },
+  },
   components: {
     Button,
     StarknetIcon,

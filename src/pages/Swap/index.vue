@@ -1,8 +1,7 @@
 <template>
   <div class="l0k-swap-app-swap-header">
-    <Logo class="app-logo" v-if="isMobile" />
     <Nav class="l0k-swap-app-header-nav" />
-    <Connector class="l0k-swap-app-header-connector" />
+    <Connector class="l0k-swap-app-header-connector" v-if="!isMobile" />
     <WrongNetworkCard class="wrong-network" v-if="!isSupportChain" />
     <TransactionPendingCard class="transaction-pending" />
   </div>
@@ -11,15 +10,14 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import useIsMobile from '../../hooks/useIsMobile'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { isSupportedChain } from '../../utils'
 
 import Nav from '../../components/Nav/Nav.vue'
-import Logo from '../../components/Logo/index.vue'
 import Connector from '../../components/Connector/Connector.vue'
 import WrongNetworkCard from '../../components/WrongNetworkCard/index.vue'
 import TransactionPendingCard from '../../components/TransactionPendingCard/index.vue'
+import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
   components: {
@@ -27,7 +25,6 @@ export default defineComponent({
     Connector,
     WrongNetworkCard,
     TransactionPendingCard,
-    Logo,
   },
   setup() {
     const {
@@ -56,10 +53,6 @@ export default defineComponent({
   height: 72px;
   padding: 0 20px;
 
-  .app-logo {
-    flex: 1;
-  }
-
   .l0k-swap-app-header-nav {
     flex: 1;
   }
@@ -75,29 +68,12 @@ export default defineComponent({
     bottom: 0px;
     transform: translateY(100%);
   }
-  @include mobile {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    height: 120px;
-    padding: 0 12px;
 
-    .app-logo {
-      grid-column: 1/4;
-      grid-row: 1/1;
-    }
+  @include mobile {
+    padding: 0 12px;
 
     .l0k-swap-app-header-nav {
       display: flex;
-      justify-content: center;
-      grid-column: 1/7;
-      grid-row: 2/2;
-    }
-
-    .l0k-swap-app-header-connector {
-      display: flex;
-      justify-content: flex-end;
-      grid-column: 4/7;
-      grid-row: 1/1;
     }
   }
 }

@@ -5,33 +5,33 @@ export default {
   [ChainId.TESTNET]: [
     {
       path: '/swap',
-      name: i18n.global.t('header.nav.swap'),
+      name: i18n.global.t('nav.swap'),
     },
     {
       path: '/pool',
-      name: i18n.global.t('header.nav.pool'),
+      name: i18n.global.t('nav.pool'),
     },
     {
       path: '/faucet',
-      name: i18n.global.t('header.nav.faucet'),
+      name: i18n.global.t('nav.faucet'),
     },
     {
       path: '/analytics',
-      name: i18n.global.t('header.nav.analytics'),
+      name: i18n.global.t('nav.analytics'),
     },
   ],
   [ChainId.MAINNET]: [
     {
       path: '/swap',
-      name: i18n.global.t('header.nav.swap'),
+      name: i18n.global.t('nav.swap'),
     },
     {
       path: '/pool',
-      name: i18n.global.t('header.nav.pool'),
+      name: i18n.global.t('nav.pool'),
     },
     {
       path: '/analytics',
-      name: i18n.global.t('header.nav.analytics'),
+      name: i18n.global.t('nav.analytics'),
     },
   ],
 }
