@@ -32,3 +32,5 @@ export const SupporteChainId = ChainId.MAINNET
 export const DEFAULT_TXN_DISMISS_MS = 3000
 
 export const ESTIMATE_GAS_FREE = JSBI.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(15)), JSBI.BigInt(5)) // 0.005 ETH
+
+export const CURRENT_APK_URL = 'https://apk.10kx.com/1.0.0/10kwallet.apk'

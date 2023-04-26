@@ -38,11 +38,11 @@
 <script lang="ts">
 import { computed, defineComponent, toRefs, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Text from '../../components/Text/Text.vue'
-import DoubleLogo from '../../components/DoubleLogo/index.vue'
-import { LoadingIcon } from '../../components/Svg'
-import useIsMobile from '../../hooks/useIsMobile'
-import { Pool, usePoolModalStore } from '../../state'
+import Text from '../../../components/Text/Text.vue'
+import DoubleLogo from '../../../components/DoubleLogo/index.vue'
+import { LoadingIcon } from '../../../components/Svg'
+import useIsMobile from '../../../hooks/useIsMobile'
+import { Pool, usePoolModalStore } from '../../../state'
 import { cloneDeep } from 'lodash'
 
 export default defineComponent({
@@ -85,7 +85,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '../../styles/index.scss';
+@import '../../../styles/index.scss';
 
 .pools-wrapper {
   padding: 0 20px 20px;

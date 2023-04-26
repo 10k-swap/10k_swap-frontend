@@ -20,7 +20,7 @@
       </div>
     </div>
     <Button type="primary" bold v-else @click="openWalletModal">
-      {{ t('header.connector.connect') }}
+      {{ connectText || t('connector.connect') }}
     </Button>
   </div>
 </template>
@@ -40,6 +40,11 @@ import { useDomainFromAddress } from '../../hooks/naming'
 import { ChainId } from 'l0k_swap-sdk'
 
 export default defineComponent({
+  props: {
+    connectText: {
+      type: String,
+    },
+  },
   components: {
     Button,
     StarknetIcon,

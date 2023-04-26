@@ -1,39 +1,39 @@
 <template>
-  <div class="l0k-swap-app-header">
-    <div class="app-logo">
-      <img class="logo" src="./logo.png" />
-      <img class="alpha" src="./alpha.png" />
-    </div>
-    <Nav class="l0k-swap-app-header-nav" />
-    <Connector class="l0k-swap-app-header-connector" />
-    <WrongNetworkCard class="wrong-network" v-if="!isSupportChain" />
-    <TransactionPendingCard class="transaction-pending" />
+  <div class="l0k-swap-haeder">
+    <Logo class="app-logo" />
+    <Menu />
+    <Connector class="connector" :connectText="isMobile ? t('header.connect') : undefined" v-if="showConnector" />
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import Nav from '../Nav/Nav.vue'
-import Connector from './Connector.vue'
-import WrongNetworkCard from '../WrongNetworkCard/index.vue'
-import TransactionPendingCard from '../TransactionPendingCard/index.vue'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
-import { isSupportedChain } from '../../utils'
+import { useI18n } from 'vue-i18n'
+import Menu from '../Menu/Menu.vue'
+import Logo from '../Logo/index.vue'
+import Connector from '../Connector/Connector.vue'
+import { useRoute } from 'vue-router'
+import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
   components: {
-    Nav,
+    Menu,
+    Logo,
     Connector,
-    WrongNetworkCard,
-    TransactionPendingCard,
   },
   setup() {
-    const {
-      state: { chainId },
-    } = useStarknet()
+    const { t } = useI18n()
+
+    const route = useRoute()
+    const isMobile = useIsMobile()
+
+    const showConnector = computed(() => route.path !== '/wallet')
 
     return {
-      isSupportChain: computed(() => isSupportedChain(chainId.value)),
+      showConnector,
+      isMobile,
+
+      t,
     }
   },
 })
@@ -41,70 +41,31 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '../../styles/index.scss';
-
-.l0k-swap-app-header {
+.l0k-swap-haeder {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   position: relative;
-  height: 72px;
+  height: 60px;
   padding: 0 20px;
-
+  background-color: rgba(0, 0, 0, 0.15);
   .app-logo {
-    flex: 1;
-
-    .logo {
-      display: inline-block;
-      width: 105px;
-      height: 40px;
-    }
-    .alpha {
-      display: inline-block;
-      width: 45px;
-      height: 16px;
-      margin-left: 6px;
-    }
+    flex: 0 0 275px;
   }
-
-  .l0k-swap-app-header-nav {
-    flex: 1;
-  }
-
-  .l0k-swap-app-header-connector {
-    display: flex;
-    justify-content: flex-end;
-    flex: 1;
-  }
-
-  .wrong-network {
+  .connector {
     position: absolute;
     right: 20px;
-    bottom: 0px;
-    transform: translateY(100%);
+    top: 50%;
+    transform: translateY(-50%);
+    @include mobile {
+      right: 44px;
+    }
   }
   @include mobile {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    height: 120px;
     padding: 0 12px;
-
+    justify-content: space-between;
+    background-color: transparent;
     .app-logo {
-      grid-column: 1/4;
-      grid-row: 1/1;
-    }
-
-    .l0k-swap-app-header-nav {
-      display: flex;
-      justify-content: center;
-      grid-column: 1/7;
-      grid-row: 2/2;
-    }
-
-    .l0k-swap-app-header-connector {
-      display: flex;
-      justify-content: flex-end;
-      grid-column: 4/7;
-      grid-row: 1/1;
+      flex: 0 0 165px;
     }
   }
 }

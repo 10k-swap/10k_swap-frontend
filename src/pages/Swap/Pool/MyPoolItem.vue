@@ -39,13 +39,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref, toRefs } from 'vue'
-import { usePoolModalStore, UserPool } from '../../state'
-import DoubleLogo from '../../components/DoubleLogo/index.vue'
-import Text from '../../components/Text/Text.vue'
-import { ArrowDownIcon } from '../../components/Svg'
+import { usePoolModalStore, UserPool } from '../../../state'
+import DoubleLogo from '../../../components/DoubleLogo/index.vue'
+import Text from '../../../components/Text/Text.vue'
+import { ArrowDownIcon } from '../../../components/Svg'
 import { useI18n } from 'vue-i18n'
 import { TokenAmount } from 'l0k_swap-sdk'
-import Button from '../../components/Button/Button'
+import Button from '../../../components/Button/Button'
 
 export default defineComponent({
   props: {
@@ -98,7 +98,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/index.scss';
+@import '../../../styles/index.scss';
 .pair-wrapper {
   background: $color-white;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);

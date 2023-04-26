@@ -4,34 +4,34 @@ import i18n from '../../i18n/index'
 export default {
   [ChainId.TESTNET]: [
     {
-      path: '/',
-      name: i18n.global.t('header.nav.swap'),
+      path: '/swap',
+      name: i18n.global.t('nav.swap'),
     },
     {
       path: '/pool',
-      name: i18n.global.t('header.nav.pool'),
+      name: i18n.global.t('nav.pool'),
     },
     {
       path: '/faucet',
-      name: i18n.global.t('header.nav.faucet'),
+      name: i18n.global.t('nav.faucet'),
     },
     {
       path: '/analytics',
-      name: i18n.global.t('header.nav.analytics'),
+      name: i18n.global.t('nav.analytics'),
     },
   ],
   [ChainId.MAINNET]: [
     {
-      path: '/',
-      name: i18n.global.t('header.nav.swap'),
+      path: '/swap',
+      name: i18n.global.t('nav.swap'),
     },
     {
       path: '/pool',
-      name: i18n.global.t('header.nav.pool'),
+      name: i18n.global.t('nav.pool'),
     },
     {
       path: '/analytics',
-      name: i18n.global.t('header.nav.analytics'),
+      name: i18n.global.t('nav.analytics'),
     },
   ],
 }
