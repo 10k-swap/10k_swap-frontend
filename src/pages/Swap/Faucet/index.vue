@@ -19,11 +19,11 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
-import Text from '../../components/Text/Text.vue'
-import Page from '../../components/Page/Page.vue'
-import Button from '../../components/Button/Button'
-import { useOpenWalletModal } from '../../state/modal/hooks'
+import { useStarknet } from '../../../starknet-vue/providers/starknet'
+import Text from '../../../components/Text/Text.vue'
+import Page from '../../../components/Page/Page.vue'
+import Button from '../../../components/Button/Button'
+import { useOpenWalletModal } from '../../../state/modal/hooks'
 
 export default defineComponent({
   components: {
@@ -56,7 +56,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/index.scss';
+@import '../../../styles/index.scss';
 .l0k-swap-faucet {
   display: flex;
   flex-direction: column;
