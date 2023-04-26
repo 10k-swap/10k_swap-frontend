@@ -70,10 +70,20 @@
     <div class="banner">
       <img src="./banner.png" />
     </div>
-    <div class="downloads">
-      <a class="download" v-for="(item, i) in sources" :key="i" :href="item.url" target="_blank">
-        <img :src="item.source" width="302" height="40" />
-      </a>
+    <div class="downloads" v-if="isIOS()">
+      <div class="download" v-for="(item, i) in ios" :key="i">
+        <a :href="item.url">
+          <img :src="item.source" width="302" height="40" />
+        </a>
+        <div class="coming">coming soon</div>
+      </div>
+    </div>
+    <div class="downloads" v-else>
+      <div class="download" v-for="(item, i) in android" :key="i">
+        <a :href="item.url">
+          <img :src="item.source" width="302" height="40" />
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -87,17 +97,18 @@ import { isIOS } from '../../utils/device'
 import AppStore from './app-store.png'
 import TestFlight from './test-flight.png'
 
-import GooglePlay from './google-play.png'
+// import GooglePlay from './google-play.png'
 import APK from './APK.png'
+import { CURRENT_APK_URL } from '../../constants'
 
 const ios = [
-  { url: '#', source: AppStore },
-  { url: '#', source: TestFlight },
+  { url: '#', source: AppStore, online: false },
+  { url: '#', source: TestFlight, online: false },
 ]
 
 const android = [
-  { url: '#', source: GooglePlay },
-  { url: '#', source: APK },
+  // { url: '#', source: GooglePlay },
+  { url: CURRENT_APK_URL, source: APK, online: true },
 ]
 
 export default defineComponent({
@@ -109,8 +120,10 @@ export default defineComponent({
 
     return {
       t,
+      isIOS,
 
-      sources: isIOS() ? ios : android,
+      ios,
+      android,
     }
   },
 })
@@ -145,10 +158,15 @@ export default defineComponent({
     flex-direction: column;
     align-items: center;
     margin-top: 15px;
-
-    a {
-      display: block;
-      margin-bottom: 12px;
+    .download {
+      a {
+        display: block;
+      }
+      .coming {
+        margin: 3px 0 6px 0;
+        font-size: 12px;
+        color: #ffcc00;
+      }
     }
   }
 }

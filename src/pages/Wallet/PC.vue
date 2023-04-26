@@ -70,11 +70,12 @@
       <Text :color="'white'" :size="'md'">{{ t('wallet.desc') }} </Text>
       <div class="links-wapper">
         <div class="links">
-          <a href="#"> <img class="ios" src="./ios.png" width="162" height="53" /></a>
-          <a href="#"> <img src="./android.png" width="162" height="53" /></a>
+          <a href="#" class="ios"> <img src="./ios.png" width="162" height="53" /></a>
+          <div class="coming">coming soon</div>
+          <a :href="CURRENT_APK_URL"> <img src="./android.png" width="162" height="53" /></a>
         </div>
         <div class="qrcode">
-          <img src="./qrcode.png" />
+          <img src="./qrcode.png" width="148" height="148" />
         </div>
       </div>
     </div>
@@ -88,6 +89,7 @@
 import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
+import { CURRENT_APK_URL } from '../../constants'
 
 export default defineComponent({
   components: {
@@ -98,6 +100,8 @@ export default defineComponent({
 
     return {
       t,
+
+      CURRENT_APK_URL,
     }
   },
 })
@@ -129,7 +133,12 @@ export default defineComponent({
         justify-content: center;
         flex-direction: column;
         .ios {
-          margin-bottom: 24px;
+          cursor: not-allowed;
+        }
+        .coming {
+          margin: 7px 0 9px 0;
+          font-size: 12px;
+          color: #ffcc00;
         }
       }
       .qrcode {
