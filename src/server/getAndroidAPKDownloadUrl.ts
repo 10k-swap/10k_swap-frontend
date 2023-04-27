@@ -1,5 +1,5 @@
 import { L0K_X_API } from '../constants'
-import { isProduction } from '../utils'
+import { isDev } from '../utils'
 import axios from './axios'
 
 interface IResponse {
@@ -16,7 +16,7 @@ interface IResponse {
 
 export async function getAndroidAPKDownloadUrl() {
   try {
-    const res = await axios.get<IResponse>(`${isProduction() ? L0K_X_API : ''}/api/wallet/get_latest_version?platform=android`)
+    const res = await axios.get<IResponse>(`${isDev() ? '' : L0K_X_API}/api/wallet/get_latest_version?platform=android`)
     if (res.data.code === 'success') {
       const data = res.data.data
       return data.download_url

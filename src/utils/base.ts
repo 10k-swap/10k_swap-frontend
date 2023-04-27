@@ -53,7 +53,6 @@ export function getDeductGasMaxAmount(amount: TokenAmount | undefined): TokenAmo
   return deductedAmount.lessThan(ZERO) || deductedAmount.equalTo(ZERO) ? undefined : deductedAmount
 }
 
-export function isProduction() {
-  console.log(import.meta.env)
-  return import.meta.env.NODE_ENV === 'production'
+export function isDev() {
+  return import.meta.env.DEV
 }
