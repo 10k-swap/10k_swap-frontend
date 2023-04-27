@@ -52,3 +52,7 @@ export function getDeductGasMaxAmount(amount: TokenAmount | undefined): TokenAmo
 
   return deductedAmount.lessThan(ZERO) || deductedAmount.equalTo(ZERO) ? undefined : deductedAmount
 }
+
+export function isDev() {
+  return import.meta.env.DEV
+}

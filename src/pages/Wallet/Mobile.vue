@@ -93,22 +93,18 @@ import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
 import { isIOS } from '../../utils/device'
+import { useAndroidAPKDownloadUrl } from '../../state/wallet/hooks'
 
 import AppStore from './app-store.png'
 import TestFlight from './test-flight.png'
 
 // import GooglePlay from './google-play.png'
 import APK from './APK.png'
-import { CURRENT_APK_URL } from '../../constants'
+import { computed } from 'vue'
 
 const ios = [
   { url: '#', source: AppStore, online: false },
   { url: '#', source: TestFlight, online: false },
-]
-
-const android = [
-  // { url: '#', source: GooglePlay },
-  { url: CURRENT_APK_URL, source: APK, online: true },
 ]
 
 export default defineComponent({
@@ -117,6 +113,13 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n()
+
+    const APKDownloadUrl = useAndroidAPKDownloadUrl()
+
+    const android = computed(() => [
+      // { url: '#', source: GooglePlay },
+      { url: APKDownloadUrl.value, source: APK, online: true },
+    ])
 
     return {
       t,

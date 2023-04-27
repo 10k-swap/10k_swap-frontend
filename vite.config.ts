@@ -13,6 +13,13 @@ export default defineConfig({
   server: {
     port: 3035,
     host: true,
+    proxy: {
+      '/api/wallet/get_latest_version': {
+        target: 'https://api.10kx.com',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   plugins: [
     vue(),

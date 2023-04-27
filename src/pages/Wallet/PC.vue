@@ -72,7 +72,7 @@
         <div class="links">
           <a href="#" class="ios"> <img src="./ios.png" width="162" height="53" /></a>
           <div class="coming">coming soon</div>
-          <a :href="CURRENT_APK_URL"> <img src="./android.png" width="162" height="53" /></a>
+          <a :href="APKDownloadUrl"> <img src="./android.png" width="162" height="53" /></a>
         </div>
         <div class="qrcode">
           <img src="./qrcode.png" width="148" height="148" />
@@ -89,7 +89,7 @@
 import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
-import { CURRENT_APK_URL } from '../../constants'
+import { useAndroidAPKDownloadUrl } from '../../state/wallet/hooks'
 
 export default defineComponent({
   components: {
@@ -97,11 +97,12 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n()
+    const APKDownloadUrl = useAndroidAPKDownloadUrl()
 
     return {
       t,
 
-      CURRENT_APK_URL,
+      APKDownloadUrl,
     }
   },
 })
