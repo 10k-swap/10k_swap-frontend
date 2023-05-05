@@ -73,7 +73,7 @@
     <div class="downloads ios" v-if="isIOS()">
       <div class="download">
         <a @click="active = true" :href="'itms-services://?action=download-manifest&url=https://ipa.10kx.com/1.0.0/10kWallet.plist'">
-          <img :src="IOSDownload" width="302" height="40" />
+          <img :src="IOSDownload" />
         </a>
         <a class="active" v-if="active" target="_blank" :href="'./assets/iPhone-trust-description-file.pdf'"
           >Installing, you still need to trust this enterprise-level developer.</a
@@ -83,7 +83,7 @@
     <div class="downloads" v-else>
       <div class="download" v-for="(item, i) in android" :key="i">
         <a :href="item.url">
-          <img :src="item.source" width="302" height="40" />
+          <img :src="item.source" />
         </a>
       </div>
     </div>
@@ -163,8 +163,13 @@ export default defineComponent({
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin: 0 18px;
       a {
         display: block;
+        img {
+          display: block;
+          width: 100%;
+        }
       }
       .coming {
         margin: 3px 0 6px 0;
