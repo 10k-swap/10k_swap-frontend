@@ -114,9 +114,7 @@ export default defineComponent({
 
     const APKDownloadUrl = useAndroidAPKDownloadUrl()
 
-    const android = computed(() => [
-      { url: APKDownloadUrl.value, source: APK, online: true },
-    ])
+    const android = computed(() => [{ url: APKDownloadUrl.value, source: APK, online: true }])
 
     return {
       t,
