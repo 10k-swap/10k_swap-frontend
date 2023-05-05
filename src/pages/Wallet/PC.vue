@@ -70,8 +70,7 @@
       <Text :color="'white'" :size="'md'">{{ t('wallet.desc') }} </Text>
       <div class="links-wapper">
         <div class="links">
-          <a href="#" class="ios"> <img src="./ios.png" width="162" height="53" /></a>
-          <div class="coming">coming soon</div>
+          <div class="ios"><img src="./ios.png" width="162" height="53" /></div>
           <a :href="APKDownloadUrl"> <img src="./android.png" width="162" height="53" /></a>
         </div>
         <div class="qrcode">
@@ -86,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
 import { useAndroidAPKDownloadUrl } from '../../state/wallet/hooks'
@@ -96,12 +95,14 @@ export default defineComponent({
     Text,
   },
   setup() {
+    const showModal = ref(false)
+
     const { t } = useI18n()
     const APKDownloadUrl = useAndroidAPKDownloadUrl()
 
     return {
       t,
-
+      showModal,
       APKDownloadUrl,
     }
   },
@@ -134,12 +135,7 @@ export default defineComponent({
         justify-content: center;
         flex-direction: column;
         .ios {
-          cursor: not-allowed;
-        }
-        .coming {
-          margin: 7px 0 9px 0;
-          font-size: 12px;
-          color: #ffcc00;
+          margin-bottom: 12px;
         }
       }
       .qrcode {
