@@ -70,12 +70,14 @@
     <div class="banner">
       <img src="./banner.png" />
     </div>
-    <div class="downloads" v-if="isIOS()">
-      <div class="download" v-for="(item, i) in ios" :key="i">
-        <a :href="item.url">
-          <img :src="item.source" width="302" height="40" />
+    <div class="downloads ios" v-if="isIOS()">
+      <div class="download">
+        <a @click="active = true" :href="'itms-services://?action=download-manifest&url=https://ipa.10kx.com/1.0.0/10kWallet.plist'">
+          <img :src="IOSDownload" width="302" height="40" />
         </a>
-        <div class="coming">coming soon</div>
+        <a class="active" v-if="active" target="_blank" :href="'./assets/iPhone-trust-description-file.pdf'"
+          >Installing, you still need to trust this enterprise-level developer.</a
+        >
       </div>
     </div>
     <div class="downloads" v-else>
@@ -89,23 +91,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Text from '../../components/Text/Text.vue'
 import { isIOS } from '../../utils/device'
 import { useAndroidAPKDownloadUrl } from '../../state/wallet/hooks'
 
-import AppStore from './app-store.png'
-import TestFlight from './test-flight.png'
+// import AppStore from './app-store.png'
+// import TestFlight from './test-flight.png'
+import IOSDownload from './IOS-download.png'
 
 // import GooglePlay from './google-play.png'
 import APK from './APK.png'
-import { computed } from 'vue'
-
-const ios = [
-  { url: '#', source: AppStore, online: false },
-  { url: '#', source: TestFlight, online: false },
-]
 
 export default defineComponent({
   components: {
@@ -113,11 +110,11 @@ export default defineComponent({
   },
   setup() {
     const { t } = useI18n()
+    const active = ref(false)
 
     const APKDownloadUrl = useAndroidAPKDownloadUrl()
 
     const android = computed(() => [
-      // { url: '#', source: GooglePlay },
       { url: APKDownloadUrl.value, source: APK, online: true },
     ])
 
@@ -125,8 +122,11 @@ export default defineComponent({
       t,
       isIOS,
 
-      ios,
+      active,
+
       android,
+
+      IOSDownload,
     }
   },
 })
@@ -162,6 +162,9 @@ export default defineComponent({
     align-items: center;
     margin-top: 15px;
     .download {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       a {
         display: block;
       }
@@ -169,6 +172,16 @@ export default defineComponent({
         margin: 3px 0 6px 0;
         font-size: 12px;
         color: #ffcc00;
+      }
+    }
+  }
+  .ios {
+    .download {
+      .active {
+        margin: 3px 0 6px 0;
+        font-size: 12px;
+        color: #ffcc00;
+        text-decoration: none;
       }
     }
   }
