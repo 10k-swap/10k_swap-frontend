@@ -79,7 +79,7 @@
       </div>
     </div>
     <div class="banner">
-      <img src="./banner.png" width="594" height="527" />
+      <img src="./banner.png" />
     </div>
   </div>
 </template>
@@ -141,6 +141,12 @@ export default defineComponent({
       .qrcode {
         margin-left: 75px;
       }
+    }
+  }
+  .banner {
+    img {
+      width: 720px;
+      height: auto;
     }
   }
 }
