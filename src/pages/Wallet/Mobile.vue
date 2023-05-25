@@ -151,7 +151,7 @@ export default defineComponent({
   }
 
   .banner {
-    margin: 0 18px;
+    margin: 0 15px;
     img {
       width: 100%;
     }
