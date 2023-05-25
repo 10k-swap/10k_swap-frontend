@@ -71,6 +71,7 @@
       <div class="links-wapper">
         <div class="links">
           <div class="ios"><img src="./ios.png" width="162" height="53" /></div>
+          <div class="coming">coming soon</div>
           <a :href="APKDownloadUrl"> <img src="./android.png" width="162" height="53" /></a>
         </div>
         <div class="qrcode">
@@ -135,7 +136,12 @@ export default defineComponent({
         justify-content: center;
         flex-direction: column;
         .ios {
-          margin-bottom: 12px;
+          /* margin-bottom: px; */
+        }
+        .coming {
+          margin: 7px 0 9px;
+          font-size: 12px;
+          color: #ffcc00;
         }
       }
       .qrcode {
