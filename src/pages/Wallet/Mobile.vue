@@ -70,14 +70,12 @@
     <div class="banner">
       <img src="./banner.png" />
     </div>
-    <div class="downloads ios" v-if="isIOS()">
-      <div class="download">
-        <a @click="active = true" :href="'itms-services://?action=download-manifest&url=https://ipa.10kx.com/1.0.0/10kWallet.plist'">
-          <img :src="IOSDownload" />
+    <div class="downloads" v-if="isIOS()">
+      <div class="download" v-for="(item, i) in ios" :key="i">
+        <a :href="item.url">
+          <img :src="item.source" width="302" height="40" />
         </a>
-        <a class="active" v-if="active" target="_blank" :href="'./assets/iPhone-trust-description-file.pdf'"
-          >Installing, you still need to trust this enterprise-level developer.</a
-        >
+        <div class="coming">coming soon</div>
       </div>
     </div>
     <div class="downloads" v-else>
@@ -97,12 +95,17 @@ import Text from '../../components/Text/Text.vue'
 import { isIOS } from '../../utils/device'
 import { useAndroidAPKDownloadUrl } from '../../state/wallet/hooks'
 
-// import AppStore from './app-store.png'
-// import TestFlight from './test-flight.png'
+import AppStore from './app-store.png'
+import TestFlight from './test-flight.png'
 import IOSDownload from './IOS-download.png'
 
 // import GooglePlay from './google-play.png'
 import APK from './APK.png'
+
+const ios = [
+  { url: '#', source: AppStore, online: false },
+  { url: '#', source: TestFlight, online: false },
+]
 
 export default defineComponent({
   components: {
@@ -119,6 +122,8 @@ export default defineComponent({
     return {
       t,
       isIOS,
+
+      ios,
 
       active,
 
