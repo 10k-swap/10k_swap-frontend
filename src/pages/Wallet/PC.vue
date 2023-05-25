@@ -135,9 +135,6 @@ export default defineComponent({
         display: flex;
         justify-content: center;
         flex-direction: column;
-        .ios {
-          /* margin-bottom: px; */
-        }
         .coming {
           margin: 7px 0 9px;
           font-size: 12px;
