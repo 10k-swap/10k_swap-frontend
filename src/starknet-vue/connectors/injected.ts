@@ -1,7 +1,23 @@
-import { AccountInterface } from 'starknet'
+import { AccountInterface } from 'starknet4'
 import { Connector } from './base'
-import { IStarknetWindowObject, EventType, EventHandler } from 'get-starknet'
+import { EventType, EventHandler, RpcMessage } from 'get-starknet'
 import { ConnectorNotConnectedError, ConnectorNotFoundError, UserNotConnectedError, UserRejectedRequestError } from '../errors'
+
+export interface IStarknetWindowObject {
+  request: <T extends RpcMessage>(call: Omit<T, 'result'>) => Promise<T['result']>
+  enable: (options?: { showModal?: boolean }) => Promise<string[]>
+  isPreauthorized: () => Promise<boolean>
+  on: (event: EventType, handleEvent: EventHandler) => void
+  off: (event: EventType, handleEvent: EventHandler) => void
+  id: string
+  name: string
+  version: string
+  icon: string
+  provider: AccountInterface
+  isConnected: boolean
+  account: AccountInterface
+  selectedAddress?: string
+}
 
 export interface InjectedConnectorOptions {
   id: string

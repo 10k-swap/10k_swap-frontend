@@ -5,7 +5,7 @@
     </div>
     <div class="content">
       <Text bold :size="'small'">
-        <span v-html="t('wrong_network_tips', { network: chainId === ChainId.MAINNET ? 'Testnet' : 'Mainnet' })"></span>
+        <span v-html="t('wrong_network_tips', { network: chainId === StarknetChainId.MAINNET ? 'Testnet' : 'Mainnet' })"></span>
       </Text>
     </div>
   </div>
@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ChainId } from 'l0k_swap-sdk'
+import { StarknetChainId } from 'l0k_swap-sdk'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { WarningIcon } from '../Svg/index'
 import Text from '../Text/Text.vue'
@@ -29,10 +29,10 @@ export default defineComponent({
     const {
       state: { chainId },
     } = useStarknet()
-
+    console.log(chainId, StarknetChainId)
     return {
       chainId,
-      ChainId,
+      StarknetChainId,
 
       t,
     }

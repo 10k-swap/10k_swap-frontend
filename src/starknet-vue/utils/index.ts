@@ -1,4 +1,4 @@
-import { AccountInterface } from 'starknet'
+import { AccountInterface } from 'starknet4'
 
 export const noop = (): null => null
 

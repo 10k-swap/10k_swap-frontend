@@ -1,11 +1,11 @@
 import { onMounted, onUnmounted, reactive, Ref, ref } from 'vue'
-import { Provider, AccountInterface, ProviderInterface } from 'starknet'
+import { Provider, AccountInterface, ProviderInterface } from 'starknet4'
 import { StarknetMethods, StarknetState } from './model'
 import { Connector, InjectedConnector } from '../../connectors'
 import { ConnectorNotFoundError, UserRejectedRequestError, ConnectorNotConnectedError } from '../../errors'
 import ConnectorStorageManager from '../../utils/ConnectorStorageManager'
-import { ChainId, isEqualAddress } from 'l0k_swap-sdk'
-import { defaultProvider } from './const'
+import { StarknetChainId, isEqualAddress } from 'l0k_swap-sdk'
+import { chainIdMap, defaultProvider } from './const'
 import { InjectedConnectorOptions } from '../../connectors/injected'
 
 export function useStarknetManager(
@@ -16,14 +16,14 @@ export function useStarknetManager(
     library: ProviderInterface | AccountInterface | Provider
     connectors: Connector<InjectedConnectorOptions>[]
     account: string | undefined
-    chainId: ChainId | undefined
+    chainId: StarknetChainId | undefined
     error: Error | undefined
   }>({
     library: userDefaultProvider.value ? userDefaultProvider.value : defaultProvider,
     connectors: connectors.value,
     account: undefined,
     error: undefined,
-    chainId: (userDefaultProvider.value ? userDefaultProvider.value : defaultProvider).chainId,
+    chainId: chainIdMap[(userDefaultProvider.value ? userDefaultProvider.value : defaultProvider).chainId] ?? StarknetChainId.MAINNET,
   })
 
   const connectorId = ConnectorStorageManager.get()
@@ -35,10 +35,12 @@ export function useStarknetManager(
     }
     const connector = currentConnector.value
     const account = await connector.connect()
-    if ((state.account && !isEqualAddress(account.address, state.account)) || state.chainId !== account.chainId) {
+    const chainId = chainIdMap[await account.getChainId()]
+
+    if ((state.account && !isEqualAddress(account.address, state.account)) || state.chainId !== chainId) {
       state.account = account.address
       state.library = account
-      state.chainId = account.chainId
+      state.chainId = chainId
     }
   }
   const _watch = (connector: Connector) => {
@@ -54,10 +56,12 @@ export function useStarknetManager(
     }
     try {
       const account = await connector.connect()
+
       currentConnector.value = connector
       state.account = account.address
       state.library = account
-      state.chainId = account.chainId
+      state.chainId = chainIdMap[await account.getChainId()]
+
       ConnectorStorageManager.set(connector.id())
     } catch (error) {
       if (error instanceof UserRejectedRequestError) {
@@ -77,11 +81,11 @@ export function useStarknetManager(
       return
     }
     currentConnector.value.disconnect().then(
-      () => {
+      async () => {
         ConnectorStorageManager.set(null)
         state.account = undefined
         state.library = userDefaultProvider.value ? userDefaultProvider.value : defaultProvider
-        state.chainId = state.library.chainId
+        state.chainId = chainIdMap[await state.library.getChainId()]
       },
       (err) => {
         console.error(err)

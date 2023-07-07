@@ -3,7 +3,7 @@ import { Token, TokenAmount, JSBI } from 'l0k_swap-sdk'
 import { useStarknetCalls } from '../starknet-vue/hooks/call'
 import { isAddress } from '../utils'
 import erc20 from '../constants/abis/erc20.json'
-import { Abi, Contract } from 'starknet'
+import { Abi, Contract } from 'starknet4'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { uint256ToBN } from 'starknet/dist/utils/uint256'
 
