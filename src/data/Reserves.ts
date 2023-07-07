@@ -4,7 +4,7 @@ import I10kSwapPairABI from '../constants/abis/l0k_pair_abi.json'
 import { useStarknetCalls } from '../starknet-vue/hooks/call'
 import { computed, ComputedRef, Ref, toRaw } from 'vue'
 import { useStarknet } from '../starknet-vue/providers/starknet'
-import { Abi, Contract } from 'starknet'
+import { Abi, Contract } from 'starknet4'
 
 export enum PairState {
   LOADING,

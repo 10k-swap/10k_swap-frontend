@@ -1,6 +1,6 @@
 import { computed, ComputedRef, toRaw } from 'vue'
 import tokens from '../constants/tokens'
-import { Token, ChainId } from 'l0k_swap-sdk'
+import { Token, StarknetChainId } from 'l0k_swap-sdk'
 import { useStarknetCall } from '../starknet-vue/hooks/call'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { parseBN2String, isEqualsAddress } from '../utils'
@@ -8,7 +8,7 @@ import { useTokenContract } from './Contract'
 
 const tokenCaches = tokens
 
-function getCaches(chainId: ChainId, address: string) {
+function getCaches(chainId: StarknetChainId, address: string) {
   return tokenCaches[chainId].find((item) => isEqualsAddress(address, item.address))
 }
 

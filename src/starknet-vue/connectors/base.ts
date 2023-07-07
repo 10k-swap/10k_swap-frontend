@@ -1,4 +1,4 @@
-import { AccountInterface } from 'starknet'
+import { AccountInterface } from 'starknet4'
 import { EventType, EventHandler } from 'get-starknet'
 
 export abstract class Connector<Options = unknown> {

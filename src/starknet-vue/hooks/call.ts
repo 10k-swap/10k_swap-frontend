@@ -1,4 +1,4 @@
-import { Contract, Result } from 'starknet'
+import { Contract, Result } from 'starknet4'
 import * as objectHash from 'object-hash'
 import { computed, ComputedRef, onMounted, reactive, watch } from 'vue'
 import { useStarknetBlock } from '../providers/block'

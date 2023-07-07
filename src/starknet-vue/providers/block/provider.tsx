@@ -1,5 +1,5 @@
 import { defineComponent, onBeforeUnmount, onMounted, toRefs, watch, readonly, provide, reactive } from 'vue'
-import { GetBlockResponse } from 'starknet'
+import { GetBlockResponse } from 'starknet4'
 import { useStarknet } from '../starknet'
 import { DEFAULT_INTERVAL, StarknetBlockStateSymbol } from './const'
 import { BlockState, INIT_BLOCK_STATE } from './model'
@@ -29,7 +29,7 @@ export const StarknetBlockProvider = defineComponent({
         // Set to loading on first load
         state.loading = true
         library.value
-          .getBlock()
+          .getBlock('latest')
           .then((newBlock: GetBlockResponse) => {
             // The new block is a different object from the old one
             // so simply updating the value of block would cause the state
