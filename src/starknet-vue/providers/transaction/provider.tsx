@@ -1,5 +1,5 @@
 import { defineComponent, toRefs, onMounted, onBeforeUnmount, watch, provide, readonly, reactive, toRaw } from 'vue'
-import { Status, TransactionStatus } from 'starknet'
+import { Status, TransactionStatus } from 'starknet4'
 import { useStarknet } from '../starknet/hooks'
 import { DEFAULT_INTERVAL, StarknetTransactionMethodsSymbol, StarknetTransactionStateSymbol } from './const'
 import { Transaction, TransactionSubmitted } from './model'
