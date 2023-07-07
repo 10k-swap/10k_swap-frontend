@@ -1,4 +1,4 @@
-import { Status, TransactionStatus, Transaction as StarknetTransaction } from 'starknet'
+import { Status, TransactionStatus } from 'starknet4'
 
 export interface TransactionSubmitted {
   status: TransactionStatus
@@ -11,8 +11,7 @@ export interface TransactionSubmitted {
 }
 
 export interface TransactionReceived {
-  status: Status
-  transaction: StarknetTransaction
+  status: Status | TransactionStatus
   transactionHash: string
   lastUpdatedAt: number
   metadata?: {

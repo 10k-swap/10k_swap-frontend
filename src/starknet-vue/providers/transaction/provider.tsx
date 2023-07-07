@@ -5,13 +5,22 @@ import { DEFAULT_INTERVAL, StarknetTransactionMethodsSymbol, StarknetTransaction
 import { Transaction, TransactionSubmitted } from './model'
 import TransactionStorageManager from '../../utils/TransactionStorageManager'
 
-function isLoading(status: Status | TransactionStatus) {
+function isLoading(status: Status | TransactionStatus | undefined) {
+  if (!status) {
+    return false
+  }
   return ['TRANSACTION_RECEIVED', 'RECEIVED', 'PENDING'].includes(status)
 }
-function isSuccess(status: Status | TransactionStatus) {
+function isSuccess(status: Status | TransactionStatus | undefined) {
+  if (!status) {
+    return false
+  }
   return ['ACCEPTED_ON_L2', 'ACCEPTED_ON_L1'].includes(status)
 }
-function isFail(status: Status | TransactionStatus) {
+function isFail(status: Status | TransactionStatus | undefined) {
+  if (!status) {
+    return false
+  }
   return ['REJECTED'].includes(status)
 }
 
@@ -71,7 +80,7 @@ export const StarknetTransactionManagerProvider = defineComponent({
     }
     const refreshTransaction = async (transactionHash: string) => {
       try {
-        const transactionResponse = await library.value.getTransaction(transactionHash)
+        const transactionResponse = await library.value.getTransactionReceipt(transactionHash)
         const lastUpdatedAt = Date.now()
         if (transactionResponse.status === 'NOT_RECEIVED') {
           return
@@ -85,6 +94,9 @@ export const StarknetTransactionManagerProvider = defineComponent({
         }
 
         const status = transactionResponse.status
+        if (!status) {
+          return
+        }
         const newTransaction: Transaction = {
           transactionHash,
           lastUpdatedAt,
@@ -93,7 +105,6 @@ export const StarknetTransactionManagerProvider = defineComponent({
           fail: isFail(status),
           loading: isLoading(status),
           createAt: oldTransaction.createAt,
-          transaction: transactionResponse.transaction,
           metadata: oldTransaction.metadata,
         }
         emit('transactionRefresh', { oldTransaction: toRaw(oldTransaction), newTransaction })
