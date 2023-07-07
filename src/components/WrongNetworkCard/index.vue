@@ -29,7 +29,7 @@ export default defineComponent({
     const {
       state: { chainId },
     } = useStarknet()
-    console.log(chainId, StarknetChainId)
+
     return {
       chainId,
       StarknetChainId,
