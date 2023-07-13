@@ -1,4 +1,4 @@
-import { Abi, TransactionSimulationResponse, Contract, InvokeFunctionResponse } from 'starknet4'
+import { Abi, Contract, InvokeFunctionResponse } from 'starknet4'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'l0k_swap-sdk'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_SWAP_ALLOWED_SLIPPAGE } from '../constants'
 import { getRouterContract } from '../utils'
