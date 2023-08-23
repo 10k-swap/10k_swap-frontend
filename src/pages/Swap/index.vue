@@ -1,36 +1,11 @@
 <template>
-  <div class="l0k-swap-app-swap-header">
-    <Nav class="l0k-swap-app-header-nav" />
-    <WrongNetworkCard class="wrong-network" v-if="!isSupportChain" />
-    <TransactionPendingCard class="transaction-pending" />
-  </div>
   <router-view />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useStarknet } from '../../starknet-vue/providers/starknet'
-import { isSupportedChain } from '../../utils'
-
-import Nav from '../../components/Nav/Nav.vue'
-import WrongNetworkCard from '../../components/WrongNetworkCard/index.vue'
-import TransactionPendingCard from '../../components/TransactionPendingCard/index.vue'
-
+import { defineComponent } from 'vue'
 export default defineComponent({
-  components: {
-    Nav,
-    WrongNetworkCard,
-    TransactionPendingCard,
-  },
-  setup() {
-    const {
-      state: { chainId },
-    } = useStarknet()
-
-    return {
-      isSupportChain: computed(() => isSupportedChain(chainId.value)),
-    }
-  },
+  setup() {},
 })
 </script>
 

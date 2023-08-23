@@ -13,6 +13,7 @@
 </template>
 
 <script lang="ts">
+/* todo: this file deprecate */
 import { defineComponent, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useIsMobile from '../../hooks/useIsMobile'

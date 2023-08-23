@@ -40,6 +40,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
   font-weight: 700;
   font-size: $font-size-md;
 

@@ -48,7 +48,8 @@ export function getDeductGasMaxAmount(amount: TokenAmount | undefined): TokenAmo
     return undefined
   }
 
-  const deductedAmount = isEther(amount.token) ? amount.subtract(new TokenAmount(amount.token, ESTIMATE_GAS_FREE)) : amount
+  const gasAmount = new TokenAmount(amount.token, ESTIMATE_GAS_FREE)
+  const deductedAmount = isEther(amount.token) && amount.greaterThan(gasAmount) ? amount.subtract(gasAmount) : amount
 
   return deductedAmount.lessThan(ZERO) || deductedAmount.equalTo(ZERO) ? undefined : deductedAmount
 }
