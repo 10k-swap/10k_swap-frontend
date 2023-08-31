@@ -64,7 +64,12 @@ export default defineComponent({
   .app-logo {
     flex: 0 0 275px;
   }
-  /* .connector {
+  .l0k-swap-app-header-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .l0k-swap-app-header-connector {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -72,7 +77,7 @@ export default defineComponent({
     @include mobile {
       right: 44px;
     }
-  } */
+  }
   @include mobile {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -85,6 +90,9 @@ export default defineComponent({
     }
 
     .l0k-swap-app-header-nav {
+      position: relative;
+      left: 0;
+      transform: translateX(0);
       display: flex;
       justify-content: center;
       grid-column: 1/7;
@@ -92,6 +100,10 @@ export default defineComponent({
     }
 
     .l0k-swap-app-header-connector {
+      position: relative;
+      right: 0;
+      top: 0;
+      transform: translateY(0);
       display: flex;
       justify-content: flex-end;
       grid-column: 4/7;
