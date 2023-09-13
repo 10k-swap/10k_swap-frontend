@@ -1,5 +1,5 @@
 <template>
-  <div class="l0k-swap-app-logo">
+  <div class="l0k-swap-app-logo" @click="onLogoClick">
     <img class="logo" src="./logo.png" />
     <img class="alpha" src="./alpha.png" />
   </div>
@@ -9,7 +9,13 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  setup() {},
+  setup() {
+    const onLogoClick = () => {
+      window.location.href = 'https://10kx.com'
+    }
+
+    return { onLogoClick }
+  },
 })
 </script>
 
@@ -18,6 +24,7 @@ export default defineComponent({
 
 .l0k-swap-app-logo {
   flex: 1;
+  cursor: pointer;
 
   .logo {
     display: inline-block;
