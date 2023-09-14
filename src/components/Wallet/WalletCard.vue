@@ -8,9 +8,9 @@
       <div class="desc">{{ t('wallet.check_layer2') }}</div>
       <div class="link">
         <div class="progress">{{ t('wallet.progress') }}</div>
-        <router-link class="download" to="/wallet">
+        <a class="download" target="_self" href="https://10kx.com/?activeSwiperIndex=2&to=swiper">
           {{ t('wallet.download_it') }}
-        </router-link>
+        </a>
       </div>
     </div>
   </div>
