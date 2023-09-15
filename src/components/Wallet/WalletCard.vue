@@ -8,7 +8,7 @@
       <div class="desc">{{ t('wallet.check_layer2') }}</div>
       <div class="link">
         <div class="progress">{{ t('wallet.progress') }}</div>
-        <a class="download" target="_self" href="https://10kx.com/?activeSwiperIndex=2&to=swiper">
+        <a class="download" target="_self" :href="WALLET_HREF">
           {{ t('wallet.download_it') }}
         </a>
       </div>
@@ -20,6 +20,7 @@
 import { computed, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { WALLET_HREF } from '../../constants'
 import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
@@ -37,6 +38,7 @@ export default defineComponent({
 
       close,
       show,
+      WALLET_HREF
     }
   },
 })

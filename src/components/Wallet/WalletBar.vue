@@ -22,6 +22,7 @@
 import { computed, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { WALLET_HREF } from '../../constants'
 import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
@@ -37,7 +38,7 @@ export default defineComponent({
     const show = computed(() => !close.value && isMobile.value && route.path !== '/wallet')
 
     const onDownload = () => {
-      window.location.href = 'https://10kx.com/?activeSwiperIndex=2&to=swiper'
+      window.location.href = WALLET_HREF
     }
 
     return {

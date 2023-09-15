@@ -36,3 +36,5 @@ export const ESTIMATE_GAS_FREE = JSBI.multiply(JSBI.exponentiate(JSBI.BigInt(10)
 export const APK_DOWNLOAD_URL = 'https://apk.10kx.com/1.1.0/10kwallet.apk'
 
 export const L0K_X_API = 'https://api.10kx.com'
+
+export const WALLET_HREF = 'https://10kx.com/?activeSwiperIndex=2&to=swiper'
