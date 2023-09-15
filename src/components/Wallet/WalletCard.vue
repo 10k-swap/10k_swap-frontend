@@ -38,7 +38,7 @@ export default defineComponent({
 
       close,
       show,
-      WALLET_HREF
+      WALLET_HREF,
     }
   },
 })
