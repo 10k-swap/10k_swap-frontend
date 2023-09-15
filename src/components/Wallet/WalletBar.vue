@@ -21,7 +21,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
@@ -30,7 +30,6 @@ export default defineComponent({
 
     const close = ref(false)
 
-    const router = useRouter()
     const route = useRoute()
 
     const isMobile = useIsMobile()
@@ -38,7 +37,7 @@ export default defineComponent({
     const show = computed(() => !close.value && isMobile.value && route.path !== '/wallet')
 
     const onDownload = () => {
-      router.push({ path: '/wallet' })
+      window.location.href = 'https://10kx.com/?activeSwiperIndex=2&to=swiper'
     }
 
     return {
