@@ -38,3 +38,8 @@ export const APK_DOWNLOAD_URL = 'https://apk.10kx.com/1.1.0/10kwallet.apk'
 export const L0K_X_API = 'https://api.10kx.com'
 
 export const WALLET_HREF = 'https://10kx.com/?wallet'
+
+export const NetworkNames: { [starknetChainId in StarknetChainId]: 'mainnet-alpha' | 'goerli-alpha' } = {
+  [StarknetChainId.MAINNET]: 'mainnet-alpha',
+  [StarknetChainId.TESTNET]: 'goerli-alpha',
+}
