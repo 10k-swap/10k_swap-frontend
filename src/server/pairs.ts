@@ -54,10 +54,11 @@ export async function getAllPairs(chainId: StarknetChainId) {
       for (let index = 0; index < data.length; index++) {
         const item = data[index]
 
+        const token0 = getToken(chainId, item.token0.address) as Token
+        const token1 = getToken(chainId, item.token1.address) as Token
+
         if (dayjs(item.lastUpdatedTime).add(1, 'h').isAfter(dayjs().utc())) {
           const { reserve0, reserve1, totalSupply } = item
-          const token0 = getToken(chainId, item.token0.address) as Token
-          const token1 = getToken(chainId, item.token1.address) as Token
           const pair = new Pair(new TokenAmount(token0, reserve0), new TokenAmount(token1, reserve1))
 
           checkedData.push({
@@ -69,8 +70,6 @@ export async function getAllPairs(chainId: StarknetChainId) {
           })
         } else {
           try {
-            const token0 = getToken(chainId, item.token0.address) as Token
-            const token1 = getToken(chainId, item.token1.address) as Token
             const pair = await Fetcher.fetchPairData(token0, token1)
 
             const provider = new Provider({ sequencer: { network: NetworkNames[chainId] } })
