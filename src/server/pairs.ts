@@ -69,13 +69,12 @@ export async function getAllPairs(chainId: StarknetChainId) {
           })
         } else {
           try {
-            const { pairAddress } = item
             const token0 = getToken(chainId, item.token0.address) as Token
             const token1 = getToken(chainId, item.token1.address) as Token
             const pair = await Fetcher.fetchPairData(token0, token1)
 
             const provider = new Provider({ sequencer: { network: NetworkNames[chainId] } })
-            const { totalSupply } = await new Contract(I10kSwapPairABI as Abi, pairAddress, provider).call('totalSupply', [])
+            const { totalSupply } = await new Contract(I10kSwapPairABI as Abi, pair.liquidityToken.address, provider).call('totalSupply', [])
 
             if (!totalSupply || !pair) {
               continue
