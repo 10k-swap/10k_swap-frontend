@@ -13,7 +13,7 @@ export interface Pool {
   decimals: number
   reserve0: string
   reserve1: string
-  APR: number
+  APR: string
   liquidity: number
 }
 
@@ -21,7 +21,7 @@ export interface UserPool {
   pair: Pair
   totalSupply: TokenAmount
   balance: TokenAmount
-  APR: number
+  APR: string
   poolShare: Percent
   poolShareView: string
 }

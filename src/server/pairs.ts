@@ -9,6 +9,7 @@ import { Pool } from '../state/pool'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import I10kSwapPairABI from '../constants/abis/l0k_pair_abi.json'
+import pairs from '../constants/pairs.json'
 import { Abi, Provider, Contract } from 'starknet4'
 import { uint256ToBN } from 'starknet/dist/utils/uint256'
 
@@ -37,7 +38,7 @@ export interface AllPairItem {
   decimals: number
   reserve0: string //0x
   reserve1: string //0x
-  APR: number
+  APR: string
   lastUpdatedTime: string
 }
 
@@ -45,6 +46,10 @@ export async function getAllPairs(chainId: StarknetChainId) {
   try {
     const res = await axios.get<IResponse<AllPairItem[]>>(`${SERVER_URLS[chainId]}/pool/pairs`)
     if (res.data.errCode === ERR_OK) {
+      if (!res.data.data.length) {
+        throw Error('get pairs error')
+      }
+
       const data = res.data.data.filter((item) => {
         return !!(getToken(chainId, item.token0.address) && getToken(chainId, item.token1.address))
       })
@@ -69,26 +74,8 @@ export async function getAllPairs(chainId: StarknetChainId) {
             totalSupply: new TokenAmount(pair.liquidityToken, totalSupply),
           })
         } else {
-          try {
-            const pair = await Fetcher.fetchPairData(token0, token1)
-
-            const provider = new Provider({ sequencer: { network: NetworkNames[chainId] } })
-            const { totalSupply } = await new Contract(I10kSwapPairABI as Abi, pair.liquidityToken.address, provider).call('totalSupply', [])
-
-            if (!totalSupply || !pair) {
-              continue
-            }
-
-            checkedData.push({
-              ...item,
-              token0,
-              token1,
-              pair,
-              totalSupply: new TokenAmount(pair.liquidityToken, uint256ToBN(totalSupply).toString()),
-            })
-          } catch (error) {
-            console.log('error for the get pair', error)
-          }
+          const pool = await getPoolInfo(chainId, item)
+          pool && checkedData.push(pool)
         }
       }
 
@@ -97,6 +84,42 @@ export async function getAllPairs(chainId: StarknetChainId) {
 
     throw new Error('fetch pairs fail')
   } catch (error: any) {
-    throw new Error(error)
+    const rets: Pool[] = []
+
+    for (let index = 0; index < pairs.data.length; index++) {
+      const item = pairs.data[index]
+      const data = await getPoolInfo(chainId, item)
+      if (data) {
+        rets.push(data)
+      }
+    }
+
+    return rets
+  }
+}
+
+async function getPoolInfo(chainId: StarknetChainId, data: AllPairItem) {
+  const token0 = getToken(chainId, data.token0.address) as Token
+  const token1 = getToken(chainId, data.token1.address) as Token
+
+  try {
+    const pair = await Fetcher.fetchPairData(token0, token1)
+
+    const provider = new Provider({ sequencer: { network: NetworkNames[chainId] } })
+    const { totalSupply } = await new Contract(I10kSwapPairABI as Abi, pair.liquidityToken.address, provider).call('totalSupply', [])
+
+    if (!totalSupply || !pair) {
+      return undefined
+    }
+
+    return {
+      ...data,
+      token0,
+      token1,
+      pair,
+      totalSupply: new TokenAmount(pair.liquidityToken, uint256ToBN(totalSupply).toString()),
+    }
+  } catch (error) {
+    console.log('error for the get pair', error)
   }
 }
