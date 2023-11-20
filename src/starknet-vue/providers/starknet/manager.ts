@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted, reactive, Ref, ref } from 'vue'
-import { Provider, AccountInterface, ProviderInterface } from 'starknet4'
+import { RpcProvider, AccountInterface, ProviderInterface } from 'starknet5'
 import { StarknetMethods, StarknetState } from './model'
 import { Connector, InjectedConnector } from '../../connectors'
 import { ConnectorNotFoundError, UserRejectedRequestError, ConnectorNotConnectedError } from '../../errors'
@@ -13,7 +13,7 @@ export function useStarknetManager(
   connectors: Ref<Connector<InjectedConnectorOptions>[]>
 ): StarknetMethods & { state: StarknetState } {
   const state = reactive<{
-    library: ProviderInterface | AccountInterface | Provider
+    library: ProviderInterface | AccountInterface | RpcProvider
     connectors: Connector<InjectedConnectorOptions>[]
     account: string | undefined
     chainId: StarknetChainId | undefined
@@ -23,7 +23,7 @@ export function useStarknetManager(
     connectors: connectors.value,
     account: undefined,
     error: undefined,
-    chainId: chainIdMap[(userDefaultProvider.value ? userDefaultProvider.value : defaultProvider).chainId] ?? StarknetChainId.MAINNET,
+    chainId: StarknetChainId.MAINNET,
   })
 
   const connectorId = ConnectorStorageManager.get()

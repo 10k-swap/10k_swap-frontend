@@ -4,7 +4,7 @@ import I10kSwapPairABI from '../constants/abis/l0k_pair_abi.json'
 import { useStarknetCalls } from '../starknet-vue/hooks/call'
 import { computed, ComputedRef, Ref, toRaw } from 'vue'
 import { useStarknet } from '../starknet-vue/providers/starknet'
-import { Abi, Contract } from 'starknet4'
+import { Abi, Contract } from 'starknet5'
 
 export enum PairState {
   LOADING,
@@ -55,7 +55,7 @@ export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefin
       if (states.loading) return [PairState.LOADING, null]
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, undefined]
       if (!reserves) return [PairState.NOT_EXISTS, undefined]
-      const { reserve0, reserve1 } = reserves
+      const { reserve0, reserve1 } = reserves as { reserve0: bigint; reserve1: bigint }
       const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
       return [PairState.EXISTS, new Pair(new TokenAmount(token0, reserve0.toString()), new TokenAmount(token1, reserve1.toString()))]
     })

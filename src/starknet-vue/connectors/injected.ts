@@ -1,4 +1,4 @@
-import { AccountInterface } from 'starknet4'
+import { AccountInterface } from 'starknet5'
 import { Connector } from './base'
 import { EventType, EventHandler, RpcMessage } from 'get-starknet'
 import { ConnectorNotConnectedError, ConnectorNotFoundError, UserNotConnectedError, UserRejectedRequestError } from '../errors'

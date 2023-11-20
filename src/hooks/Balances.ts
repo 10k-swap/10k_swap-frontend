@@ -3,9 +3,8 @@ import { Token, TokenAmount, JSBI } from 'l0k_swap-sdk'
 import { useStarknetCalls } from '../starknet-vue/hooks/call'
 import { isAddress } from '../utils'
 import erc20 from '../constants/abis/erc20.json'
-import { Abi, Contract } from 'starknet4'
+import { Abi, Contract, uint256 } from 'starknet5'
 import { useStarknet } from '../starknet-vue/providers/starknet'
-import { uint256ToBN } from 'starknet/dist/utils/uint256'
 
 /**
  * Returns a map of token addresses to their eventually consistent token balances for a single account.
@@ -25,15 +24,15 @@ export function useTokenBalancesWithLoadingIndicator(
   const contracts = computed(() => validatedTokenAddresses.value.map((item) => new Contract(erc20 as Abi, item, toRaw(library.value))))
   const methods = computed(() => validatedTokenAddresses.value.map(() => 'balanceOf'))
   const args = computed(() => validatedTokenAddresses.value.map(() => [address.value]))
-  const balances = useStarknetCalls(contracts, methods, args)
+  const balances = useStarknetCalls(contracts, methods, args as any)
 
   const anyLoading = computed(() => balances.states.loading)
 
   const data = computed(() => {
     return address && validatedTokens.value.length > 0
       ? validatedTokens.value.reduce<{ [tokenAddress: string]: TokenAmount | null | undefined }>((memo, token, i) => {
-          const value = balances.states.data?.[i]?.[0]
-          const amount = value ? JSBI.BigInt(uint256ToBN(value).toString()) : undefined
+          const value = balances.states.data?.[i]?.balance
+          const amount = value ? JSBI.BigInt(uint256.uint256ToBN(value).toString()) : undefined
 
           if (amount) {
             memo[token.address] = new TokenAmount(token, amount)

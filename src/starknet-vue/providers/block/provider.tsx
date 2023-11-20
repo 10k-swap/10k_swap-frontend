@@ -1,5 +1,5 @@
 import { defineComponent, onBeforeUnmount, onMounted, toRefs, watch, readonly, provide, reactive } from 'vue'
-import { GetBlockResponse } from 'starknet4'
+import { GetBlockResponse } from 'starknet5'
 import { useStarknet } from '../starknet'
 import { DEFAULT_INTERVAL, StarknetBlockStateSymbol } from './const'
 import { BlockState, INIT_BLOCK_STATE } from './model'

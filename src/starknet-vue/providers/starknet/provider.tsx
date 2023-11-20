@@ -1,5 +1,5 @@
 import { defineComponent, provide, readonly, toRefs, PropType } from 'vue'
-import { ProviderInterface } from 'starknet4'
+import { ProviderInterface } from 'starknet5'
 import { useStarknetManager } from './manager'
 import { Connector } from '../../connectors'
 import { StarknetMethodsSymbol, StarknetStateSymbol } from './const'

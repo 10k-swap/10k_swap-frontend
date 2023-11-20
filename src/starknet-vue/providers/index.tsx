@@ -1,4 +1,4 @@
-import { ProviderInterface } from 'starknet4'
+import { ProviderInterface } from 'starknet5'
 import { defineComponent, PropType, toRefs } from 'vue'
 
 import { StarknetBlockProvider } from './block'

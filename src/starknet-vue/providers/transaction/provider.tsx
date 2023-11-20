@@ -1,23 +1,23 @@
 import { defineComponent, toRefs, onMounted, onBeforeUnmount, watch, provide, readonly, reactive, toRaw } from 'vue'
-import { Status, TransactionStatus } from 'starknet4'
+import { TransactionStatus } from 'starknet4'
 import { useStarknet } from '../starknet/hooks'
 import { DEFAULT_INTERVAL, StarknetTransactionMethodsSymbol, StarknetTransactionStateSymbol } from './const'
 import { Transaction, TransactionSubmitted } from './model'
 import TransactionStorageManager from '../../utils/TransactionStorageManager'
 
-function isLoading(status: Status | TransactionStatus | undefined) {
+function isLoading(status: TransactionStatus | undefined) {
   if (!status) {
     return false
   }
   return ['TRANSACTION_RECEIVED', 'RECEIVED', 'PENDING'].includes(status)
 }
-function isSuccess(status: Status | TransactionStatus | undefined) {
+function isSuccess(status: TransactionStatus | undefined) {
   if (!status) {
     return false
   }
   return ['ACCEPTED_ON_L2', 'ACCEPTED_ON_L1'].includes(status)
 }
-function isFail(status: Status | TransactionStatus | undefined) {
+function isFail(status: TransactionStatus | undefined) {
   if (!status) {
     return false
   }

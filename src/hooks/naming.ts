@@ -1,6 +1,5 @@
 import { toBN } from 'starknet/utils/number'
 import { useNamingContract } from './Contract'
-import { BN } from '../types'
 import { useStarknetCall } from '../starknet-vue/hooks/call'
 import { computed, ComputedRef, Ref, toRaw } from 'vue'
 
@@ -10,9 +9,10 @@ const bigAlphabet = '这来'
 const bigAlphabetSize = toBN(bigAlphabet.length)
 const bigAlphabetSizePlusOne = toBN(bigAlphabet.length + 1)
 
-export function useDecoded(encoded: BN[]): string {
+export function useDecoded(encoded: bigint[]): string {
   let decoded = ''
-  for (let subdomain of encoded) {
+  for (const _subdomain of encoded) {
+    let subdomain = toBN(_subdomain.toString())
     while (!subdomain.isZero()) {
       const code = subdomain.mod(basicSizePlusOne).toNumber()
       subdomain = subdomain.div(basicSizePlusOne)
@@ -41,10 +41,10 @@ export function useDomainFromAddress(address: Ref<string | undefined>): Computed
   const { state } = useStarknetCall(contract, 'address_to_domain', args, { watch: false })
 
   return computed(() => {
-    if (!state.data || state.data?.['domain_len'] === 0) {
+    if (!state.data || state.data?.['domain_len'] === 0n) {
       return undefined
     }
-    const domain = useDecoded(toRaw(state.data[0]))
+    const domain = useDecoded(toRaw(state.data.domain))
     return domain
   })
 }
