@@ -73,7 +73,7 @@ export function useStarknetExecute<T extends unknown[]>(
         state.data = response.transaction_hash
         // start tracking the transaction
         addTransaction({
-          status: 'TRANSACTION_RECEIVED',
+          status: 'RECEIVED',
           transactionHash: response.transaction_hash,
           metadata,
         })

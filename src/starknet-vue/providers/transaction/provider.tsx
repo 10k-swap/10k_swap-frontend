@@ -1,15 +1,14 @@
 import { defineComponent, toRefs, onMounted, onBeforeUnmount, watch, provide, readonly, reactive, toRaw } from 'vue'
-import { TransactionStatus } from 'starknet4'
 import { useStarknet } from '../starknet/hooks'
 import { DEFAULT_INTERVAL, StarknetTransactionMethodsSymbol, StarknetTransactionStateSymbol } from './const'
-import { Transaction, TransactionSubmitted } from './model'
+import { Transaction, TransactionStatus, TransactionSubmitted } from './model'
 import TransactionStorageManager from '../../utils/TransactionStorageManager'
 
 function isLoading(status: TransactionStatus | undefined) {
   if (!status) {
     return false
   }
-  return ['TRANSACTION_RECEIVED', 'RECEIVED', 'PENDING'].includes(status)
+  return ['RECEIVED', 'PENDING', 'NOT_RECEIVED'].includes(status)
 }
 function isSuccess(status: TransactionStatus | undefined) {
   if (!status) {
@@ -21,12 +20,12 @@ function isFail(status: TransactionStatus | undefined) {
   if (!status) {
     return false
   }
-  return ['REJECTED'].includes(status)
+  return ['REJECTED', 'REVERTED'].includes(status)
 }
 
 function shouldRefreshTransaction(transaction: Transaction, now: number): boolean {
   // try to get transaction data as soon as possible
-  if (transaction.status === 'TRANSACTION_RECEIVED') {
+  if (transaction.status === 'RECEIVED') {
     return true
   }
 
@@ -37,10 +36,10 @@ function shouldRefreshTransaction(transaction: Transaction, now: number): boolea
 
   // every couple of minutes is enough. Blocks finalized infrequently.
   if (transaction.status === 'ACCEPTED_ON_L2') {
-    return now - transaction.lastUpdatedAt > 120000
+    return now - transaction?.lastUpdatedAt > 120000
   }
 
-  return now - transaction.lastUpdatedAt > 15000
+  return now - transaction?.lastUpdatedAt > 15000
 }
 
 let intervalId: number

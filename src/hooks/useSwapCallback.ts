@@ -1,4 +1,4 @@
-import { Abi, Contract, InvokeFunctionResponse } from 'starknet4'
+import { Abi, Contract, InvokeFunctionResponse } from 'starknet5'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'l0k_swap-sdk'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_SWAP_ALLOWED_SLIPPAGE } from '../constants'
 import { getRouterContract } from '../utils'
@@ -157,7 +157,7 @@ export function useSwapCallback(
           )
           .then((response: InvokeFunctionResponse) => {
             addTransaction({
-              status: 'TRANSACTION_RECEIVED',
+              status: 'RECEIVED',
               transactionHash: response.transaction_hash,
               metadata: {
                 message: getSwapSummary(swapTrade, swapApproveAmount),

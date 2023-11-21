@@ -1,7 +1,9 @@
-import { TransactionStatus } from 'starknet5'
+import { TransactionStatus as _TransactionStatus } from 'starknet5'
+
+export type TransactionStatus = 'REVERTED' | 'ACCEPTED_ON_L2' | 'ACCEPTED_ON_L1' | _TransactionStatus | 'RECEIVED' | 'REJECTED' | 'NOT_RECEIVED'
 
 export interface TransactionSubmitted {
-  status: TransactionStatus
+  status: 'RECEIVED'
   transactionHash: string
   address?: string
   metadata?: {
