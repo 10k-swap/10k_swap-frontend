@@ -39,7 +39,7 @@ export const L0K_X_API = 'https://api.10kx.com'
 
 export const WALLET_HREF = 'https://10kx.com/?wallet'
 
-export const NetworkNames: { [starknetChainId in StarknetChainId]: 'mainnet-alpha' | 'goerli-alpha' } = {
-  [StarknetChainId.MAINNET]: 'mainnet-alpha',
-  [StarknetChainId.TESTNET]: 'goerli-alpha',
+export const RPCS: { [starknetChainId in StarknetChainId]: string } = {
+  [StarknetChainId.MAINNET]: 'https://starknet-mainnet.public.blastapi.io',
+  [StarknetChainId.TESTNET]: 'https://starknet-testnet.public.blastapi.io',
 }

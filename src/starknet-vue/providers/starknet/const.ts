@@ -7,7 +7,7 @@ export const StarknetMethodsSymbol = Symbol('StarknetMethods')
 
 export const defaultChainId = StarknetChainId.MAINNET
 
-export const defaultProvider = new RpcProvider({ nodeUrl: defaultChainId })
+export const defaultProvider = new RpcProvider({ nodeUrl: defaultChainId, default: true })
 
 enum Chains {
   MAINNET = '0x534e5f4d41494e',
