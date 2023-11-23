@@ -80,11 +80,9 @@ export default defineComponent({
   }
   .wrong-network {
     position: absolute;
-    bottom: -150%;
     right: 20px;
-    @include mobile {
-      bottom: -80%;
-    }
+    bottom: 0px;
+    transform: translateY(100%);
   }
   @include mobile {
     display: grid;
