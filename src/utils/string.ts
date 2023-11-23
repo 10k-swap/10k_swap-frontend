@@ -1,7 +1,9 @@
 import { number } from 'starknet'
 import * as buffer from 'buffer'
-import { BN } from '../types'
+import { toBN } from 'starknet/utils/number'
 
-export function parseBN2String(value: BN | undefined): string {
-  return value ? number.toBN(value).toArrayLike(buffer.Buffer, 'utf-8').toString() : ''
+export function parseBN2String(value: bigint | undefined): string {
+  const _value = value ? toBN(value.toString()) : undefined
+
+  return _value ? number.toBN(_value).toArrayLike(buffer.Buffer, 'utf-8').toString() : ''
 }

@@ -1,4 +1,4 @@
-import { Abi, Contract } from 'starknet'
+import { Abi, Contract } from 'starknet5'
 import { computed, ComputedRef, toRaw } from 'vue'
 import { useStarknet } from '../providers/starknet'
 

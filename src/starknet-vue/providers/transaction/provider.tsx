@@ -81,7 +81,7 @@ export const StarknetTransactionManagerProvider = defineComponent({
       try {
         const transactionResponse = await library.value.getTransactionReceipt(transactionHash)
         const lastUpdatedAt = Date.now()
-
+        const status = (transactionResponse as any).finality_status
         if (transactionResponse.status === 'NOT_RECEIVED') {
           return
         }
@@ -92,8 +92,6 @@ export const StarknetTransactionManagerProvider = defineComponent({
         if (!oldTransaction) {
           return
         }
-
-        const status = transactionResponse.status
 
         if (!status) {
           return

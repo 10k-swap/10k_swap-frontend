@@ -1,4 +1,4 @@
-import { Abi } from 'starknet'
+import { Abi } from 'starknet5'
 import { computed, ComputedRef } from 'vue'
 import erc20 from '../constants/abis/erc20.json'
 import naming_abi from '../constants/abis/naming_abi.json'

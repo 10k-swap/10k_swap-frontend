@@ -2,7 +2,7 @@ import axios from './axios'
 import { SERVER_URLS } from '../constants'
 import { IResponse } from './types'
 import { ERR_OK } from './'
-import { ChainId } from 'l0k_swap-sdk'
+import { StarknetChainId } from 'l0k_swap-sdk'
 import { Pair, Summary, Transaction, TransactionType } from '../state/analytics/types'
 
 export interface TransactionsResponse {
@@ -33,7 +33,7 @@ export interface ChartsDataResponse {
 }
 
 export async function getTransactions(
-  chainId: ChainId,
+  chainId: StarknetChainId,
   { startTime, endTime, page, type }: { startTime: number; endTime: number; page: number; type: TransactionType | undefined }
 ) {
   try {
@@ -56,7 +56,7 @@ export async function getTransactions(
   }
 }
 
-export async function getPairs(chainId: ChainId, { startTime, endTime, page }: { startTime: number; endTime: number; page: number }) {
+export async function getPairs(chainId: StarknetChainId, { startTime, endTime, page }: { startTime: number; endTime: number; page: number }) {
   try {
     const res = await axios.get<IResponse<PairResponse>>(`${SERVER_URLS[chainId]}/analytics/pairs`, {
       params: { startTime, endTime, page },
@@ -71,7 +71,7 @@ export async function getPairs(chainId: ChainId, { startTime, endTime, page }: {
   }
 }
 
-export async function getChartsData(chainId: ChainId) {
+export async function getChartsData(chainId: StarknetChainId) {
   try {
     const res = await axios.get<IResponse<ChartsDataResponse>>(`${SERVER_URLS[chainId]}/analytics`)
     if (res.data.errCode === ERR_OK) {

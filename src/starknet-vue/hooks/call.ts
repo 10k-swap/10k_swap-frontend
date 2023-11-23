@@ -1,14 +1,13 @@
-import { Contract, Result } from 'starknet'
+import { ArgsOrCalldata, Contract, Result } from 'starknet5'
 import * as objectHash from 'object-hash'
 import { computed, ComputedRef, onMounted, reactive, watch } from 'vue'
 import { useStarknetBlock } from '../providers/block'
-import { BN } from '../../types'
 import { useIntervalFn } from '@vueuse/core'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { isUndefined } from 'lodash'
 
 interface State {
-  data?: Result | undefined
+  data?: any | undefined
   loading: boolean
   error?: string
   lastUpdatedAt: string
@@ -38,10 +37,10 @@ const caches: {
   [key: string]: { result: Result; updateAt: number }
 } = {}
 
-export function useStarknetCall<T extends unknown[]>(
+export function useStarknetCall(
   contract: ComputedRef<Contract | undefined>,
   method: string,
-  args?: ComputedRef<T | undefined> | [],
+  args?: ComputedRef<ArgsOrCalldata | undefined> | [],
   options?: UseStarknetCallOptions | undefined
 ): UseStarknetCall & { state: State } {
   const state = reactive<State>({
@@ -142,16 +141,16 @@ export function useStarknetCall<T extends unknown[]>(
 }
 
 interface CallsState {
-  data: Array<(BN[] & { [key: string]: BN }) | undefined>
+  data: (any | undefined)[]
   loading: boolean
   error?: string
   lastUpdatedAt: string
 }
 
-export function useStarknetCalls<T extends unknown[]>(
+export function useStarknetCalls(
   contracts: ComputedRef<Contract[] | undefined>,
   methods: ComputedRef<string[] | undefined>,
-  argsList?: ComputedRef<T[] | undefined>,
+  argsList?: ComputedRef<(ArgsOrCalldata | undefined)[] | undefined>,
   options?: UseStarknetCallOptions | undefined
 ): UseStarknetCall & { states: CallsState } {
   const states = reactive<CallsState>({
@@ -175,7 +174,7 @@ export function useStarknetCalls<T extends unknown[]>(
         const key = toCallKey(contract.address, method, block.value?.block_hash, argsToHash(args))
         const current = caches[key]
 
-        if (args.some((item) => isUndefined(item))) {
+        if (args?.some((item) => isUndefined(item))) {
           return
         }
 

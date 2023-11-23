@@ -1,4 +1,5 @@
-import { AddTransactionResponse, Overrides, Call, Abi } from 'starknet'
+import { Overrides } from 'starknet'
+import { InvokeFunctionResponse, Call, Abi } from 'starknet4'
 import { ComputedRef, reactive, toRaw } from 'vue'
 import { useStarknet } from '../providers/starknet'
 import { useStarknetTransactionManager } from '../providers/transaction/hooks'
@@ -22,7 +23,7 @@ export interface ExecuteArgs<T extends unknown[]> {
 export interface UseStarknetExecute<T extends unknown[]> {
   state: State
   reset: () => void
-  execute: ({ args, metadata }: ExecuteArgs<T>) => Promise<AddTransactionResponse | undefined>
+  execute: ({ args, metadata }: ExecuteArgs<T>) => Promise<InvokeFunctionResponse | undefined>
 }
 
 const INIT_STATE = {
@@ -73,7 +74,7 @@ export function useStarknetExecute<T extends unknown[]>(
         state.data = response.transaction_hash
         // start tracking the transaction
         addTransaction({
-          status: response.code,
+          status: 'RECEIVED',
           transactionHash: response.transaction_hash,
           metadata,
         })

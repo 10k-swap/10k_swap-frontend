@@ -1,6 +1,7 @@
-import { AddTransactionResponse, Contract, Overrides } from 'starknet'
+import { ArgsOrCalldata, Contract, InvokeFunctionResponse } from 'starknet5'
 import { ComputedRef, reactive } from 'vue'
 import { useStarknetTransactionManager } from '../providers/transaction/hooks'
+import { Overrides } from 'starknet4'
 
 interface State {
   data?: string | undefined
@@ -8,8 +9,8 @@ interface State {
   error?: string | undefined
 }
 
-export interface InvokeArgs<T extends unknown[]> {
-  args: T
+export interface InvokeArgs {
+  args: ArgsOrCalldata | undefined
   overrides?: Overrides
   metadata?: {
     method?: string
@@ -17,10 +18,10 @@ export interface InvokeArgs<T extends unknown[]> {
   }
 }
 
-export interface UseStarknetInvoke<T extends unknown[]> {
+export interface UseStarknetInvoke {
   state: State
   reset: () => void
-  invoke: ({ args, metadata }: InvokeArgs<T>) => Promise<AddTransactionResponse | undefined>
+  invoke: ({ args, metadata }: InvokeArgs) => Promise<InvokeFunctionResponse | undefined>
 }
 
 const INIT_STATE = {
@@ -29,7 +30,7 @@ const INIT_STATE = {
   error: undefined,
 }
 
-export function useStarknetInvoke<T extends unknown[]>(contract: ComputedRef<Contract | undefined>, method: string): UseStarknetInvoke<T> {
+export function useStarknetInvoke(contract: ComputedRef<Contract | undefined>, method: string): UseStarknetInvoke {
   const { addTransaction } = useStarknetTransactionManager()
   const state = reactive<State>(INIT_STATE)
 
@@ -39,7 +40,7 @@ export function useStarknetInvoke<T extends unknown[]>(contract: ComputedRef<Con
     state.error = undefined
   }
 
-  const invoke = async ({ args, overrides, metadata }: InvokeArgs<T>) => {
+  const invoke = async ({ args, overrides, metadata }: InvokeArgs) => {
     if (!contract.value) {
       throw new Error('invoke: contract is undefined')
     }
@@ -51,7 +52,7 @@ export function useStarknetInvoke<T extends unknown[]>(contract: ComputedRef<Con
         state.data = response.transaction_hash
         // start tracking the transaction
         addTransaction({
-          status: response.code,
+          status: 'RECEIVED',
           transactionHash: response.transaction_hash,
           metadata,
         })

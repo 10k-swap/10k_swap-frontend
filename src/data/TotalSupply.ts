@@ -1,9 +1,9 @@
 // returns undefined if input token is undefined, or fails to get token contract,
-import { uint256ToBN } from 'starknet/dist/utils/uint256'
 import { computed, ComputedRef } from 'vue'
 import { useTokenContract } from '../hooks/Contract'
 import { Token, TokenAmount } from 'l0k_swap-sdk'
 import { useStarknetCall } from '../starknet-vue/hooks/call'
+import { uint256 } from 'starknet5'
 
 // or contract total supply cannot be fetched
 export function useTotalSupply(token: ComputedRef<Token | undefined | null>): ComputedRef<TokenAmount | null | undefined> {
@@ -16,7 +16,10 @@ export function useTotalSupply(token: ComputedRef<Token | undefined | null>): Co
     if (totalSupply.state.loading) {
       return null
     }
-    return token.value && totalSupply.state.data?.[0] ? new TokenAmount(token.value, uint256ToBN(totalSupply.state.data[0]).toString()) : undefined
+
+    return token.value && totalSupply.state.data?.totalSupply
+      ? new TokenAmount(token.value, uint256.uint256ToBN(totalSupply.state.data.totalSupply).toString())
+      : undefined
   })
 }
 

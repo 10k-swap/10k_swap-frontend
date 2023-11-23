@@ -40,8 +40,8 @@ export function useToken(tokenAddress: ComputedRef<string | undefined>): Compute
         chainId.value,
         address.value,
         toRaw(decimals.state.data[0]).toNumber(),
-        parseBN2String(symbol.state.data?.[0]),
-        parseBN2String(tokenName.state.data?.[0])
+        parseBN2String(symbol.state.data?.symbol),
+        parseBN2String(tokenName.state.data?.name)
       )
       tokenCaches[chainId.value].push(newToken)
       return newToken
