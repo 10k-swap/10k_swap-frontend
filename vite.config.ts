@@ -10,9 +10,6 @@ export default defineConfig({
   build: {
     target: 'esnext', // you can also use 'es2020' here
   },
-  define: {
-    global: {},
-  },
   optimizeDeps: {
     esbuildOptions: {
       target: 'esnext', // you can also use 'es2020' here
