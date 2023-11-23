@@ -15,9 +15,6 @@ export default defineConfig({
       target: 'esnext', // you can also use 'es2020' here
     },
   },
-  define: {
-    global: {},
-  },
   server: {
     port: 3035,
     host: true,
