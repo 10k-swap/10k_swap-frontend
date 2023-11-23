@@ -78,6 +78,14 @@ export default defineComponent({
       right: 44px;
     }
   }
+  .wrong-network {
+    position: absolute;
+    bottom: -150%;
+    right: 20px;
+    @include mobile {
+      bottom: -80%;
+    }
+  }
   @include mobile {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
