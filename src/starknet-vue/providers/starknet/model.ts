@@ -1,13 +1,13 @@
-import { ChainId } from 'l0k_swap-sdk'
-import { ProviderInterface, AccountInterface } from 'starknet'
+import { StarknetChainId } from 'l0k_swap-sdk'
+import { ProviderInterface, AccountInterface } from 'starknet5'
 import { Connector } from '../../connectors'
 import { InjectedConnectorOptions } from '../../connectors/injected'
-import { defaultProvider } from './const'
+import { defaultChainId, defaultProvider } from './const'
 export interface StarknetState {
   account: string | undefined
   library: ProviderInterface | AccountInterface
   connectors: Connector<InjectedConnectorOptions>[]
-  chainId: ChainId | undefined
+  chainId: StarknetChainId | undefined
   error: Error | undefined
 }
 
@@ -21,5 +21,5 @@ export const STARKNET_INITIAL_STATE: StarknetState = {
   library: defaultProvider,
   connectors: [],
   error: undefined,
-  chainId: defaultProvider.chainId,
+  chainId: defaultChainId,
 }

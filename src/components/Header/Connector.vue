@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { CHAIN_LABELS } from '../../constants'
 import { useStarknet } from '../../starknet-vue/providers/starknet'
@@ -37,7 +37,7 @@ import { useModalStore } from '../../state'
 import useIsMobile from '../../hooks/useIsMobile'
 import { useOpenWalletModal } from '../../state/modal/hooks'
 import { useDomainFromAddress } from '../../hooks/naming'
-import { ChainId } from 'l0k_swap-sdk'
+import { StarknetChainId } from 'l0k_swap-sdk'
 
 export default defineComponent({
   components: {
@@ -50,23 +50,21 @@ export default defineComponent({
     const isMobile = useIsMobile()
 
     const {
-      state: { account, library },
+      state: { account, chainId },
     } = useStarknet()
     const { t } = useI18n()
     const openWalletModal = useOpenWalletModal()
-
-    const chainId = computed(() => library.value.chainId ?? undefined)
 
     const starknetId = useDomainFromAddress(account)
 
     const toStarknetId = (e: Event) => {
       e.stopPropagation()
       const urls = {
-        [ChainId.MAINNET]: 'https://app.starknet.id',
-        [ChainId.TESTNET]: 'https://goerli.app.starknet.id',
+        [StarknetChainId.MAINNET]: 'https://app.starknet.id',
+        [StarknetChainId.TESTNET]: 'https://goerli.app.starknet.id',
       }
 
-      window.open(`${urls[chainId.value ?? ChainId.MAINNET]}/search?domain=${starknetId.value}`)
+      window.open(`${urls[chainId.value ?? StarknetChainId.MAINNET]}/search?domain=${starknetId.value}`)
     }
 
     return {

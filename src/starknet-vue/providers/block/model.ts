@@ -1,4 +1,4 @@
-import { GetBlockResponse } from 'starknet'
+import { GetBlockResponse } from 'starknet5'
 
 export interface BlockState {
   block: GetBlockResponse | undefined

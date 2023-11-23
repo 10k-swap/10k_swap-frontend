@@ -8,7 +8,15 @@ import ElementPlus from 'unplugin-element-plus/vite'
 export default defineConfig({
   base: './',
   build: {
-    target: 'es2015',
+    target: 'esnext', // you can also use 'es2020' here
+  },
+  define: {
+    global: {},
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext', // you can also use 'es2020' here
+    },
   },
   server: {
     port: 3035,
