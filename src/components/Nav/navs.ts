@@ -11,10 +11,10 @@ export default {
       path: '/pool',
       name: i18n.global.t('header.nav.pool'),
     },
-    {
-      path: '/faucet',
-      name: i18n.global.t('header.nav.faucet'),
-    },
+    // {
+    //   path: '/faucet',
+    //   name: i18n.global.t('header.nav.faucet'),
+    // },
     {
       path: '/analytics',
       name: i18n.global.t('header.nav.analytics'),
