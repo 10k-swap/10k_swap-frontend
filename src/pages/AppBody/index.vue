@@ -41,7 +41,7 @@ export default defineComponent({
     const isSwap = computed(() => route.path === '/swap')
     const isPool = computed(() => route.path === '/pool')
 
-    const showSocials = computed(() => ['/swap', '/pool'].includes(route.path))
+    const showSocials = computed(() => ['/swap', isMobile.value ? undefined : '/pool'].includes(route.path))
 
     return {
       isSwap,
@@ -90,11 +90,11 @@ export default defineComponent({
     left: 50%;
     transform: translateX(-50%);
     bottom: 80px;
-    @media screen and (max-height: 600px) {
-      display: none;
-    }
     @include mobile {
       display: block;
+    }
+    @media screen and (max-height: 650px) {
+      display: none;
     }
   }
 }

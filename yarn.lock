@@ -1953,6 +1953,19 @@ json5@^2.2.1:
   resolved "https://registry.npmjs.org/json5/-/json5-2.2.1.tgz"
   integrity sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==
 
+l0k_swap-sdk@10k-swap/10k_swap-sdk:
+  version "0.9.0"
+  resolved "https://codeload.github.com/10k-swap/10k_swap-sdk/tar.gz/354f35aa1caa7330bfa7db1309d814ddb2910e73"
+  dependencies:
+    big.js "^6.2.1"
+    decimal.js-light "^2.5.1"
+    jsbi "^4.3.0"
+    starknet "^4.22.0"
+    starknet-v5 "npm:starknet@5.24.2"
+    tiny-invariant "^1.2.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
+
 "l0k_swap-sdk@https://github.com/10k-swap/10k_swap-sdk.git#main":
   version "0.9.0"
   resolved "https://github.com/10k-swap/10k_swap-sdk.git#main"
