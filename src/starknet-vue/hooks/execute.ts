@@ -32,7 +32,7 @@ const INIT_STATE = {
   error: undefined,
 }
 
-export function useStarknetExecute<T extends (RawArgs | Calldata)[]>(
+export function useStarknetExecute<T extends any[]>(
   contractAddresses: ComputedRef<string[] | undefined>,
   abis: Abi[],
   methods: string[]
