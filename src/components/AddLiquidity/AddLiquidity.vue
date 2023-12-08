@@ -83,13 +83,11 @@ import { useStarknet } from '../../starknet-vue/providers/starknet'
 import { DEFAULT_DEADLINE_FROM_NOW } from '../../constants'
 import l0k_router_abi from '../../constants/abis/l0k_router_abi.json'
 import erc20 from '../../constants/abis/erc20.json'
-import { Abi } from 'starknet'
-import { bnToUint256 } from 'starknet/dist/utils/uint256'
+import { Abi, uint256 } from 'starknet5'
 import { calculateSlippageAmount, getDeadlineFromNow, getDeductGasMaxAmount } from '../../utils'
 import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
 import { ROUTER_ADDRESSES } from '../../constants/address'
 import { useMintStore } from '../../state'
-import { toBN } from 'starknet/utils/number'
 import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
@@ -213,10 +211,10 @@ export default defineComponent({
       if (!parsedAmountA || !parsedAmountB || !routerAddress.value || !account.value) {
         return
       }
-      const AAmount = bnToUint256(parsedAmountA.raw.toString())
-      const BAmount = bnToUint256(parsedAmountB.raw.toString())
-      const AMin = bnToUint256(toBN(calculateSlippageAmount(parsedAmountA, noLiquidity.value ? 0 : allowedSlippage.value)[0].toString()))
-      const BMin = bnToUint256(toBN(calculateSlippageAmount(parsedAmountB, noLiquidity.value ? 0 : allowedSlippage.value)[0].toString()))
+      const AAmount = uint256.bnToUint256(parsedAmountA.raw.toString())
+      const BAmount = uint256.bnToUint256(parsedAmountB.raw.toString())
+      const AMin = uint256.bnToUint256(calculateSlippageAmount(parsedAmountA, noLiquidity.value ? 0 : allowedSlippage.value)[0].toString())
+      const BMin = uint256.bnToUint256(calculateSlippageAmount(parsedAmountB, noLiquidity.value ? 0 : allowedSlippage.value)[0].toString())
 
       const response = await executeInvoke({
         args: [

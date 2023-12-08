@@ -1,4 +1,5 @@
-import { InvokeFunctionResponse, Overrides, Call, Abi } from 'starknet4'
+import { InvokeFunctionResponse, Call, Abi, AllowArray, RawArgs, Calldata } from 'starknet5'
+import { Overrides } from 'starknet4'
 import { ComputedRef, reactive, toRaw } from 'vue'
 import { useStarknet } from '../providers/starknet'
 import { useStarknetTransactionManager } from '../providers/transaction/hooks'
@@ -10,7 +11,7 @@ interface State {
   error?: string | undefined
 }
 
-export interface ExecuteArgs<T extends unknown[]> {
+export interface ExecuteArgs<T extends RawArgs | Calldata> {
   args: T[]
   overrides?: Overrides
   metadata?: {
@@ -19,7 +20,7 @@ export interface ExecuteArgs<T extends unknown[]> {
   }
 }
 
-export interface UseStarknetExecute<T extends unknown[]> {
+export interface UseStarknetExecute<T extends RawArgs | Calldata> {
   state: State
   reset: () => void
   execute: ({ args, metadata }: ExecuteArgs<T>) => Promise<InvokeFunctionResponse | undefined>
@@ -31,7 +32,7 @@ const INIT_STATE = {
   error: undefined,
 }
 
-export function useStarknetExecute<T extends unknown[]>(
+export function useStarknetExecute<T extends (RawArgs | Calldata)[]>(
   contractAddresses: ComputedRef<string[] | undefined>,
   abis: Abi[],
   methods: string[]
@@ -64,7 +65,7 @@ export function useStarknetExecute<T extends unknown[]>(
       try {
         state.loading = true
 
-        const transactions: Call[] = contractAddresses.value.map((address, i) => ({
+        const transactions: AllowArray<Call> = contractAddresses.value.map((address, i) => ({
           contractAddress: address,
           entrypoint: methods[i],
           calldata: args[i],

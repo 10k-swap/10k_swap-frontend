@@ -88,8 +88,7 @@ import { ROUTER_ADDRESSES } from '../../constants/address'
 import { useStarknetExecute } from '../../starknet-vue/hooks/execute'
 import l0k_router_abi from '../../constants/abis/l0k_router_abi.json'
 import erc20 from '../../constants/abis/erc20.json'
-import { Abi } from 'starknet4'
-import { bnToUint256 } from 'starknet/dist/utils/uint256'
+import { Abi, uint256 } from 'starknet5'
 import WaittingModal from '../transaction/WaittingModal.vue'
 import ScuccessModal from '../transaction/ScuccessModal.vue'
 import RejectedModal from '../transaction/RejectedModal.vue'
@@ -98,7 +97,6 @@ import DetailedRemove from './DetailedRemove.vue'
 import SimpleRemove from './SimpleRemove.vue'
 import { calculateSlippageAmount, getDeadlineFromNow } from '../../utils'
 import { useUserLiquiditySlippageTolerance } from '../../state/slippageToleranceSettings/hooks'
-import { toBN } from 'starknet/utils/number'
 import { useOpenWalletModal } from '../../state/modal/hooks'
 
 export default defineComponent({
@@ -181,9 +179,9 @@ export default defineComponent({
       if (!parsedAmountA || !parsedAmountB || !liquidityAmount || !routerAddress.value || !account.value) {
         return
       }
-      const LAmount = bnToUint256(liquidityAmount.raw.toString())
-      const AMin = bnToUint256(toBN(calculateSlippageAmount(parsedAmountA, allowedSlippage.value)[0].toString()))
-      const BMin = bnToUint256(toBN(calculateSlippageAmount(parsedAmountB, allowedSlippage.value)[0].toString()))
+      const LAmount = uint256.bnToUint256(liquidityAmount.raw.toString())
+      const AMin = uint256.bnToUint256(calculateSlippageAmount(parsedAmountA, allowedSlippage.value)[0].toString())
+      const BMin = uint256.bnToUint256(calculateSlippageAmount(parsedAmountB, allowedSlippage.value)[0].toString())
 
       const response = await executeInvoke({
         args: [

@@ -1,4 +1,4 @@
-import { Abi, Contract, InvokeFunctionResponse } from 'starknet5'
+import { Abi, Contract, InvokeFunctionResponse, uint256 } from 'starknet5'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'l0k_swap-sdk'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_SWAP_ALLOWED_SLIPPAGE } from '../constants'
 import { getRouterContract } from '../utils'
@@ -7,7 +7,6 @@ import { useStarknet } from '../starknet-vue/providers/starknet'
 import erc20 from '../constants/abis/erc20.json'
 import l0k_router_abi from '../constants/abis/l0k_router_abi.json'
 import { isAccountInterface } from '../starknet-vue/utils'
-import { bnToUint256 } from 'starknet/dist/utils/uint256'
 import { useStarknetTransactionManager } from '../starknet-vue/providers/transaction'
 import { getSwapSummary } from './useSwapSummary'
 import { getSwapApproveAmount } from './useSwapApproveAmount'
@@ -136,7 +135,7 @@ export function useSwapCallback(
           swapTrade,
           Math.floor(typeof allowedSlippage === 'number' ? allowedSlippage : allowedSlippage.value)
         )
-        const approveAmount = bnToUint256(swapApproveAmount.raw.toString())
+        const approveAmount = uint256.bnToUint256(swapApproveAmount.raw.toString())
 
         return libraryRaw
           .execute(
