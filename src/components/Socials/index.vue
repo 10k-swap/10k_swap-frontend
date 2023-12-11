@@ -16,7 +16,7 @@ import MirrorIcon from './mirror.png'
 import TwitterIcon from './twitter.png'
 
 const socials = [
-  { link: 'https://twitter.com/10KSwap', icon: TwitterIcon },
+  { link: 'https://twitter.com/10KX_Global', icon: TwitterIcon },
   { link: 'https://github.com/10k-swap', icon: GithubIcon },
   { link: 'https://mirror.xyz/0xbf5808047D1e968D6A68580C3f61262A95eCb7Ae', icon: MirrorIcon },
   { link: 'https://discord.gg/T77yphUPB6', icon: DiscordIcon },
