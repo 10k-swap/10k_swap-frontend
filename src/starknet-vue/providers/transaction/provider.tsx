@@ -3,6 +3,7 @@ import { useStarknet } from '../starknet/hooks'
 import { DEFAULT_INTERVAL, StarknetTransactionMethodsSymbol, StarknetTransactionStateSymbol } from './const'
 import { Transaction, TransactionStatus, TransactionSubmitted } from './model'
 import TransactionStorageManager from '../../utils/TransactionStorageManager'
+import { TransactionFinalityStatus } from 'starknet5'
 
 function isLoading(status: TransactionStatus | undefined) {
   if (!status) {
@@ -81,7 +82,10 @@ export const StarknetTransactionManagerProvider = defineComponent({
       try {
         const transactionResponse = await library.value.getTransactionReceipt(transactionHash)
         const lastUpdatedAt = Date.now()
-        if (transactionResponse.status === 'NOT_RECEIVED') {
+        const finalityStatus: TransactionFinalityStatus = (transactionResponse as any).finality_status
+        const status = finalityStatus ? finalityStatus : transactionResponse.status
+
+        if (!status || status === 'NOT_RECEIVED') {
           return
         }
 
@@ -92,10 +96,6 @@ export const StarknetTransactionManagerProvider = defineComponent({
           return
         }
 
-        const status = transactionResponse.status
-        if (!status) {
-          return
-        }
         const newTransaction: Transaction = {
           transactionHash,
           lastUpdatedAt,
