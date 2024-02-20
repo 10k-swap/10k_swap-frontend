@@ -141,7 +141,7 @@ export default defineComponent({
       return `Unstaked ${parsedAmount.value?.toSignificant(3)} ${parsedAmount.value?.token.symbol}`
     })
 
-    const onInput = (e: InputEvent) => {
+    const onInput = (e: any) => {
       const nextUserInput = (e.target as HTMLInputElement).value.replace(/,/g, '.') ?? ''
 
       if (!new RegExp(/^[0-9]*[.,]?[0-9]*$/).test(nextUserInput) && nextUserInput !== '') {

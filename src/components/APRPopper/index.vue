@@ -1,5 +1,5 @@
 <template>
-  <Popper :interactive="false" hover @close:popper="show = false" @open:popper="show = true">
+  <Popper :interactive="false" hover>
     <div class="l0k-swap-apr--button" role="button">
       <Text class="symbol" :size="isMobile ? 'mini' : 'small'">{{ APY }} %</Text>
     </div>

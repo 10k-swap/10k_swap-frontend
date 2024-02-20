@@ -144,7 +144,7 @@ export default defineComponent({
     watch([account, parsedAmount], checkError)
     onMounted(checkError)
 
-    const onInput = (e: InputEvent) => {
+    const onInput = (e: any) => {
       const nextUserInput = (e.target as HTMLInputElement).value.replace(/,/g, '.') ?? ''
 
       if (!new RegExp(/^[0-9]*[.,]?[0-9]*$/).test(nextUserInput) && nextUserInput !== '') {
