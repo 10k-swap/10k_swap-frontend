@@ -5,6 +5,7 @@ const Swap = () => import('../pages/Swap/Swap/index.vue')
 const Pool = () => import('../pages/Swap/Pool/index.vue')
 const Faucet = () => import('../pages/Swap/Faucet/index.vue')
 const Analytics = () => import('../pages/Swap/Analytics/index.vue')
+const Stake = () => import('../pages/Swap/Stake/index.vue')
 
 const Wallet = () => import('../pages/Wallet/index.vue')
 
@@ -13,6 +14,7 @@ const swaps = [
   { path: '/pool', name: 'Pool', component: Pool },
   { path: '/faucet', name: 'Faucet', component: Faucet },
   { path: '/analytics', name: 'Analytics', component: Analytics },
+  { path: '/stake', name: 'Stake', component: Stake },
 ]
 
 const routes: Array<RouteRecordRaw> = [

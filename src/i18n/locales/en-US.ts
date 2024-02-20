@@ -55,6 +55,7 @@ export default {
     pool: 'Pool',
     faucet: 'Faucet',
     analytics: 'Analytics',
+    stake: 'Stake',
   },
   connector: {
     connect: 'Connect Wallet',
@@ -118,6 +119,19 @@ export default {
     your_pool_share: 'Your Pool share:',
     add_liquidity: '+Add',
     withdraw: '-Withdraw',
+  },
+  stake: {
+    title: 'ALL Pools',
+    name: 'Name',
+    APY: 'APY',
+    fees_stake: 'Fees+Stake',
+    staked: 'Staked',
+    unclaimed: 'Unclaimed',
+    reward: 'Reward',
+    pool: 'Pool',
+    share: 'Share',
+    oparation: 'Oparation',
+    total_staked: 'Total Staked',
   },
   pool_modal: {
     add_liquidity: 'Add liquidity',

@@ -1,9 +1,10 @@
 import { StarknetChainId } from 'l0k_swap-sdk'
 import { Abi, Contract, RpcProvider, uint256, Uint256 } from 'starknet5'
 import l0k_pair_abi from '../constants/abis/l0k_pair_abi.json'
+import { RPCS } from '../constants'
 
 export default async function getBalances(account: string, pairAddress: string, chainId: StarknetChainId): Promise<string | undefined> {
-  const contract = new Contract(l0k_pair_abi as Abi, pairAddress, new RpcProvider({ nodeUrl: chainId, default: true }))
+  const contract = new Contract(l0k_pair_abi as Abi, pairAddress, new RpcProvider({ nodeUrl: RPCS[chainId], default: true }))
   try {
     const data = (await contract.call('balanceOf', [account])) as { balance: Uint256 }
 

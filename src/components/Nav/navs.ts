@@ -33,5 +33,9 @@ export default {
       path: '/analytics',
       name: i18n.global.t('nav.analytics'),
     },
+    {
+      path: '/stake',
+      name: i18n.global.t('nav.stake'),
+    },
   ],
 }

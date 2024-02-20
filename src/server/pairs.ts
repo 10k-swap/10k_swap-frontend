@@ -39,6 +39,8 @@ export interface AllPairItem {
   reserve1: string //0x
   APR: string
   lastUpdatedTime: string
+  fee24h: string
+  strkPrice: string
 }
 
 export async function getAllPairs(chainId: StarknetChainId) {
@@ -71,6 +73,8 @@ export async function getAllPairs(chainId: StarknetChainId) {
             token1,
             pair,
             totalSupply: new TokenAmount(pair.liquidityToken, totalSupply),
+            fee24h: item.fee24h,
+            strkPrice: item.strkPrice,
           })
         } else {
           const pool = await getPoolInfo(chainId, item)
@@ -97,7 +101,7 @@ export async function getAllPairs(chainId: StarknetChainId) {
   }
 }
 
-async function getPoolInfo(chainId: StarknetChainId, data: AllPairItem) {
+async function getPoolInfo(chainId: StarknetChainId, data: Omit<Omit<AllPairItem, 'fee24h'>, 'strkPrice'>) {
   const token0 = getToken(chainId, data.token0.address) as Token
   const token1 = getToken(chainId, data.token1.address) as Token
 
@@ -118,6 +122,8 @@ async function getPoolInfo(chainId: StarknetChainId, data: AllPairItem) {
       token0,
       token1,
       pair,
+      fee24h: '0',
+      strkPrice: '0',
       totalSupply: new TokenAmount(pair.liquidityToken, uint256.uint256ToBN(totalSupply).toString()),
     }
   } catch (error) {

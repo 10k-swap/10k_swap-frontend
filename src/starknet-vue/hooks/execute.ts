@@ -42,7 +42,7 @@ export function useStarknetExecute<T extends any[]>(
   } = useStarknet()
 
   const { addTransaction } = useStarknetTransactionManager()
-  const state = reactive<State>(INIT_STATE)
+  const state = reactive<State>(JSON.parse(JSON.stringify(INIT_STATE)))
 
   const reset = () => {
     state.data = undefined
@@ -82,7 +82,7 @@ export function useStarknetExecute<T extends any[]>(
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err)
         state.error = message
-        console.log(message)
+        console.log(err)
       } finally {
         state.loading = false
       }

@@ -1,28 +1,28 @@
 <template>
   <div class="l0k-swap-pool-wrapper">
-    <template v-if="!isSupportChain">
+    <!-- <template v-if="!isSupportChain">
       <Text class="wrong-network" bold> Wrong Network </Text>
     </template>
-    <template v-else>
-      <div class="head">
-        <Text bold>
-          {{ t('pool.title') }}
-        </Text>
-        <div class="tabs">
-          <Button class="pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'pools'" @click="currentNav = 'pools'">
-            {{ t('pool.pools') }}
-          </Button>
-          <Button class="my-pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'my-pools'" @click="currentNav = 'my-pools'">
-            {{ t('pool.my_pools') }}
-          </Button>
-        </div>
-        <Button :size="'small'" :type="'primary'" @click="onNewPosition">
-          {{ isMobile ? '+' : t('pool.new_position') }}
+    <template v-else> -->
+    <div class="head">
+      <Text bold>
+        {{ t('pool.title') }}
+      </Text>
+      <div class="tabs">
+        <Button class="pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'pools'" @click="currentNav = 'pools'">
+          {{ t('pool.pools') }}
+        </Button>
+        <Button class="my-pools" :size="'small'" :type="'secondary'" :disabled="currentNav === 'my-pools'" @click="currentNav = 'my-pools'">
+          {{ t('pool.my_pools') }}
         </Button>
       </div>
-      <Pools v-if="currentNav === 'pools'" :pairs="pairs" :loading="loadingPairs" />
-      <MyPools v-else :userPairs="userPairs" :loading="loadingUserPairs" />
-    </template>
+      <Button :size="'small'" :type="'primary'" @click="onNewPosition">
+        {{ isMobile ? '+' : t('pool.new_position') }}
+      </Button>
+    </div>
+    <Pools v-if="currentNav === 'pools'" :pairs="pairs" :loading="loadingPairs" />
+    <MyPools v-else :userPairs="userPairs" :loading="loadingUserPairs" />
+    <!-- </template> -->
   </div>
   <PoolModal />
 </template>
@@ -88,7 +88,7 @@ export default defineComponent({
 @import '../../../styles/index.scss';
 
 .l0k-swap-pool-wrapper {
-  width: 640px;
+  width: 740px;
   margin: 28px auto 0 auto;
   background: $color-white;
   border-radius: 20px;
@@ -103,7 +103,7 @@ export default defineComponent({
   }
 
   @include mobile {
-    width: 351px;
+    width: 431px;
     margin-top: 5px;
   }
 

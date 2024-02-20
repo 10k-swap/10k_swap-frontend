@@ -78,7 +78,7 @@ export function useStarknetCall(
         }
         return result
       } catch (error) {
-        console.log('call:call error', error)
+        console.log('call:call error', error, contract.value.address, method, args)
         throw error
       }
     }

@@ -4,9 +4,9 @@
       <Text class="name" :size="'small'">
         {{ t('pool.name') }}
       </Text>
-      <!-- <Text class="APR" :size="'small'">
+      <Text class="APR" :size="'small'">
         {{ t('pool.APR') }}
-      </Text> -->
+      </Text>
       <Text class="liquidity" :size="'small'">
         {{ t('pool.liquidity') }}
       </Text>
@@ -22,11 +22,19 @@
             {{ pair.token0.symbol }} - {{ pair.token1.symbol }}
           </Text>
         </div>
-        <!-- <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text> -->
+        <template v-if="hasStake(pair)">
+          <APRPopper :pool="pair" />
+        </template>
+        <template v-else>
+          <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ getAPY(pair) }} % </Text>
+        </template>
         <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">$ {{ pair.liquidity.toFixed(2) }} </Text>
-        <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
-          {{ t('pool.get') }}
-        </Text>
+        <div class="oparation">
+          <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
+            {{ t('pool.get') }}
+          </Text>
+          <Button v-if="hasStake(pair)" class="add" :size="'small'" @click="onStake"> Stake </Button>
+        </div>
       </div>
       <div class="loading" v-if="loading && !sortedPairs.length">
         <LoadingIcon />
@@ -44,6 +52,13 @@ import { LoadingIcon } from '../../../components/Svg'
 import useIsMobile from '../../../hooks/useIsMobile'
 import { Pool, usePoolModalStore } from '../../../state'
 import { cloneDeep } from 'lodash'
+import Button from '../../../components/Button/Button'
+import APRPopper from '../../../components/APRPopper/index.vue'
+import { useRouter } from 'vue-router'
+import { isEqualAddress } from 'l0k_swap-sdk'
+import { useStarknet } from '../../../starknet-vue/providers/starknet'
+import { STAKE_POOLS } from '../../../constants/stake'
+import { getFeesAPY } from '../../../utils/getAPY'
 
 export default defineComponent({
   props: {
@@ -58,24 +73,43 @@ export default defineComponent({
     Text,
     DoubleLogo,
     LoadingIcon,
+    Button,
+    APRPopper,
   },
   setup(props) {
     const { pairs } = toRefs(props)
 
     const { t } = useI18n()
 
+    const {
+      state: { chainId },
+    } = useStarknet()
     const poolModalStore = usePoolModalStore()
     const isMobile = useIsMobile()
+    const router = useRouter()
 
     const sortedPairs = computed(() => cloneDeep(pairs.value ?? []).sort((a, b) => b.liquidity - a.liquidity))
 
     const onGet = (pool: Pool) => {
       poolModalStore.addLiquidity(pool.pair)
     }
+    const onStake = () => {
+      router.push({ path: '/stake' })
+    }
+
+    const hasStake = (pool: Pool) => {
+      return chainId.value ? STAKE_POOLS[chainId.value].some((item) => isEqualAddress(pool.pairAddress, item.lpToken.address)) : false
+    }
+    const getAPY = (pool: Pool) => {
+      return getFeesAPY(parseFloat(pool.fee24h), pool.liquidity).toFixed(2)
+    }
 
     return {
       t,
       onGet,
+      onStake,
+      hasStake,
+      getAPY,
 
       sortedPairs,
       isMobile,
@@ -92,7 +126,7 @@ export default defineComponent({
   .pools-head {
     display: grid;
     align-items: center;
-    grid-template-columns: 170px 260px 170px;
+    grid-template-columns: 170px 100px 260px 170px;
     background: $color-bg-secondary;
     height: 32px;
 
@@ -122,7 +156,7 @@ export default defineComponent({
     .pair {
       display: grid;
       align-items: center;
-      grid-template-columns: 170px 260px 170px;
+      grid-template-columns: 170px 100px 260px 170px;
       padding: 10px 0;
       .tokens {
         display: flex;
@@ -136,10 +170,19 @@ export default defineComponent({
         display: flex;
         justify-content: center;
       }
-      .get {
-        padding-left: 5px;
-        cursor: pointer;
-        text-align: center;
+      .oparation {
+        display: flex;
+        align-items: center;
+        .get {
+          padding-left: 5px;
+          cursor: pointer;
+          text-align: center;
+        }
+        .add {
+          color: $color-blue;
+          border-color: $color-blue;
+          margin-left: 20px;
+        }
       }
     }
     .loading {
@@ -150,15 +193,15 @@ export default defineComponent({
     }
   }
   @include mobile {
-    width: 351px;
+    width: 431px;
     padding: 0;
 
     .pools-head {
-      grid-template-columns: 108px 143px 100px;
+      grid-template-columns: 108px 80px 143px 100px;
     }
     .pools {
       .pair {
-        grid-template-columns: 108px 143px 100px;
+        grid-template-columns: 108px 80px 143px 100px;
         .tokens {
           .symbol {
             margin-left: 4px;
