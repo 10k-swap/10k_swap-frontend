@@ -18,5 +18,5 @@ export const STAKE_ADDRESSES: {
   [chainId in StarknetChainId]: string
 } = {
   [StarknetChainId.MAINNET]: '',
-  [StarknetChainId.TESTNET]: '0x04e59ea969ff735a7123906048e2b736cd35063a9d6aeb2881cb3ddee2fa86d9',
+  [StarknetChainId.TESTNET]: '0x051188e50bdda34dac05c8417807b32a3faa4ae8d979a55983d3f659036348ca',
 }

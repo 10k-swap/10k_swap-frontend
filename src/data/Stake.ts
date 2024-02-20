@@ -1,7 +1,6 @@
 import { Ref, computed } from 'vue'
 import { useStakeContract } from '../hooks/Contract'
 import { useStarknetCall } from '../starknet-vue/hooks/call'
-import { isUndefined } from 'lodash'
 import { StakePool } from '../state/stake/types'
 import { JSBI, Token, TokenAmount } from 'l0k_swap-sdk'
 import { useStarknet } from '../starknet-vue/providers/starknet'
