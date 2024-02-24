@@ -57,3 +57,11 @@ export function getDeductGasMaxAmount(amount: TokenAmount | undefined): TokenAmo
 export function isDev() {
   return import.meta.env.DEV
 }
+
+export async function sleep(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(null)
+    }, ms)
+  })
+}
