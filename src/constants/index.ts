@@ -39,7 +39,12 @@ export const L0K_X_API = 'https://api.10kx.com'
 
 export const WALLET_HREF = 'https://10kx.com/?wallet'
 
+export const RPCS_V4: { [starknetChainId in StarknetChainId]: string } = {
+  [StarknetChainId.MAINNET]: 'https://starknet-mainnet.public.blastapi.io/rpc/v0.4',
+  [StarknetChainId.TESTNET]: 'https://starknet-testnet.public.blastapi.io/rpc/v0.4',
+}
+
 export const RPCS: { [starknetChainId in StarknetChainId]: string } = {
-  [StarknetChainId.MAINNET]: 'https://starknet-mainnet.public.blastapi.io',
-  [StarknetChainId.TESTNET]: 'https://starknet-testnet.public.blastapi.io',
+  [StarknetChainId.MAINNET]: 'https://starknet-mainnet.public.blastapi.io/rpc/v0.5',
+  [StarknetChainId.TESTNET]: 'https://starknet-testnet.public.blastapi.io/rpc/v0.5',
 }

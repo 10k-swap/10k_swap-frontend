@@ -1,5 +1,5 @@
 import { StarknetChainId } from 'l0k_swap-sdk'
-import { RpcProvider } from 'starknet5'
+import { getRpcProvider } from '../../../utils/getRpcProvider'
 
 export const StarknetStateSymbol = Symbol('StarknetState')
 
@@ -7,7 +7,7 @@ export const StarknetMethodsSymbol = Symbol('StarknetMethods')
 
 export const defaultChainId = StarknetChainId.MAINNET
 
-export const defaultProvider = new RpcProvider({ nodeUrl: defaultChainId, default: true })
+export const defaultProvider = getRpcProvider(defaultChainId, { default: true })
 
 enum Chains {
   MAINNET = '0x534e5f4d41494e',

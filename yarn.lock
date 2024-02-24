@@ -2420,10 +2420,10 @@ sourcemap-codec@^1.4.8:
     ts-custom-error "^3.3.1"
     url-join "^4.0.1"
 
-"starknet5@npm:starknet@5.24.3":
-  version "5.24.3"
-  resolved "https://registry.yarnpkg.com/starknet/-/starknet-5.24.3.tgz#1d8a84047783ea122a6cf4f2dac59bfa6d628154"
-  integrity sha512-v0TuaNc9iNtHdbIRzX372jfQH1vgx2rwBHQDMqK4DqjJbwFEE5dog8Go6rGiZVW750NqRSWrZ7ahqyRNc3bscg==
+"starknet5@npm:starknet@5.24.2":
+  version "5.24.2"
+  resolved "https://registry.yarnpkg.com/starknet/-/starknet-5.24.2.tgz#086184ec1bb9dc5aee499e7568844fd497eb42fd"
+  integrity sha512-/PP7hih5UgZQYZJwwQE3E1lRh5b70D6tOaA6aKQe+ihK22IGdyyaAkNp3uFMeJwFsa2bWu5pRZom8ghYUV0ybw==
   dependencies:
     "@noble/curves" "~1.2.0"
     "@scure/base" "^1.1.3"

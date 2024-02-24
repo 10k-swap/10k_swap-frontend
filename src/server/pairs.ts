@@ -10,7 +10,8 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import I10kSwapPairABI from '../constants/abis/l0k_pair_abi.json'
 import pairs from '../constants/pairs.json'
-import { Abi, RpcProvider, Contract, Uint256, uint256 } from 'starknet5'
+import { Abi, Contract, Uint256, uint256 } from 'starknet5'
+import { getRpcProvider } from '../utils/getRpcProvider'
 
 dayjs.extend(utc)
 
@@ -102,9 +103,9 @@ async function getPoolInfo(chainId: StarknetChainId, data: AllPairItem) {
   const token1 = getToken(chainId, data.token1.address) as Token
 
   try {
-    const pair = await Fetcher.fetchPairData(token0, token1)
+    const pair = await Fetcher.fetchPairData(token0, token1, getRpcProvider(chainId))
 
-    const provider = new RpcProvider({ nodeUrl: chainId, default: true })
+    const provider = getRpcProvider(chainId, { default: true })
     const { totalSupply } = (await new Contract(I10kSwapPairABI as Abi, pair.liquidityToken.address, provider).call('totalSupply', [])) as {
       totalSupply: Uint256
     }
