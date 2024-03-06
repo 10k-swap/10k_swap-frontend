@@ -103,7 +103,7 @@ async function getPoolInfo(chainId: StarknetChainId, data: AllPairItem) {
   const token1 = getToken(chainId, data.token1.address) as Token
 
   try {
-    const pair = await Fetcher.fetchPairData(token0, token1, getRpcProvider(chainId))
+    const pair = await Fetcher.fetchPairData(token0, token1, getRpcProvider(chainId) as any)
 
     const provider = getRpcProvider(chainId, { default: true })
     const { totalSupply } = (await new Contract(I10kSwapPairABI as Abi, pair.liquidityToken.address, provider).call('totalSupply', [])) as {
