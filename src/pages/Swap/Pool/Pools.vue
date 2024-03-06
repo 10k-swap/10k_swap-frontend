@@ -4,11 +4,11 @@
       <Text class="name" :size="'small'">
         {{ t('pool.name') }}
       </Text>
-      <!-- <Text class="APR" :size="'small'">
-        {{ t('pool.APR') }}
-      </Text> -->
       <Text class="liquidity" :size="'small'">
         {{ t('pool.liquidity') }}
+      </Text>
+      <Text class="APR" :size="'small'">
+        {{ t('pool.APR') }}
       </Text>
       <Text class="add" :size="'small'">
         {{ t('pool.add') }}
@@ -22,8 +22,8 @@
             {{ pair.token0.symbol }} - {{ pair.token1.symbol }}
           </Text>
         </div>
-        <!-- <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text> -->
-        <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">$ {{ pair.liquidity.toFixed(2) }} </Text>
+        <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">${{ pair.liquidity.toFixed(2) }} </Text>
+        <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text>
         <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
           {{ t('pool.get') }}
         </Text>
@@ -92,7 +92,7 @@ export default defineComponent({
   .pools-head {
     display: grid;
     align-items: center;
-    grid-template-columns: 170px 260px 170px;
+    grid-template-columns: 170px 130px 130px 170px;
     background: $color-bg-secondary;
     height: 32px;
 
@@ -122,7 +122,7 @@ export default defineComponent({
     .pair {
       display: grid;
       align-items: center;
-      grid-template-columns: 170px 260px 170px;
+      grid-template-columns: 170px 130px 130px 170px;
       padding: 10px 0;
       .tokens {
         display: flex;
@@ -154,11 +154,11 @@ export default defineComponent({
     padding: 0;
 
     .pools-head {
-      grid-template-columns: 108px 143px 100px;
+      grid-template-columns: 108px 75px 70px 90px;
     }
     .pools {
       .pair {
-        grid-template-columns: 108px 143px 100px;
+        grid-template-columns: 108px 73px 70px 90px;
         .tokens {
           .symbol {
             margin-left: 4px;

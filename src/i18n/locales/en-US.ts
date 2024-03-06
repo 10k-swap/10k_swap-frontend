@@ -55,6 +55,7 @@ export default {
     pool: 'Pool',
     faucet: 'Faucet',
     analytics: 'Analytics',
+    rewards: 'Rewards',
   },
   connector: {
     connect: 'Connect Wallet',
@@ -104,7 +105,7 @@ export default {
     pools: 'Pools',
     new_position: '+ New position',
     name: 'Name',
-    APR: 'APR',
+    APR: 'Total APR',
     liquidity: 'Liquidity',
     pool_share: 'Pool Share',
     get: 'Add Liquidity',
@@ -119,6 +120,7 @@ export default {
     add_liquidity: '+Add',
     withdraw: '-Withdraw',
   },
+  rewards: {},
   pool_modal: {
     add_liquidity: 'Add liquidity',
     withdraw: 'Withdraw',

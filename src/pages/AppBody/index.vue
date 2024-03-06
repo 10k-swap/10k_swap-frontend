@@ -1,11 +1,12 @@
 <template>
   <div class="l0k-swap-app-body">
-    <Placard v-if="!isMobile" />
-    <WalletBar />
+    <!-- <Placard v-if="!isMobile" /> -->
+    <Placard />
+    <!-- <WalletBar /> -->
     <MHeader />
     <Popups />
     <slot></slot>
-    <WalletCard />
+    <!-- <WalletCard /> -->
     <div class="socials" v-if="showSocials"><Socials /></div>
     <div class="l0k-swap-app-body-bg" :class="{ swap: isSwap, pool: isPool }"></div>
   </div>
@@ -20,8 +21,8 @@ import Modals from '../../components/Modals/Modals.vue'
 import Socials from '../../components/Socials/index.vue'
 import Placard from '../../components/Placard/index.vue'
 import Popups from '../../components/Popups/index.vue'
-import WalletCard from '../../components/Wallet/WalletCard.vue'
-import WalletBar from '../../components/Wallet/WalletBar.vue'
+// import WalletCard from '../../components/Wallet/WalletCard.vue'
+// import WalletBar from '../../components/Wallet/WalletBar.vue'
 import useIsMobile from '../../hooks/useIsMobile'
 
 export default defineComponent({
@@ -31,8 +32,8 @@ export default defineComponent({
     Socials,
     Placard,
     Popups,
-    WalletCard,
-    WalletBar,
+    // WalletCard,
+    // WalletBar,
   },
   setup() {
     const route = useRoute()
