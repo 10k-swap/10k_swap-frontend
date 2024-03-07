@@ -1,7 +1,7 @@
 <template>
   <div class="l0k-swap-rewards">
     <div class="rewards-title">
-      <h1>Starknet DeFi Spring 🌿</h1>
+      <h1>Starknet DeFi Spring 🌱</h1>
       <div class="rewards-title_40m">🎉 40M&nbsp;<StarknetIcon width="36" heigth="36" />&nbsp;STRK</div>
       <span class="l0k-swap-text--secondary-text">
         10KSwap Protocol users will receive STRK incentives as part of the Starknet DeFi Spring Program.
@@ -40,7 +40,6 @@ import { useI18n } from 'vue-i18n'
 import DoubleLogo from '../../../components/DoubleLogo/index.vue'
 import Text from '../../../components/Text/Text.vue'
 import { useAllPairs } from '../../../state/pool/hooks'
-// import numeral from 'numeral'
 import { cloneDeep } from 'lodash'
 import useIsMobile from '../../../hooks/useIsMobile'
 import { StarknetIcon } from '../../../components/Svg/index'
@@ -104,7 +103,7 @@ export default defineComponent({
   border-radius: 20px;
   background: $color-white;
   margin: 28px auto;
-  padding: 20px;
+  padding: 32px;
   @media screen and (max-width: 768px) {
     width: calc(100% - 24px);
     margin: 8px 12px;
@@ -144,7 +143,7 @@ export default defineComponent({
     h2 {
       font-size: 18px;
       font-weight: bolder;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     a {
