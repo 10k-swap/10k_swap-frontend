@@ -29,7 +29,9 @@
 
     <div class="claims">
       <h2>Claim rewards STRK</h2>
-      <span class="l0k-swap-text--secondary-text">Launched before March 09, 2024... </span>
+      <div class="l0k-swap-text--secondary-text">
+        📢 We are sorting and verifying the data, and the claim date has been postponed to March 12th...
+      </div>
     </div>
   </div>
 </template>
