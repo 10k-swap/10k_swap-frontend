@@ -44,8 +44,8 @@
         <div class="claim-content--item">
           <Text :color="'secondary-text'">Round 02/22 - 03/07 claimable:</Text>&nbsp;
           <div v-if="!rewardsLoading">
-            {{ rewardsCalldataAmountSTRK.toFixed(3) }}
-            STRK<Text size="mini" v-if="rewardsClaimed > 0">&nbsp;(claimed: {{ rewardsClaimed.toFixed(3) }})</Text>&nbsp;<StarknetIcon
+            {{ rewardsCalldataAmountSTRK.toFixed(5) }}
+            STRK<Text size="mini" v-if="rewardsClaimed > 0">&nbsp;(claimed: {{ rewardsClaimed.toFixed(5) }})</Text>&nbsp;<StarknetIcon
               width="18"
               heigth="18"
             />
