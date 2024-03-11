@@ -29,35 +29,77 @@
 
     <div class="claims">
       <h2>Claim rewards STRK</h2>
-      <div class="l0k-swap-text--secondary-text">
-        📢 We are sorting and verifying the data, and the claim date has been postponed to March 12th...
+      <div class="claim-content">
+        <div class="claim-content--item">
+          <Text :color="'secondary-text'">Round 02/22 - 03/07 claimable:</Text>&nbsp;
+          <div v-if="!rewardsLoading">
+            {{ rewardsCalldataAmountSTRK.toFixed(2) }}
+            STRK&nbsp;<StarknetIcon width="18" heigth="18" />
+          </div>
+          <span v-else>Loading...</span>
+          <Button
+            class="button"
+            :type="'primary'"
+            :size="'small'"
+            bold
+            @click="onClickClaim"
+            :disabled="rewardsLoading || rewardsCalldataAmountSTRK <= 0"
+            >{{ claimButtonText }}</Button
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useI18n } from 'vue-i18n'
-import DoubleLogo from '../../../components/DoubleLogo/index.vue'
-import Text from '../../../components/Text/Text.vue'
-import { useAllPairs } from '../../../state/pool/hooks'
+import { formatEther } from '@ethersproject/units'
+import { StarknetChainId } from 'l0k_swap-sdk'
 import { cloneDeep } from 'lodash'
-import useIsMobile from '../../../hooks/useIsMobile'
-import { StarknetIcon } from '../../../components/Svg/index'
+import { computed, defineComponent, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import Button from '../../../components/Button/Button'
+import DoubleLogo from '../../../components/DoubleLogo/index.vue'
+import { StarknetIcon } from '../../../components/Svg/index'
+import Text from '../../../components/Text/Text.vue'
+import useIsMobile from '../../../hooks/useIsMobile'
+import { getCalldata } from '../../../server/defispring'
+import { useStarknet } from '../../../starknet-vue/providers/starknet'
+import { useOpenWalletModal } from '../../../state/modal/hooks'
+import { useAllPairs } from '../../../state/pool/hooks'
+import { useStarknetExecute } from '../../../starknet-vue/hooks/execute'
+import { DEFISPRING_DISTRIBUTOR_ADDRESSES } from '../../../constants/address'
+import distributor from '../../../constants/abis/distributor.json'
+import { Abi } from 'starknet5'
 
 export default defineComponent({
   components: {
     Text,
     DoubleLogo,
     StarknetIcon,
+    Button,
   },
   setup() {
     const { t } = useI18n()
 
     const router = useRouter()
     const isMobile = useIsMobile()
+    const {
+      state: { account, chainId },
+    } = useStarknet()
+    const openWalletModal = useOpenWalletModal()
+
+    const rewardsLoading = ref(false)
+    const rewardsCalldata = ref<{ amount: string; proof: string[] }>({ amount: '', proof: [] })
+    const rewardsCalldataAmountSTRK = computed(() => parseFloat(formatEther(rewardsCalldata.value.amount)))
+
+    const executeContractAddresses = computed(() => [DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN])
+    const {
+      state: executeState,
+      execute: executeInvoke,
+      reset: executeReset,
+    } = useStarknetExecute(executeContractAddresses, [distributor as Abi], ['claim'])
 
     const [pairs, loadingPairs] = useAllPairs()
 
@@ -81,8 +123,36 @@ export default defineComponent({
         .sort((a: any, b: any) => parseFloat(b.APR) - parseFloat(a.APR))
     )
 
+    const claimButtonText = computed(() => {
+      if (account.value) return 'Claim'
+      else return 'Connect Wallet'
+    })
+
+    const loadCalldata = async () => {
+      rewardsLoading.value = true
+      const _calldata = await getCalldata(chainId.value || StarknetChainId.MAINNET, account.value, 1)
+      rewardsLoading.value = false
+      rewardsCalldata.value = _calldata
+    }
+
+    loadCalldata()
+    watch([account, chainId], () => {
+      loadCalldata()
+    })
+
     const onClickPair = () => {
       router.replace({ path: '/pool' })
+    }
+
+    const onClickClaim = async () => {
+      if (!account.value) return openWalletModal()
+
+      try {
+        await executeInvoke({ args: [[rewardsCalldata.value.amount, rewardsCalldata.value.proof]] })
+      } catch (e) {
+        console.error(e)
+      }
+      executeReset()
     }
 
     return {
@@ -90,8 +160,13 @@ export default defineComponent({
       isMobile,
       filterPairs,
       loadingPairs,
+      claimButtonText,
+      rewardsLoading,
+      rewardsCalldata,
+      rewardsCalldataAmountSTRK,
 
       onClickPair,
+      onClickClaim,
     }
   },
 })
@@ -198,6 +273,29 @@ export default defineComponent({
       font-size: 18px;
       font-weight: bolder;
       margin-bottom: 12px;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+    }
+
+    .claim-content {
+      .claim-content--item {
+        width: 100%;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+
+        div {
+          display: flex;
+          align-items: center;
+        }
+
+        .button {
+          margin-left: 10px;
+        }
+      }
     }
   }
 }
