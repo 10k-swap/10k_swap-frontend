@@ -29,6 +29,17 @@
 
     <div class="claims">
       <h2>Claim rewards STRK</h2>
+      <div class="illustrate">
+        <ul>
+          <li>Larger positions earn a larger share of incentives, all else equal.</li>
+          <li>The longer you hold a position, the more rewards you get (during the event).</li>
+          <li>If the reward is too low, you can accumulate it and claim the rewards together in the next round.</li>
+          <li>
+            ⚠️ When using the ArgentX wallet to make a claim, a warning will appear. We are reaching out to ArgentX to address this issue, which will
+            not affect the claim reward.
+          </li>
+        </ul>
+      </div>
       <div class="claim-content">
         <div class="claim-content--item">
           <Text :color="'secondary-text'">Round 02/22 - 03/07 claimable:</Text>&nbsp;
@@ -193,9 +204,10 @@ export default defineComponent({
           },
         })
 
-        if (response?.transaction_hash) await getRpcProvider(StarknetChainId.MAINNET).waitForTransaction(response?.transaction_hash)
-
-        loadCalldata()
+        if (response?.transaction_hash) {
+          await getRpcProvider(StarknetChainId.MAINNET).waitForTransaction(response?.transaction_hash)
+          loadCalldata()
+        }
       } catch (e) {
         console.error(e)
       }
@@ -326,9 +338,26 @@ export default defineComponent({
       margin-bottom: 12px;
     }
 
-    .loading {
-      display: flex;
-      align-items: center;
+    .illustrate {
+      padding: 2px 10px;
+      margin: 16px 0;
+      border-left: 3px #68b41b solid;
+      color: #888888;
+      font-size: 14px;
+
+      ul {
+        list-style: decimal;
+
+        li {
+          margin-bottom: 8px;
+          margin-left: 14px;
+          line-height: 20px;
+
+          &:last-child {
+            margin-bottom: 0px;
+          }
+        }
+      }
     }
 
     .claim-content {
