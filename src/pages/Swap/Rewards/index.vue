@@ -96,7 +96,7 @@ export default defineComponent({
 
     const executeContractAddresses = computed(() => [DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN])
     const {
-      state: executeState,
+      // state: executeState,
       execute: executeInvoke,
       reset: executeReset,
     } = useStarknetExecute(executeContractAddresses, [distributor as Abi], ['claim'])
