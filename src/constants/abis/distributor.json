@@ -1,12 +1,12 @@
 [
   {
-    "type": "impl",
     "name": "Distributor",
+    "type": "impl",
     "interface_name": "distributor::contract::IDistributor"
   },
   {
-    "type": "struct",
     "name": "core::array::Span::<core::felt252>",
+    "type": "struct",
     "members": [
       {
         "name": "snapshot",
@@ -15,12 +15,12 @@
     ]
   },
   {
-    "type": "interface",
     "name": "distributor::contract::IDistributor",
+    "type": "interface",
     "items": [
       {
-        "type": "function",
         "name": "claim",
+        "type": "function",
         "inputs": [
           {
             "name": "amount",
@@ -35,8 +35,8 @@
         "state_mutability": "external"
       },
       {
-        "type": "function",
         "name": "add_root",
+        "type": "function",
         "inputs": [
           {
             "name": "new_root",
@@ -47,8 +47,8 @@
         "state_mutability": "external"
       },
       {
-        "type": "function",
         "name": "get_root_for",
+        "type": "function",
         "inputs": [
           {
             "name": "claimee",
@@ -71,8 +71,8 @@
         "state_mutability": "view"
       },
       {
-        "type": "function",
         "name": "amount_already_claimed",
+        "type": "function",
         "inputs": [
           {
             "name": "claimee",
@@ -87,8 +87,8 @@
         "state_mutability": "view"
       },
       {
-        "type": "function",
         "name": "roots",
+        "type": "function",
         "inputs": [],
         "outputs": [
           {
@@ -100,8 +100,8 @@
     ]
   },
   {
-    "type": "constructor",
     "name": "constructor",
+    "type": "constructor",
     "inputs": [
       {
         "name": "owner",
@@ -110,87 +110,65 @@
     ]
   },
   {
-    "type": "event",
+    "kind": "struct",
     "name": "distributor::contract::Distributor::Claimed",
-    "kind": "struct",
+    "type": "event",
     "members": [
       {
+        "kind": "data",
         "name": "claimee",
-        "type": "core::starknet::contract_address::ContractAddress",
-        "kind": "data"
+        "type": "core::starknet::contract_address::ContractAddress"
       },
       {
+        "kind": "data",
         "name": "amount",
-        "type": "core::integer::u128",
-        "kind": "data"
+        "type": "core::integer::u128"
       }
     ]
   },
   {
-    "type": "event",
+    "kind": "struct",
     "name": "openzeppelin::access::ownable::ownable::OwnableComponent::OwnershipTransferred",
-    "kind": "struct",
+    "type": "event",
     "members": [
       {
+        "kind": "data",
         "name": "previous_owner",
-        "type": "core::starknet::contract_address::ContractAddress",
-        "kind": "key"
+        "type": "core::starknet::contract_address::ContractAddress"
       },
       {
+        "kind": "data",
         "name": "new_owner",
-        "type": "core::starknet::contract_address::ContractAddress",
-        "kind": "key"
+        "type": "core::starknet::contract_address::ContractAddress"
       }
     ]
   },
   {
-    "type": "event",
-    "name": "openzeppelin::access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
-    "kind": "struct",
-    "members": [
-      {
-        "name": "previous_owner",
-        "type": "core::starknet::contract_address::ContractAddress",
-        "kind": "key"
-      },
-      {
-        "name": "new_owner",
-        "type": "core::starknet::contract_address::ContractAddress",
-        "kind": "key"
-      }
-    ]
-  },
-  {
-    "type": "event",
+    "kind": "enum",
     "name": "openzeppelin::access::ownable::ownable::OwnableComponent::Event",
-    "kind": "enum",
+    "type": "event",
     "variants": [
       {
+        "kind": "nested",
         "name": "OwnershipTransferred",
-        "type": "openzeppelin::access::ownable::ownable::OwnableComponent::OwnershipTransferred",
-        "kind": "nested"
-      },
-      {
-        "name": "OwnershipTransferStarted",
-        "type": "openzeppelin::access::ownable::ownable::OwnableComponent::OwnershipTransferStarted",
-        "kind": "nested"
+        "type": "openzeppelin::access::ownable::ownable::OwnableComponent::OwnershipTransferred"
       }
     ]
   },
   {
-    "type": "event",
-    "name": "distributor::contract::Distributor::Event",
     "kind": "enum",
+    "name": "distributor::contract::Distributor::Event",
+    "type": "event",
     "variants": [
       {
+        "kind": "nested",
         "name": "Claimed",
-        "type": "distributor::contract::Distributor::Claimed",
-        "kind": "nested"
+        "type": "distributor::contract::Distributor::Claimed"
       },
       {
+        "kind": "nested",
         "name": "OwnableEvent",
-        "type": "openzeppelin::access::ownable::ownable::OwnableComponent::Event",
-        "kind": "nested"
+        "type": "openzeppelin::access::ownable::ownable::OwnableComponent::Event"
       }
     ]
   }

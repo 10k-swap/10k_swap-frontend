@@ -33,8 +33,11 @@
         <div class="claim-content--item">
           <Text :color="'secondary-text'">Round 02/22 - 03/07 claimable:</Text>&nbsp;
           <div v-if="!rewardsLoading">
-            {{ rewardsCalldataAmountSTRK.toFixed(2) }}
-            STRK&nbsp;<StarknetIcon width="18" heigth="18" />
+            {{ rewardsCalldataAmountSTRK.toFixed(3) }}
+            STRK<Text size="mini" v-if="rewardsClaimed > 0">&nbsp;(claimed: {{ rewardsClaimed.toFixed(3) }})</Text>&nbsp;<StarknetIcon
+              width="18"
+              heigth="18"
+            />
           </div>
           <span v-else>Loading...</span>
           <Button
@@ -43,7 +46,7 @@
             :size="'small'"
             bold
             @click="onClickClaim"
-            :disabled="rewardsLoading || rewardsCalldataAmountSTRK <= 0"
+            :disabled="claiming || rewardsLoading || rewardsCalldataAmountSTRK <= 0 || rewardsCalldataAmountSTRK <= rewardsClaimed"
             >{{ claimButtonText }}</Button
           >
         </div>
@@ -70,8 +73,31 @@ import { useOpenWalletModal } from '../../../state/modal/hooks'
 import { useAllPairs } from '../../../state/pool/hooks'
 import { useStarknetExecute } from '../../../starknet-vue/hooks/execute'
 import { DEFISPRING_DISTRIBUTOR_ADDRESSES } from '../../../constants/address'
-import distributor from '../../../constants/abis/distributor.json'
-import { Abi } from 'starknet5'
+import distributorAbi from '../../../constants/abis/distributor.json'
+import { Abi, Contract, num } from 'starknet5'
+import { getRpcProvider } from '../../../utils/getRpcProvider'
+import { sleep } from '../../../utils'
+
+async function getAmountAlreadyClaimed(claimee: string, tryCount = 3): Promise<bigint> {
+  const contract = new Contract(
+    distributorAbi as Abi,
+    DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN,
+    getRpcProvider(StarknetChainId.MAINNET, { default: true })
+  )
+  try {
+    if (!claimee) return 0n
+
+    const data = await contract.call('amount_already_claimed', [claimee])
+    return num.toBigInt(data + '')
+  } catch (error) {
+    if (tryCount > 1) {
+      await sleep(200)
+      return await getAmountAlreadyClaimed(claimee, (tryCount -= 1))
+    }
+
+    return 0n
+  }
+}
 
 export default defineComponent({
   components: {
@@ -90,8 +116,10 @@ export default defineComponent({
     } = useStarknet()
     const openWalletModal = useOpenWalletModal()
 
+    const claiming = ref(false)
     const rewardsLoading = ref(false)
     const rewardsCalldata = ref<{ amount: string; proof: string[] }>({ amount: '', proof: [] })
+    const rewardsClaimed = ref(0)
     const rewardsCalldataAmountSTRK = computed(() => parseFloat(formatEther(rewardsCalldata.value.amount)))
 
     const executeContractAddresses = computed(() => [DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN])
@@ -99,7 +127,7 @@ export default defineComponent({
       // state: executeState,
       execute: executeInvoke,
       reset: executeReset,
-    } = useStarknetExecute(executeContractAddresses, [distributor as Abi], ['claim'])
+    } = useStarknetExecute(executeContractAddresses, [distributorAbi as Abi], ['claim'])
 
     const [pairs, loadingPairs] = useAllPairs()
 
@@ -124,15 +152,22 @@ export default defineComponent({
     )
 
     const claimButtonText = computed(() => {
-      if (account.value) return 'Claim'
-      else return 'Connect Wallet'
+      if (!account.value) return 'Connect Wallet'
+      else if (claiming.value) return 'Claiming'
+      else return 'Claim'
     })
 
     const loadCalldata = async () => {
       rewardsLoading.value = true
-      const _calldata = await getCalldata(chainId.value || StarknetChainId.MAINNET, account.value, 1)
-      rewardsLoading.value = false
+
+      const [_calldata, _claimed] = await Promise.all([
+        getCalldata(chainId.value || StarknetChainId.MAINNET, account.value, 1),
+        getAmountAlreadyClaimed(account.value || ''),
+      ])
+
       rewardsCalldata.value = _calldata
+      rewardsClaimed.value = parseFloat(formatEther(_claimed))
+      rewardsLoading.value = false
     }
 
     loadCalldata()
@@ -147,11 +182,25 @@ export default defineComponent({
     const onClickClaim = async () => {
       if (!account.value) return openWalletModal()
 
+      executeReset()
+      claiming.value = true
+
       try {
-        await executeInvoke({ args: [[rewardsCalldata.value.amount, rewardsCalldata.value.proof]] })
+        const response = await executeInvoke({
+          args: [[rewardsCalldata.value.amount, rewardsCalldata.value.proof]],
+          metadata: {
+            message: `Claim DeFi Spring rewards`,
+          },
+        })
+
+        if (response?.transaction_hash) await getRpcProvider(StarknetChainId.MAINNET).waitForTransaction(response?.transaction_hash)
+
+        loadCalldata()
       } catch (e) {
         console.error(e)
       }
+
+      claiming.value = false
       executeReset()
     }
 
@@ -161,8 +210,10 @@ export default defineComponent({
       filterPairs,
       loadingPairs,
       claimButtonText,
+      claiming,
       rewardsLoading,
       rewardsCalldata,
+      rewardsClaimed,
       rewardsCalldataAmountSTRK,
 
       onClickPair,
