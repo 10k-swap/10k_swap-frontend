@@ -45,6 +45,6 @@ export const RPCS_V4: { [starknetChainId in StarknetChainId]: string } = {
 }
 
 export const RPCS: { [starknetChainId in StarknetChainId]: string } = {
-  [StarknetChainId.MAINNET]: 'https://starknet-mainnet.public.blastapi.io/rpc/v0.5',
-  [StarknetChainId.TESTNET]: 'https://starknet-testnet.public.blastapi.io/rpc/v0.5',
+  [StarknetChainId.MAINNET]: 'https://free-rpc.nethermind.io/mainnet-juno',
+  [StarknetChainId.TESTNET]: 'https://free-rpc.nethermind.io/goerli-juno',
 }
