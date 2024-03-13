@@ -39,12 +39,17 @@ export const L0K_X_API = 'https://api.10kx.com'
 
 export const WALLET_HREF = 'https://10kx.com/?wallet'
 
-export const RPCS_V4: { [starknetChainId in StarknetChainId]: string } = {
-  [StarknetChainId.MAINNET]: 'https://starknet-mainnet.public.blastapi.io/rpc/v0.4',
-  [StarknetChainId.TESTNET]: 'https://starknet-testnet.public.blastapi.io/rpc/v0.4',
-}
+// export const RPCS_V4: { [starknetChainId in StarknetChainId]: string } = {
+//   [StarknetChainId.MAINNET]: 'https://starknet-mainnet.public.blastapi.io/rpc/v0.4',
+//   [StarknetChainId.TESTNET]: 'https://starknet-testnet.public.blastapi.io/rpc/v0.4',
+// }
 
-export const RPCS: { [starknetChainId in StarknetChainId]: string } = {
-  [StarknetChainId.MAINNET]: 'https://free-rpc.nethermind.io/mainnet-juno',
-  [StarknetChainId.TESTNET]: 'https://free-rpc.nethermind.io/goerli-juno',
+export const RPCS: { [starknetChainId in StarknetChainId]: string[] } = {
+  [StarknetChainId.MAINNET]: [
+    'https://free-rpc.nethermind.io/mainnet-juno',
+    'https://starknet-mainnet.g.alchemy.com/v2/DSHkhEeOAoNF256HyA-A5eYaldjZFnX0',
+    'https://rpc.starknet.lava.build',
+    'https://starknet.blockpi.network/v1/rpc/public',
+  ],
+  [StarknetChainId.TESTNET]: ['https://free-rpc.nethermind.io/goerli-juno', 'https://rpc.starknet-testnet.lava.build'],
 }
