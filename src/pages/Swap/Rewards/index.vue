@@ -89,7 +89,7 @@ import { Abi, Contract, num } from 'starknet5'
 import { getRpcProvider } from '../../../utils/getRpcProvider'
 import { sleep } from '../../../utils'
 
-async function getAmountAlreadyClaimed(claimee: string, tryCount = 3): Promise<bigint> {
+async function getAmountAlreadyClaimed(claimee: string, tryCount = 5): Promise<bigint> {
   const contract = new Contract(
     distributorAbi as Abi,
     DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN,

@@ -68,30 +68,36 @@ export const usePoolStore = defineStore<'pool', PoolState, {}, PoolActions>('poo
 
       this.loadingUserPools = true
 
-      const userPools: UserPool[] = []
-      for (let index = 0; index < this.pairs.length; index++) {
-        const item = this.pairs[index]
+      const userPools = await Promise.all(
+        this.pairs.map(async (item) => {
+          try {
+            const balance = await getBalances(account, item.pairAddress, chainId)
+            if (balance) {
+              const poolShare = new Percent(balance, item.totalSupply.raw.toString())
+              return {
+                pair: new Pair(
+                  new TokenAmount(item.pair.reserve0.token, item.pair.reserve0.raw.toString()),
+                  new TokenAmount(item.pair.reserve1.token, item.pair.reserve1.raw.toString())
+                ),
+                totalSupply: new TokenAmount(item.totalSupply.token, item.totalSupply.raw.toString()),
+                APR: item.APR,
+                balance: new TokenAmount(item.pair.liquidityToken, balance),
+                poolShare,
+                poolShareView: (poolShare?.lessThan(ONE_BIPS) ? '<0.01' : poolShare.toFixed(2)) ?? '0',
+              }
+            }
 
-        const balance = await getBalances(account, item.pairAddress, chainId)
-        if (balance) {
-          const poolShare = new Percent(balance, item.totalSupply.raw.toString())
-          userPools.push({
-            pair: new Pair(
-              new TokenAmount(item.pair.reserve0.token, item.pair.reserve0.raw.toString()),
-              new TokenAmount(item.pair.reserve1.token, item.pair.reserve1.raw.toString())
-            ),
-            totalSupply: new TokenAmount(item.totalSupply.token, item.totalSupply.raw.toString()),
-            APR: item.APR,
-            balance: new TokenAmount(item.pair.liquidityToken, balance),
-            poolShare,
-            poolShareView: (poolShare?.lessThan(ONE_BIPS) ? '<0.01' : poolShare.toFixed(2)) ?? '0',
-          })
-        }
-      }
+            return undefined
+          } catch (e) {
+            return undefined
+          }
+        })
+      )
+
       this.lastUpdateUserPoolAt = new Date().getTime()
       this.loadingUserPools = false
 
-      this.userPools = userPools.filter((item): item is UserPool => !!(item && item.balance.greaterThan(ZERO)))
+      this.userPools = userPools.filter((item) => item !== undefined).filter((item): item is UserPool => !!(item && item.balance.greaterThan(ZERO)))
     },
   },
 })
