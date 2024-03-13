@@ -2,9 +2,11 @@ import { TokenAmount, Pair, Token } from 'l0k_swap-sdk'
 import I10kSwapPairABI from '../constants/abis/l0k_pair_abi.json'
 
 import { useStarknetCalls } from '../starknet-vue/hooks/call'
-import { computed, ComputedRef, Ref, toRaw } from 'vue'
+import { computed, ComputedRef, Ref } from 'vue'
 import { useStarknet } from '../starknet-vue/providers/starknet'
 import { Abi, Contract } from 'starknet5'
+import { getRpcProvider } from '../utils/getRpcProvider'
+import { defaultChainId } from '../starknet-vue/providers/starknet/const'
 
 export enum PairState {
   LOADING,
@@ -16,7 +18,7 @@ export enum PairState {
 // null if loading
 export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefined][]>): ComputedRef<Array<[PairState, Pair | undefined | null]>> {
   const {
-    state: { library },
+    state: { chainId },
   } = useStarknet()
 
   const pairAddresses = computed(() => {
@@ -30,7 +32,7 @@ export function usePairs(tokens: ComputedRef<[Token | undefined, Token | undefin
       return undefined
     }
     const pairContracts = pairAddresses.value.map((address) =>
-      address ? new Contract(I10kSwapPairABI as Abi, address, toRaw(library.value)) : undefined
+      address ? new Contract(I10kSwapPairABI as Abi, address, getRpcProvider(chainId.value || defaultChainId)) : undefined
     )
     if (pairContracts.some((item) => item === undefined)) {
       return undefined
