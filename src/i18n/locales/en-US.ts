@@ -70,6 +70,7 @@ export default {
   swap: {
     title: 'Swap',
     connect: 'Connect Wallet',
+    high_price_impact: 'Higher price impact, swap cautiously.',
     insufficient_liquidity: 'Insufficient liquidity for this trade.',
     fetching: 'Fetching best price',
     expected_output: 'Expected Output',

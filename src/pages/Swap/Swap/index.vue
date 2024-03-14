@@ -34,6 +34,16 @@
           <AdvancedSwapDetails :trade="v2Trade" />
         </div>
       </div>
+      <div class="high-price-impact-info" v-if="higherPriceImpact">
+        <span>{{ t('swap.high_price_impact') }}</span>
+        <Button
+          :type="'danger'"
+          :size="'mini'"
+          @click="onSwapClick"
+          :disabled="!isValid || loadingTrade || !v2Trade || (tradeToConfirm && !!swapCallbackError)"
+          >Force Swap</Button
+        >
+      </div>
       <div class="swap">
         <Button :type="'primary'" :size="'large'" bold v-if="!account" @click="openWalletModal">
           {{ t('connect') }}
@@ -47,7 +57,7 @@
           bold
           v-else
           @click="onSwapClick"
-          :disabled="!isValid || loadingTrade || !v2Trade || (tradeToConfirm && !!swapCallbackError)"
+          :disabled="!isValid || loadingTrade || !v2Trade || (tradeToConfirm && !!swapCallbackError) || higherPriceImpact"
         >
           {{ !isValid ? swapInputError : t('swap.swap') }}
         </Button>
@@ -74,7 +84,7 @@ import WaittingModal from '../../../components/transaction/WaittingModal.vue'
 import RejectedModal from '../../../components/transaction/RejectedModal.vue'
 import ScuccessModal from '../../../components/transaction/ScuccessModal.vue'
 import { SettingIcon, SwitchIcon, LoadingIcon } from '../../../components/Svg'
-import { Token, Trade, JSBI, TokenAmount } from 'l0k_swap-sdk'
+import { Token, Trade, JSBI, TokenAmount, Percent } from 'l0k_swap-sdk'
 import { useModalStore, useSlippageToleranceSettingsStore } from '../../../state'
 import { useDerivedSwapInfo, useSwapActionHandlers } from '../../../state/swap/hooks'
 import { useSwapStore } from '../../../state/swap'
@@ -149,6 +159,11 @@ export default defineComponent({
       attemptingTxn: false,
       swapErrorMessage: undefined,
       txHash: undefined,
+    })
+
+    const higherPriceImpact = computed(() => {
+      if (!v2Trade.value?.priceImpact) return false
+      return v2Trade.value.priceImpact.greaterThan(new Percent(JSBI.BigInt(3), JSBI.BigInt(100)))
     })
 
     const summary = useSwapSummary(tradeToConfirm)
@@ -239,6 +254,8 @@ export default defineComponent({
       showRejectedModal,
       tradeToConfirm,
 
+      higherPriceImpact,
+
       t,
       onSetting,
       onInputSelect,
@@ -293,6 +310,19 @@ export default defineComponent({
         .icon {
           margin-right: 6px;
         }
+      }
+    }
+
+    .high-price-impact-info {
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      color: #fe8d59;
+      justify-content: center;
+      margin-top: 13px;
+
+      span {
+        margin-right: 5px;
       }
     }
 
