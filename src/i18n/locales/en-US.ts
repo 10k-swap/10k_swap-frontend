@@ -8,7 +8,7 @@ export default {
   <span style="color:rgba(204, 16, 16, 1);">switch</span> the network to <span style="color:rgba(204, 16, 16, 1);">StarkNet %{network}! and refresh the page.</span>`,
   warning: `This is an ALPHA version, you can ask for help in <a  href="https://discord.gg/T77yphUPB6" target="_blank">Discord</a> if you have any questions and follow our <a  href="https://twitter.com/10KSwap" target="_blank">Twitter </a> to learn more information.`,
   pending: '%{n} Pending',
-  view_on_scan: 'View on STARKSCAN',
+  view_on_scan: 'View on VOYAGER',
   wallet_modal: {
     title: 'connect a wallet',
     tips: 'By connecting a wallet,you agree to 10K Swap Labs’ Terms of Service and acknowledge that you have read and understand the 10K Swap Protocol Disclaimer.',

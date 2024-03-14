@@ -35,8 +35,11 @@
           <li>The longer you hold a position, the more rewards you get (during the event).</li>
           <li>If the reward is too low, you can accumulate it and claim the rewards together in the next round.</li>
           <li>
-            ⚠️ When using the ArgentX wallet to make a claim, a warning will appear. We are reaching out to ArgentX to address this issue, which will
-            not affect the claim reward.
+            <span style="text-decoration: line-through">
+              ⚠️ When using the ArgentX wallet to make a claim, a warning will appear. We are reaching out to ArgentX to address this issue, which
+              will not affect the claim reward.
+            </span>
+            <span>&nbsp;(Fixed)</span>
           </li>
         </ul>
       </div>

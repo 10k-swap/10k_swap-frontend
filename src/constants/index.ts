@@ -50,6 +50,11 @@ export const RPCS: { [starknetChainId in StarknetChainId]: string[] } = {
     'https://starknet-mainnet.g.alchemy.com/v2/DSHkhEeOAoNF256HyA-A5eYaldjZFnX0',
     'https://rpc.starknet.lava.build',
     'https://starknet.blockpi.network/v1/rpc/public',
+    'https://starknet-mainnet.public.blastapi.io',
   ],
-  [StarknetChainId.TESTNET]: ['https://free-rpc.nethermind.io/goerli-juno', 'https://rpc.starknet-testnet.lava.build'],
+  [StarknetChainId.TESTNET]: [
+    'https://free-rpc.nethermind.io/goerli-juno',
+    'https://rpc.starknet-testnet.lava.build',
+    'https://starknet-testnet.public.blastapi.io',
+  ],
 }

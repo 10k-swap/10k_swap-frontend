@@ -1,4 +1,4 @@
-import { InvokeFunctionResponse, Call, Abi, AllowArray, RawArgs, Calldata } from 'starknet5'
+import { InvokeFunctionResponse, Call, Abi, AllowArray, RawArgs, Calldata, CallData } from 'starknet5'
 import { Overrides } from 'starknet4'
 import { ComputedRef, reactive, toRaw } from 'vue'
 import { useStarknet } from '../providers/starknet'
@@ -68,7 +68,7 @@ export function useStarknetExecute<T extends any[]>(
         const transactions: AllowArray<Call> = contractAddresses.value.map((address, i) => ({
           contractAddress: address,
           entrypoint: methods[i],
-          calldata: args[i],
+          calldata: CallData.compile(args[i]),
         }))
         const response = await libraryRaw.execute(transactions, abis, overrides)
         state.data = response.transaction_hash
