@@ -2,7 +2,7 @@
   <div class="l0k-swap-analytics-pairs">
     <div class="header">
       <Text class="title">{{ t('analytics.pairs') }}</Text>
-      <div class="date-picker">
+      <!-- <div class="date-picker">
         <el-date-picker
           v-model="dates"
           type="datetimerange"
@@ -11,7 +11,7 @@
           end-placeholder="End date"
           :clearable="false"
         />
-      </div>
+      </div> -->
     </div>
     <div class="pairs">
       <div class="head">
@@ -49,7 +49,8 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { ElPagination, ElDatePicker } from 'element-plus'
+import { ElPagination } from 'element-plus'
+// import { ElPagination, ElDatePicker } from 'element-plus'
 import numeral from 'numeral'
 import Text from '../../../components/Text/Text.vue'
 import DoubleLogo from '../../../components/DoubleLogo/index.vue'
@@ -62,7 +63,7 @@ import { useStarknet } from '../../../starknet-vue/providers/starknet'
 export default defineComponent({
   components: {
     ElPagination,
-    ElDatePicker,
+    // ElDatePicker,
     Text,
     DoubleLogo,
   },

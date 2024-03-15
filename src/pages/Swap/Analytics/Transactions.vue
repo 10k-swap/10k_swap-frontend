@@ -2,7 +2,7 @@
   <div class="l0k-swap-analytics-transactions">
     <div class="header">
       <Text class="title">{{ t('analytics.transactions') }}</Text>
-      <div class="date-picker">
+      <!-- <div class="date-picker">
         <el-date-picker
           v-model="dates"
           type="datetimerange"
@@ -11,7 +11,7 @@
           end-placeholder="End date"
           :clearable="false"
         />
-      </div>
+      </div> -->
     </div>
     <div class="wrapper">
       <div class="summary">
@@ -78,7 +78,8 @@
 import { defineComponent, ref } from 'vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { ElPagination, ElDatePicker } from 'element-plus'
+import { ElPagination } from 'element-plus'
+// import { ElPagination, ElDatePicker } from 'element-plus'
 import Text from '../../../components/Text/Text.vue'
 import { useI18n } from 'vue-i18n'
 import { useTransactions } from '../../../state/analytics/hooks'
@@ -98,7 +99,7 @@ const TransactionTypes = [
 export default defineComponent({
   components: {
     ElPagination,
-    ElDatePicker,
+    // ElDatePicker,
     Text,
   },
   setup() {
