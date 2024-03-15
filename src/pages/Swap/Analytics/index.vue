@@ -23,8 +23,8 @@
         <div class="chart" id="l0k-swap-volume-chart"></div>
       </div>
     </div>
-    <Pairs />
-    <Transactions />
+    <Pairs v-if="false" />
+    <Transactions v-if="false" />
   </div>
 </template>
 
