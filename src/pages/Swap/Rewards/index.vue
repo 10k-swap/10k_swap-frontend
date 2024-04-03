@@ -34,18 +34,11 @@
           <li>Larger positions earn a larger share of incentives, all else equal.</li>
           <li>The longer you hold a position, the more rewards you get (during the event).</li>
           <li>If the reward is too low, you can accumulate it and claim the rewards together in the next round.</li>
-          <li>
-            <span style="text-decoration: line-through">
-              ⚠️ When using the ArgentX wallet to make a claim, a warning will appear. We are reaching out to ArgentX to address this issue, which
-              will not affect the claim reward.
-            </span>
-            <span>&nbsp;(Fixed)</span>
-          </li>
         </ul>
       </div>
       <div class="claim-content">
         <div class="claim-content--item">
-          <Text :color="'secondary-text'">Round 02/22 - 03/07 claimable:</Text>&nbsp;
+          <Text :color="'secondary-text'">Event 02/22 - 03/21 claimable:</Text>&nbsp;
           <div v-if="!rewardsLoading">
             {{ rewardsCalldataAmountSTRK.toFixed(5) }}
             STRK<Text size="mini" v-if="rewardsClaimed > 0">&nbsp;(claimed: {{ rewardsClaimed.toFixed(5) }})</Text>&nbsp;<StarknetIcon
@@ -113,6 +106,8 @@ async function getAmountAlreadyClaimed(claimee: string, tryCount = 5): Promise<b
   }
 }
 
+const TOTAL_ROUND = 2
+
 export default defineComponent({
   components: {
     Text,
@@ -133,15 +128,20 @@ export default defineComponent({
     const claiming = ref(false)
     const rewardsLoading = ref(false)
     const rewardsCalldata = ref<{ amount: string; proof: string[] }>({ amount: '', proof: [] })
+    const rewardsCalldatas = ref<{ amount: string; proof: string[] }[]>([])
     const rewardsClaimed = ref(0)
-    const rewardsCalldataAmountSTRK = computed(() => parseFloat(formatEther(rewardsCalldata.value.amount)))
+    const rewardsCalldataAmountSTRK = computed(() => {
+      const _value = rewardsCalldatas.value
+      const _amount = _value.length == 0 ? '0' : _value[_value.length - 1].amount
+      return parseFloat(formatEther(_amount))
+    })
 
-    const executeContractAddresses = computed(() => [DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN])
+    const executeContractAddresses = computed(() => new Array(TOTAL_ROUND).fill(DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN))
     const {
       // state: executeState,
       execute: executeInvoke,
       reset: executeReset,
-    } = useStarknetExecute(executeContractAddresses, [distributorAbi as Abi], ['claim'])
+    } = useStarknetExecute(executeContractAddresses, new Array(TOTAL_ROUND).fill(distributorAbi as Abi), new Array(TOTAL_ROUND).fill('claim'))
 
     const [pairs, loadingPairs] = useAllPairs()
 
@@ -174,12 +174,13 @@ export default defineComponent({
     const loadCalldata = async () => {
       rewardsLoading.value = true
 
-      const [_calldata, _claimed] = await Promise.all([
-        getCalldata(chainId.value || StarknetChainId.MAINNET, account.value, 1),
+      const [_claimed, ..._calldatas] = await Promise.all([
         getAmountAlreadyClaimed(account.value || ''),
+        ...new Array(TOTAL_ROUND).fill(undefined).map((_, i) => getCalldata(chainId.value || StarknetChainId.MAINNET, account.value, i + 1)),
       ])
 
-      rewardsCalldata.value = _calldata
+      rewardsCalldatas.value = _calldatas
+
       rewardsClaimed.value = parseFloat(formatEther(_claimed))
       rewardsLoading.value = false
     }
@@ -201,7 +202,7 @@ export default defineComponent({
 
       try {
         const response = await executeInvoke({
-          args: [[rewardsCalldata.value.amount, rewardsCalldata.value.proof]],
+          args: rewardsCalldatas.value.map((item) => [item.amount, item.proof]),
           metadata: {
             message: `Claim DeFi Spring rewards`,
           },
