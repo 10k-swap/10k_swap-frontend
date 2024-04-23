@@ -38,7 +38,7 @@
       </div>
       <div class="claim-content">
         <div class="claim-content--item">
-          <Text :color="'secondary-text'">Event 02/22 - 03/21 claimable:</Text>&nbsp;
+          <Text :color="'secondary-text'">Event 02/22 - 04/18 claimable:</Text>&nbsp;
           <div v-if="!rewardsLoading">
             {{ rewardsCalldataAmountSTRK.toFixed(5) }}
             STRK<Text size="mini" v-if="rewardsClaimed > 0">&nbsp;(claimed: {{ rewardsClaimed.toFixed(5) }})</Text>&nbsp;<StarknetIcon
@@ -106,8 +106,6 @@ async function getAmountAlreadyClaimed(claimee: string, tryCount = 5): Promise<b
   }
 }
 
-const TOTAL_ROUND = 2
-
 export default defineComponent({
   components: {
     Text,
@@ -136,12 +134,12 @@ export default defineComponent({
       return parseFloat(formatEther(_amount))
     })
 
-    const executeContractAddresses = computed(() => new Array(TOTAL_ROUND).fill(DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN))
+    const executeContractAddresses = computed(() => [DEFISPRING_DISTRIBUTOR_ADDRESSES.SN_MAIN])
     const {
       // state: executeState,
       execute: executeInvoke,
       reset: executeReset,
-    } = useStarknetExecute(executeContractAddresses, new Array(TOTAL_ROUND).fill(distributorAbi as Abi), new Array(TOTAL_ROUND).fill('claim'))
+    } = useStarknetExecute(executeContractAddresses, [distributorAbi as Abi], ['claim'])
 
     const [pairs, loadingPairs] = useAllPairs()
 
@@ -174,12 +172,12 @@ export default defineComponent({
     const loadCalldata = async () => {
       rewardsLoading.value = true
 
-      const [_claimed, ..._calldatas] = await Promise.all([
+      const [_claimed, _calldata] = await Promise.all([
         getAmountAlreadyClaimed(account.value || ''),
-        ...new Array(TOTAL_ROUND).fill(undefined).map((_, i) => getCalldata(chainId.value || StarknetChainId.MAINNET, account.value, i + 1)),
+        getCalldata(chainId.value || StarknetChainId.MAINNET, account.value, 0),
       ])
 
-      rewardsCalldatas.value = _calldatas
+      rewardsCalldatas.value = [_calldata]
 
       rewardsClaimed.value = parseFloat(formatEther(_claimed))
       rewardsLoading.value = false
