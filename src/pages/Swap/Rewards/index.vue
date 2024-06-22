@@ -38,7 +38,7 @@
       </div>
       <div class="claim-content">
         <div class="claim-content--item">
-          <Text :color="'secondary-text'">Event 02/22 - 05/30 claimable:</Text>&nbsp;
+          <Text :color="'secondary-text'">Event 02/22 - 06/13 claimable:</Text>&nbsp;
           <div v-if="!rewardsLoading">
             {{ rewardsCalldataAmountSTRK.toFixed(5) }}
             STRK<Text size="mini" v-if="rewardsClaimed > 0">&nbsp;(claimed: {{ rewardsClaimed.toFixed(5) }})</Text>&nbsp;<StarknetIcon
