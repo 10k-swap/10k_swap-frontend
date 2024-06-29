@@ -47,7 +47,14 @@ export const WALLET_HREF = 'https://10kx.com/?wallet'
 export const RPCS: { [starknetChainId in StarknetChainId]: string[] } = {
   [StarknetChainId.MAINNET]: [
     'https://free-rpc.nethermind.io/mainnet-juno',
-    'https://starknet-mainnet.g.alchemy.com/v2/DSHkhEeOAoNF256HyA-A5eYaldjZFnX0',
+    'https://starknet-mainnet.g.alchemy.com/v2/qeW9Qg4ew8AKLyzicQ7J7oOFI1NCtKyz',
+    'https://starknet-mainnet.g.alchemy.com/v2/cUa595b4LBwHdDZ3uHSBZr7PS1NXgFCQ',
+    'https://starknet-mainnet.g.alchemy.com/v2/ekJheYMyUgzO8bxrMq0e6PCgir5WuJqK',
+    'https://starknet-mainnet.g.alchemy.com/v2/G9wJH34O_F038b_k329lcjOd_o38JA3j',
+    'https://starknet-mainnet.g.alchemy.com/v2/-RKRlVd3tmxZAHYO2QbBNp6E6y7vCXXE',
+    'https://starknet-mainnet.g.alchemy.com/v2/MG9LXo50DOJi4_g0qmtShuiJKY4KPQHF',
+    'https://starknet-mainnet.g.alchemy.com/v2/JnR9OZ0EoYZTyhz91Kko2UkLLZ1jH7Eu',
+    'https://starknet-mainnet.g.alchemy.com/v2/Ekse1g_j948hqjq79TAUGCkGETIxWMSI',
     'https://rpc.starknet.lava.build',
     'https://starknet.blockpi.network/v1/rpc/public',
     'https://starknet-mainnet.public.blastapi.io',
