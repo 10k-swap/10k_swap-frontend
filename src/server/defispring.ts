@@ -12,7 +12,7 @@ export async function getCalldata(chainId: StarknetChainId, account?: string, ro
   if (!account) throw new Error('Miss account')
 
   try {
-    const res = await axios.get<DefispringCalldata>('https://10kswap.defispring.xyz/defispring/get_calldata', { params: { address: account, round } })
+    const res = await axios.get<DefispringCalldata>('https://10kswap.defispring.xyz/get_calldata', { params: { address: account, round } })
 
     if (res.data) {
       return res.data
