@@ -45,11 +45,7 @@ export const WALLET_HREF = 'https://10kx.com/?wallet'
 // }
 
 export const RPCS: { [starknetChainId in StarknetChainId]: string[] } = {
-  [StarknetChainId.MAINNET]: [
-    'https://free-rpc.nethermind.io/mainnet-juno',
-    // 'https://rpc.starknet.lava.build',
-    'https://starknet.blockpi.network/v1/rpc/public',
-  ],
+  [StarknetChainId.MAINNET]: ['https://free-rpc.nethermind.io/mainnet-juno', 'https://rpc.starknet.lava.build'],
   [StarknetChainId.TESTNET]: [
     'https://free-rpc.nethermind.io/goerli-juno',
     'https://rpc.starknet-testnet.lava.build',
