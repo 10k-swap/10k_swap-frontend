@@ -110,7 +110,7 @@ export async function getAllPairs(chainId: StarknetChainId) {
   // }
 
   // Multiple
-  const rets: Pool[] = (await Promise.all(pairs.data.map(async (item) => await getPoolInfo(chainId, item)))).filter((item) => item !== undefined)
+  const rets = (await Promise.all(pairs.data.map(async (item) => await getPoolInfo(chainId, item)))).filter((item) => item !== undefined) as Pool[]
 
   // TODO
   // const COIN_PRICE = { DAI: 0, USDT: 1, USDC: 1, WBTC: 0, STRK: 0, ETH: 0 }
