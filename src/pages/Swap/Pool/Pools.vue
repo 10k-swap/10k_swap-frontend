@@ -7,9 +7,9 @@
       <Text class="liquidity" :size="'small'">
         {{ t('pool.liquidity') }}
       </Text>
-      <Text class="APR" :size="'small'">
+      <!-- <Text class="APR" :size="'small'">
         {{ t('pool.APR') }}
-      </Text>
+      </Text> -->
       <Text class="add" :size="'small'">
         {{ t('pool.add') }}
       </Text>
@@ -23,7 +23,7 @@
           </Text>
         </div>
         <Text class="liquidity" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'">${{ pair.liquidity.toFixed(2) }} </Text>
-        <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text>
+        <!-- <Text class="APR" :size="isMobile ? 'mini' : 'small'" :color="'secondary-text'"> {{ pair.APR }}% </Text> -->
         <Text class="get" :size="isMobile ? 'mini' : 'small'" :color="'blue'" @click="onGet(pair)">
           {{ t('pool.get') }}
         </Text>
@@ -92,7 +92,7 @@ export default defineComponent({
   .pools-head {
     display: grid;
     align-items: center;
-    grid-template-columns: 170px 130px 130px 170px;
+    grid-template-columns: 170px 215px 215px;
     background: $color-bg-secondary;
     height: 32px;
 
@@ -122,7 +122,7 @@ export default defineComponent({
     .pair {
       display: grid;
       align-items: center;
-      grid-template-columns: 170px 130px 130px 170px;
+      grid-template-columns: 170px 215px 215px;
       padding: 10px 0;
       .tokens {
         display: flex;
@@ -154,11 +154,11 @@ export default defineComponent({
     padding: 0;
 
     .pools-head {
-      grid-template-columns: 108px 75px 70px 90px;
+      grid-template-columns: 108px 120px 115px;
     }
     .pools {
       .pair {
-        grid-template-columns: 108px 73px 70px 90px;
+        grid-template-columns: 108px 120px 115px;
         .tokens {
           .symbol {
             margin-left: 4px;

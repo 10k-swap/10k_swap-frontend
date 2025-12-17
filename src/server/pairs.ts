@@ -42,7 +42,7 @@ export interface AllPairItem {
   lastUpdatedTime: string
 }
 
-export async function getAllPairs(chainId: StarknetChainId) {
+export async function getAllPairs_old20251217(chainId: StarknetChainId) {
   try {
     const res = await axios.get<IResponse<AllPairItem[]>>(`${SERVER_URLS[chainId]}/pool/pairs`)
     if (res.data.errCode === ERR_OK) {
@@ -96,6 +96,31 @@ export async function getAllPairs(chainId: StarknetChainId) {
 
     return rets
   }
+}
+
+export async function getAllPairs(chainId: StarknetChainId) {
+  // Single
+  // const rets: Pool[] = []
+  // for (let index = 0; index < pairs.data.length; index++) {
+  //   const item = pairs.data[index]
+  //   const data = await getPoolInfo(chainId, item)
+  //   if (data) {
+  //     rets.push(data)
+  //   }
+  // }
+
+  // Multiple
+  const rets: Pool[] = (await Promise.all(pairs.data.map(async (item) => await getPoolInfo(chainId, item)))).filter((item) => item !== undefined)
+
+  // TODO
+  // const COIN_PRICE = { DAI: 0, USDT: 1, USDC: 1, WBTC: 0, STRK: 0, ETH: 0 }
+
+  // for (const item of rets) {
+  //   console.log('item.reserve0:', item.reserve0)
+  //   console.log('item.reserve1:', item.reserve1)
+  // }
+
+  return rets
 }
 
 async function getPoolInfo(chainId: StarknetChainId, data: AllPairItem) {
