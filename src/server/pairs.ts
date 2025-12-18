@@ -1,17 +1,15 @@
-import axios from './axios'
-import { SERVER_URLS } from '../constants'
-import { IResponse } from './types'
-import { ERR_OK } from './'
-import { Pair, Token, TokenAmount, StarknetChainId, Fetcher } from 'l0k_swap-sdk'
-import tokens from '../constants/tokens'
-import { isEqualsAddress } from '../utils'
-import { Pool } from '../state/pool'
+import { formatEther, parseEther } from '@ethersproject/units'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import { Fetcher, StarknetChainId, Token, TokenAmount } from 'l0k_swap-sdk'
+import { Abi, Contract, Uint256, uint256 } from 'starknet5'
 import I10kSwapPairABI from '../constants/abis/l0k_pair_abi.json'
 import pairs from '../constants/pairs.json'
-import { Abi, Contract, Uint256, uint256 } from 'starknet5'
+import tokens from '../constants/tokens'
+import { Pool } from '../state/pool'
+import { isEqualsAddress } from '../utils'
 import { getRpcProvider } from '../utils/getRpcProvider'
+import axios from './axios'
 
 dayjs.extend(utc)
 
@@ -42,61 +40,61 @@ export interface AllPairItem {
   lastUpdatedTime: string
 }
 
-export async function getAllPairs_old20251217(chainId: StarknetChainId) {
-  try {
-    const res = await axios.get<IResponse<AllPairItem[]>>(`${SERVER_URLS[chainId]}/pool/pairs`)
-    if (res.data.errCode === ERR_OK) {
-      if (!res.data.data.length) {
-        throw Error('get pairs error')
-      }
+// export async function getAllPairs_old20251217(chainId: StarknetChainId) {
+//   try {
+//     const res = await axios.get<IResponse<AllPairItem[]>>(`${SERVER_URLS[chainId]}/pool/pairs`)
+//     if (res.data.errCode === ERR_OK) {
+//       if (!res.data.data.length) {
+//         throw Error('get pairs error')
+//       }
 
-      const data = res.data.data.filter((item) => {
-        return !!(getToken(chainId, item.token0.address) && getToken(chainId, item.token1.address))
-      })
+//       const data = res.data.data.filter((item) => {
+//         return !!(getToken(chainId, item.token0.address) && getToken(chainId, item.token1.address))
+//       })
 
-      const checkedData: Pool[] = []
+//       const checkedData: Pool[] = []
 
-      for (let index = 0; index < data.length; index++) {
-        const item = data[index]
+//       for (let index = 0; index < data.length; index++) {
+//         const item = data[index]
 
-        const token0 = getToken(chainId, item.token0.address) as Token
-        const token1 = getToken(chainId, item.token1.address) as Token
+//         const token0 = getToken(chainId, item.token0.address) as Token
+//         const token1 = getToken(chainId, item.token1.address) as Token
 
-        if (dayjs(item.lastUpdatedTime).add(1, 'h').isAfter(dayjs().utc())) {
-          const { reserve0, reserve1, totalSupply } = item
-          const pair = new Pair(new TokenAmount(token0, reserve0), new TokenAmount(token1, reserve1))
+//         if (dayjs(item.lastUpdatedTime).add(1, 'h').isAfter(dayjs().utc())) {
+//           const { reserve0, reserve1, totalSupply } = item
+//           const pair = new Pair(new TokenAmount(token0, reserve0), new TokenAmount(token1, reserve1))
 
-          checkedData.push({
-            ...item,
-            token0,
-            token1,
-            pair,
-            totalSupply: new TokenAmount(pair.liquidityToken, totalSupply),
-          })
-        } else {
-          const pool = await getPoolInfo(chainId, item)
-          pool && checkedData.push(pool)
-        }
-      }
+//           checkedData.push({
+//             ...item,
+//             token0,
+//             token1,
+//             pair,
+//             totalSupply: new TokenAmount(pair.liquidityToken, totalSupply),
+//           })
+//         } else {
+//           const pool = await getPoolInfo(chainId, item)
+//           pool && checkedData.push(pool)
+//         }
+//       }
 
-      return checkedData
-    }
+//       return checkedData
+//     }
 
-    throw new Error('fetch pairs fail')
-  } catch (error: any) {
-    const rets: Pool[] = []
+//     throw new Error('fetch pairs fail')
+//   } catch (error: any) {
+//     const rets: Pool[] = []
 
-    for (let index = 0; index < pairs.data.length; index++) {
-      const item = pairs.data[index]
-      const data = await getPoolInfo(chainId, item)
-      if (data) {
-        rets.push(data)
-      }
-    }
+//     for (let index = 0; index < pairs.data.length; index++) {
+//       const item = pairs.data[index]
+//       const data = await getPoolInfo(chainId, item)
+//       if (data) {
+//         rets.push(data)
+//       }
+//     }
 
-    return rets
-  }
-}
+//     return rets
+//   }
+// }
 
 export async function getAllPairs(chainId: StarknetChainId) {
   // Single
@@ -112,13 +110,33 @@ export async function getAllPairs(chainId: StarknetChainId) {
   // Multiple
   const rets = (await Promise.all(pairs.data.map(async (item) => await getPoolInfo(chainId, item)))).filter((item) => item !== undefined) as Pool[]
 
-  // TODO
-  // const COIN_PRICE = { DAI: 0, USDT: 1, USDC: 1, WBTC: 0, STRK: 0, ETH: 0 }
+  let tickers: { instId: string; last: string }[] | undefined = undefined
 
-  // for (const item of rets) {
-  //   console.log('item.reserve0:', item.reserve0)
-  //   console.log('item.reserve1:', item.reserve1)
-  // }
+  try {
+    const { data } = await axios.get('https://www.okx.com/api/v5/market/tickers?instType=SPOT')
+    tickers = data['data']
+  } catch (e: any) {
+    console.error('Fetch okx tickers failed:', e.message)
+  }
+
+  if (tickers) {
+    const findPriceX10XX18 = (symbol?: string) => {
+      if (symbol == 'USDC') return parseEther('1').toBigInt()
+      if (symbol == 'WBTC') symbol = 'BTC'
+
+      const element = tickers?.find((item) => item.instId == `${symbol}-USD`)
+
+      if (!element) return 0n
+
+      return parseEther(element.last).toBigInt()
+    }
+
+    for (const item of rets) {
+      const token0Volume = formatEther((BigInt(item.reserve0) * findPriceX10XX18(item.token0.symbol)) / 10n ** BigInt(item.token0.decimals))
+      const token1Volume = formatEther((BigInt(item.reserve1) * findPriceX10XX18(item.token1.symbol)) / 10n ** BigInt(item.token1.decimals))
+      item.liquidity = parseFloat((parseFloat(token0Volume) + parseFloat(token1Volume)).toFixed(2))
+    }
+  }
 
   return rets
 }
@@ -135,6 +153,11 @@ async function getPoolInfo(chainId: StarknetChainId, data: AllPairItem) {
       totalSupply: Uint256
     }
 
+    const { reserve0, reserve1 } = (await new Contract(I10kSwapPairABI as Abi, pair.liquidityToken.address, provider).call('getReserves', [])) as {
+      reserve0: Uint256
+      reserve1: Uint256
+    }
+
     if (!totalSupply || !pair) {
       return undefined
     }
@@ -145,6 +168,8 @@ async function getPoolInfo(chainId: StarknetChainId, data: AllPairItem) {
       token1,
       pair,
       totalSupply: new TokenAmount(pair.liquidityToken, uint256.uint256ToBN(totalSupply).toString()),
+      reserve0: reserve0 + '',
+      reserve1: reserve1 + '',
     }
   } catch (error) {
     console.log('error for the get pair', error)
