@@ -15,10 +15,10 @@ export default {
       path: '/faucet',
       name: i18n.global.t('nav.faucet'),
     },
-    {
-      path: '/analytics',
-      name: i18n.global.t('nav.analytics'),
-    },
+    // {
+    //   path: '/analytics',
+    //   name: i18n.global.t('nav.analytics'),
+    // },
   ],
   [StarknetChainId.MAINNET]: [
     {
@@ -29,10 +29,10 @@ export default {
       path: '/pool',
       name: i18n.global.t('nav.pool'),
     },
-    {
-      path: '/analytics',
-      name: i18n.global.t('nav.analytics'),
-    },
+    // {
+    //   path: '/analytics',
+    //   name: i18n.global.t('nav.analytics'),
+    // },
     // {
     //   path: '/rewards',
     //   name: i18n.global.t('nav.rewards'),

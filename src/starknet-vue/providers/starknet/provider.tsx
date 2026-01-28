@@ -2,7 +2,7 @@ import { defineComponent, provide, readonly, toRefs, PropType } from 'vue'
 import { ProviderInterface } from 'starknet5'
 import { useStarknetManager } from './manager'
 import { Connector } from '../../connectors'
-import { StarknetMethodsSymbol, StarknetStateSymbol } from './const'
+import { defaultProvider as constDefaultProvider, StarknetMethodsSymbol, StarknetStateSymbol } from './const'
 import { InjectedConnectorOptions } from '../../connectors/injected'
 
 export const StarknetLibraryProvider = defineComponent({
@@ -16,7 +16,7 @@ export const StarknetLibraryProvider = defineComponent({
   setup(props, { slots }) {
     const { defaultProvider, connectors } = toRefs(props)
 
-    const { state, connect, disconnect } = useStarknetManager(defaultProvider, connectors)
+    const { state, connect, disconnect } = useStarknetManager(defaultProvider || constDefaultProvider, connectors)
     provide(StarknetStateSymbol, toRefs(readonly(state)))
     provide(StarknetMethodsSymbol, { connect, disconnect })
 
